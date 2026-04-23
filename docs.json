@@ -6,7 +6,7 @@
     "light": "https://media.brand.dev/aaa8c33f-0e86-4533-a661-9fa9d39e6c5f.png",
     "dark": "https://media.brand.dev/aaa8c33f-0e86-4533-a661-9fa9d39e6c5f.png"
   },
-  "favicon": "https://media.brand.dev/67798d4a-6d3c-43d4-8516-0b72eb58af41.png",
+  "favicon": "/favicon.ico",
   "colors": {
     "primary": "#2c3576",
     "light": "#ffffff"
