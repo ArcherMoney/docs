@@ -3,8 +3,8 @@
   "name": "Archer",
   "theme": "luma",
   "logo": {
-    "light": "https://media.brand.dev/aaa8c33f-0e86-4533-a661-9fa9d39e6c5f.png",
-    "dark": "https://media.brand.dev/aaa8c33f-0e86-4533-a661-9fa9d39e6c5f.png"
+    "light": "/logo/archer-logo.png",
+    "dark": "/logo/archer-logo.png"
   },
   "favicon": "/favicon.ico",
   "colors": {
