@@ -1,0 +1,67 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Archer",
+  "theme": "luma",
+  "logo": {
+    "light": "https://media.brand.dev/aaa8c33f-0e86-4533-a661-9fa9d39e6c5f.png",
+    "dark": "https://media.brand.dev/aaa8c33f-0e86-4533-a661-9fa9d39e6c5f.png"
+  },
+  "favicon": "https://media.brand.dev/67798d4a-6d3c-43d4-8516-0b72eb58af41.png",
+  "colors": {
+    "primary": "#2c3576",
+    "light": "#ffffff"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/ArcherMoney/Archer"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/payouts",
+              "concepts/team-members",
+              "concepts/paying-limits",
+              "concepts/smart-wallets"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/create-payout",
+              "guides/invite-team-members",
+              "guides/configure-limits",
+              "guides/fund-and-offramp"
+            ]
+          },
+          {
+            "group": "Compliance",
+            "pages": [
+              "compliance/kyc-kyb",
+              "compliance/transaction-history"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "pages": [
+          "changelog"
+        ]
+      }
+    ]
+  }
+}

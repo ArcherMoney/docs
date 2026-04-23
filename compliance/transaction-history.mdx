@@ -1,0 +1,67 @@
+---
+title: "View and Export Your Archer Transaction History"
+description: "Access a full audit trail of on-chain payout events and fiat transfers, with search, filtering, and CSV export from the Archer dashboard."
+sidebarTitle: "Transaction History"
+---
+
+Archer maintains a complete audit trail of every transaction executed through your account. On-chain payout events are captured directly from the `ArcherAgentEndpoint` contract and surfaced in the Transaction History view alongside any fiat off-ramp activity. You can search, filter, page through results, and export to CSV for accounting or compliance purposes.
+
+## Accessing transaction history
+
+<Steps>
+  <Step title="Open Transaction History">
+    Select **Transaction History** in the sidebar. The page loads a chronological list of all transactions associated with your smart wallet.
+  </Step>
+
+  <Step title="Browse and filter">
+    Use the controls at the top of the page to narrow results:
+
+    - **Search** — filter by counterparty address, token, or transaction hash
+    - **Type filter** — show only executions, deposits, or withdrawals
+    - **Date range** — set a start and end date to scope results to a specific period
+  </Step>
+
+  <Step title="View transaction details">
+    Click any row to open the details panel. It shows the full transaction hash, counterparty address, amount, token, fee breakdown, rule type, nonce, and timestamp.
+  </Step>
+
+  <Step title="Export to CSV">
+    Click **Export** in the top-right corner to open the export modal. Select a date range and Archer downloads a CSV file containing all matching transactions.
+  </Step>
+</Steps>
+
+Each record in the list shows: **To/From** address, **status**, **time**, and **amount** with token label.
+
+## On-chain events
+
+On-chain transactions are sourced from events emitted by the `ArcherAgentEndpoint` contract. Three event types are recorded:
+
+| Event | Description |
+|---|---|
+| `EthTransferExecuted` | A native ETH transfer was sent to a recipient |
+| `ERC20TransferExecuted` | A token transfer (e.g., USDC) was sent to a recipient |
+| `CustomCallExecuted` | An arbitrary contract call was executed |
+
+Every on-chain event record includes the following fields:
+
+- **msgSender** — the address that triggered the execution
+- **user** — the smart wallet address (your Archer execution account)
+- **ruleId** — the identifier of the rule that authorized the transaction
+- **nonce** — the sequential transaction nonce for ordering
+- **recipient / target** — the destination address for transfers or calls
+- **amount / value** — the transferred amount or call value
+- **feeToken** — the token used to pay the Archer protocol fee
+- **feeCollector** — the address that received the fee
+- **feeAmount** — the amount of the fee charged
+
+## Fiat transactions
+
+ACH and wire off-ramp transactions also appear in your transaction history. Each fiat record shows the payment type (ACH or wire), recipient name, amount, and current status. Fiat status values are:
+
+- **Pending** — the payment order has been submitted and is awaiting settlement
+- **Settled** — funds have been delivered to the recipient
+- **Failed** — the payment could not be completed; check the error details or contact support
+
+<Tip>
+  Transaction history is suitable for accounting, tax reporting, and compliance audits. Use the date range filter and CSV export to generate records for any reporting period.
+</Tip>

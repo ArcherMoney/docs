@@ -1,0 +1,51 @@
+---
+title: "Invite and Activate Team Members for Payouts"
+description: "Learn how to invite recipients, walk them through onboarding, activate their on-chain wallet, and manage your team member list in Archer."
+sidebarTitle: "Invite Members"
+---
+
+Before Archer can send a payout to someone, that person must be invited, complete onboarding, and be activated by you. Activation registers their wallet address on-chain as an approved recipient — without this step, the smart contract will not accept transfers to their address. This guide walks through the full lifecycle from first invite to active recipient.
+
+## Invite and activate a member
+
+<Steps>
+  <Step title="Go to Team Members">
+    Select **Team Members** from the left sidebar.
+  </Step>
+  <Step title="Enter the recipient's email">
+    Type the recipient's email address into the **Email address** field in the invite form at the top of the page.
+  </Step>
+  <Step title="Send the invite">
+    Click **Send Invite**. Archer sends the recipient an onboarding email with instructions to create their account and connect a wallet.
+  </Step>
+  <Step title="Wait for the Invited status">
+    The member appears in the team members table with a status of **Invited**. They have received the email but have not yet completed sign-up.
+  </Step>
+  <Step title="Wait for the Onboarded status">
+    Once the recipient completes the onboarding flow and connects their wallet, their status changes to **Onboarded**. Their wallet address will appear in the table row.
+  </Step>
+  <Step title="Activate the member">
+    Click **Activate** next to the member's name. This submits a blockchain transaction that registers their wallet address on the on-chain allowlist for your account.
+  </Step>
+  <Step title="Confirm Active status">
+    Once the transaction confirms, the member's status changes to **Active**. They can now receive payouts from your account.
+  </Step>
+</Steps>
+
+## Bulk import via CSV
+
+If you need to add a large group of recipients at once, use the CSV import feature instead of inviting one by one.
+
+1. Click **Import CSV** in the page header.
+2. In the import modal, upload a CSV file that contains a `name` column and a `wallet_address` column for each person. An `email` column is optional.
+3. Archer processes the file and adds each row as an active team member immediately. Imported members appear in the table with status **Active** and are ready to receive payouts.
+
+## Archive a member
+
+To remove a member's access, click the archive icon in their table row. If the member was **Active**, this also submits a blockchain transaction to remove their wallet from the on-chain allowlist — they will no longer be able to receive payouts.
+
+Archived members are hidden from the main table but can be found and restored by clicking **Archived Members** in the page header.
+
+<Warning>
+  Only activate members whose wallet address has been verified during the Archer onboarding flow. Activating an address you do not control or have not verified could result in funds being sent to the wrong recipient.
+</Warning>

@@ -1,0 +1,43 @@
+---
+title: "Team Members: Managing Payout Recipients in Archer"
+description: "Learn how to invite, onboard, activate, and archive team members — the recipients who can receive USDC payouts through Archer's smart wallet system."
+sidebarTitle: "Team Members"
+---
+
+Team members in Archer are the people who can receive payouts. Before someone can be paid, they need to go through a short lifecycle: you invite them, they sign up and register their wallet, and you activate them on-chain. This page explains each stage and what you can do at each step.
+
+## Member lifecycle
+
+<Steps>
+  <Step title="Invite">
+    Enter the recipient's email address in the Team Members page and click **Send Invite**. Archer sends them an invitation email and creates a record with status `invited`. You can also import multiple recipients at once using a CSV file — see the **Import CSV** button in the top toolbar.
+  </Step>
+  <Step title="Onboarded">
+    The recipient clicks the invite link, signs up, and completes their profile. Once their account is created and their smart wallet address is registered, their status automatically updates to `onboarded`. No action is required from you at this step.
+  </Step>
+  <Step title="Activate">
+    When a member shows the **Activate** button in the Actions column, their profile is ready. Click **Activate** to register their wallet address on-chain as an approved payout recipient. This calls the `setRecipient` function on the ArcherAgentEndpoint contract, adding the wallet to your allowlist. The member's status updates to `active` once the transaction confirms.
+  </Step>
+  <Step title="Archive">
+    To remove someone from your active recipient set, click the archive icon next to their name. If the member is currently `active`, Archer removes their wallet address from the on-chain allowlist before archiving the record. Archived members are not deleted — you can view and restore them via **Archived Members**.
+  </Step>
+</Steps>
+
+## Status badges
+
+Each team member displays a status badge that reflects where they are in the lifecycle:
+
+| Status | Meaning |
+|---|---|
+| `invited` | Invite has been sent; recipient has not yet signed up |
+| `onboarded` | Recipient has completed signup and their wallet is registered |
+| `active` | Wallet is registered on-chain; member can receive payouts |
+| `archived` | Member has been removed from the active recipient set |
+
+## Bulk import via CSV
+
+If you need to add many recipients at once, use the **Import CSV** button in the Team Members header. Your CSV must include a `name` column and a `wallet_address` column for each row. An `email` column is optional but recommended. Recipients imported this way are created with `active` status immediately — no separate activation step is required.
+
+<Tip>
+Only team members with `active` status can receive payouts. Their wallet address must be registered on the ArcherAgentEndpoint contract before any payout will succeed. If a payment is directed at a non-active member, the on-chain transaction will revert.
+</Tip>

@@ -1,0 +1,125 @@
+{
+  "projectType": "saas",
+  "projectName": "Archer",
+  "projectDescription": "Archer is a blockchain-powered incentive platform that lets businesses automate rule-based and scheduled payouts to team members using smart wallets and on-chain spending limits.",
+  "theme": "luma",
+  "primaryColor": "#2c3576",
+  "lightColor": "#ffffff",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/payouts",
+              "concepts/team-members",
+              "concepts/paying-limits",
+              "concepts/smart-wallets"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/create-payout",
+              "guides/schedule-payout",
+              "guides/invite-team-members",
+              "guides/configure-limits",
+              "guides/fund-and-offramp"
+            ]
+          },
+          {
+            "group": "Staking & Savings",
+            "pages": [
+              "staking/overview",
+              "staking/deposit-usdc"
+            ]
+          },
+          {
+            "group": "Compliance",
+            "pages": [
+              "compliance/kyc-kyb",
+              "compliance/transaction-history"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api/accounts",
+              "api/team-members",
+              "api/payouts",
+              "api/scheduled-payouts",
+              "api/transactions",
+              "api/wallets"
+            ]
+          },
+          {
+            "group": "Smart Contract",
+            "pages": [
+              "api/contract-overview",
+              "api/contract-rules"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Event-driven payouts with customizable trigger conditions",
+    "Scheduled payouts with flexible timing options",
+    "Team member management with email-based onboarding",
+    "On-chain spending limits (per-transaction, per-period, call frequency)",
+    "Smart wallet integration via Privy (EOA + kernel smart wallet)",
+    "USDC staking with yield through Blend",
+    "ACH and wire off-ramp via Plaid",
+    "KYC/KYB identity verification",
+    "Transaction history and audit trail",
+    "ArcherAgentEndpoint smart contract for trustless rule enforcement"
+  ],
+  "publicApiSurface": [
+    "GET/POST /account",
+    "GET/POST/PATCH/DELETE /person",
+    "GET/POST/PATCH/DELETE /event_payout",
+    "GET/POST/DELETE /scheduled_payout",
+    "GET /transaction_history",
+    "POST /wallet/execute_endpoint",
+    "POST /wallet/execute_kernel",
+    "POST /wallet/execute_blend_quote",
+    "GET /blend/account",
+    "GET /blend/yield",
+    "POST /blend/deposit_quote",
+    "POST /offramp",
+    "POST /onramp",
+    "GET/POST /plaid/accounts",
+    "GET /kyc",
+    "GET /kyb",
+    "ArcherAgentEndpoint.addRule(bytes32 ruleId, Rule rule)",
+    "ArcherAgentEndpoint.executeWithRule(bytes32 ruleId, Call callData)",
+    "ArcherAgentEndpoint.batchExecuteWithRule(bytes32 ruleId, Call[] calls)",
+    "ArcherAgentEndpoint.setRuleEnabled(bytes32 ruleId, bool enabled)",
+    "ArcherAgentEndpoint.setRecipient(bytes32 recipientSetId, address recipient, bool allowed)",
+    "ArcherAgentEndpoint.getRule(address user, bytes32 ruleId)",
+    "ArcherAgentEndpoint.getAllowanceState(address user, bytes32 ruleId)"
+  ]
+}

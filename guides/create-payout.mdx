@@ -1,0 +1,53 @@
+---
+title: "Create an Event Payout in Archer"
+description: "Learn how to create event-driven payouts in Archer — automated transfers that fire when a named condition is met by the Archer agent."
+sidebarTitle: "Create Payout"
+---
+
+Event payouts are automated transfers tied to a named condition. When Archer's agent detects that the condition has been satisfied — for example, a sales rep closing a qualifying deal — it executes the payout automatically. You define the name and the condition; Archer handles the rest.
+
+## Create a payout
+
+<Steps>
+  <Step title="Navigate to Payouts">
+    Select **Payouts** from the left sidebar.
+  </Step>
+  <Step title="Open the creation form">
+    Click the **Create payout** button in the top-right corner of the page. A modal will appear.
+  </Step>
+  <Step title="Enter a Payout Name">
+    Type a short, descriptive label for this incentive in the **Payout Name** field. This name appears in your payouts list and in payout records.
+
+    **Example:** `Q1 Sales Bonus`
+  </Step>
+  <Step title="Enter a Condition">
+    Describe the trigger event in the **Condition** field. Write it as a plain-language statement that Archer's agent will evaluate against incoming data.
+
+    **Example:** `Sales rep closes deal over $10,000`
+  </Step>
+  <Step title="Save the payout">
+    Click **Save**. The new payout immediately appears in your active payouts list and is ready to be triggered.
+  </Step>
+</Steps>
+
+## Managing your payouts
+
+### Search
+
+Use the search bar at the top of the Payouts page to filter by payout name or condition text. Results update as you type.
+
+### Archive a payout
+
+To remove a payout from your active list, click the archive icon in its row. Archived payouts are no longer evaluated by Archer's agent and will not trigger transfers.
+
+### Restore an archived payout
+
+Click **Archived Payouts** in the page header to open the archived payouts panel. Locate the payout you want to restore and click **Restore** — it will return to your active list immediately.
+
+<Tip>
+  You can suspend all active payouts at once by clicking the **Pause all payouts** button in the page header. This is useful when you need to temporarily halt incentive payouts across your entire account without archiving each one individually.
+</Tip>
+
+<Note>
+  The condition you enter is a human-readable description, not code. Archer's agent reads it to determine when to execute the payout. Be as specific as possible — clear conditions reduce false positives and missed triggers.
+</Note>

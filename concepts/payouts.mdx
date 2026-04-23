@@ -1,0 +1,54 @@
+---
+title: "Archer Payouts: Event-Driven and Scheduled Transfers"
+description: "Understand how Archer's two payout types — event-driven and scheduled — let you automate token transfers to your team on Base."
+sidebarTitle: "Payouts"
+---
+
+Payouts are the core of Archer: they define when money moves, how much, and to whom. Archer supports two distinct payout types — **event payouts** for condition-based triggers and **scheduled payouts** for time-based transfers. Both types execute within the spending rules you configure in [Paying Limits](/concepts/paying-limits) and are ultimately settled on-chain via the ArcherAgentEndpoint smart contract.
+
+## Event payouts
+
+An event payout fires when a specific condition is met. You give it a name and write a condition — a plain-language description of the trigger (for example, "User completes onboarding" or "Monthly sales target reached"). Archer's backend evaluates that condition and initiates the payout when it's satisfied.
+
+You manage event payouts from the **Payouts** dashboard. From there you can:
+
+- **Create** a new payout with a name and condition
+- **Search** payouts by name or condition text
+- **Archive** a payout to deactivate it (archived payouts are recoverable)
+- **Pause** all payouts at once if you need to halt activity temporarily
+- **Restore** an archived payout via the Archived Payouts view
+
+### Event payout fields
+
+| Field | Description |
+|---|---|
+| `id` | Unique identifier for the payout |
+| `event_payout_name` | Human-readable name you assign when creating the payout |
+| `condition` | Plain-language description of the trigger condition |
+| `created_at` | ISO 8601 timestamp of when the payout was created |
+| `is_archived` | `true` when the payout has been archived; archived payouts do not fire |
+
+## Scheduled payouts
+
+A scheduled payout sends a fixed amount to a recipient at a specific date and time. You create one by providing the recipient (by email or `person_id`), the USD amount, and a `scheduled_at` datetime in ISO 8601 format. Archer processes it automatically when the scheduled time arrives.
+
+### Scheduled payout fields
+
+| Field | Description |
+|---|---|
+| `id` | Unique identifier for the scheduled payout |
+| `scheduled_at` | ISO 8601 datetime when the payout should execute |
+| `amount` | USD amount to transfer |
+| `status` | Current state: `pending`, `skipped`, or `executed` |
+| `email` | Recipient's email address |
+| `person_id` | ID of the team member record, if resolved |
+
+You can delete a scheduled payout as long as its status is `pending` or `skipped`. Once a payout reaches `executed` status it cannot be cancelled.
+
+## Spending limits apply to all payouts
+
+Every payout — whether event-driven or scheduled — must pass the spending rules set in **Paying Limits** before it executes. If a payout would exceed your configured maximum per transaction, maximum per period, or maximum call count, the transaction is rejected on-chain. See [Paying Limits](/concepts/paying-limits) for details on configuring those rules.
+
+<Note>
+Payouts are executed via the ArcherAgentEndpoint smart contract deployed on Base. Each successful transfer emits an on-chain event that serves as an immutable record of the payout.
+</Note>

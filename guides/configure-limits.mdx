@@ -1,0 +1,44 @@
+---
+title: "Configure On-Chain Spending Limits for Payouts"
+description: "Set per-transaction, per-period, and transaction-count limits that are enforced by Archer's smart contract to protect your payout wallet."
+sidebarTitle: "Configure Limits"
+---
+
+Paying limits are spending controls enforced directly by the `ArcherAgentEndpoint` smart contract — not just at the application layer. When you save limits in Archer, a blockchain transaction is submitted to update these rules on-chain. This means no payout can exceed your configured thresholds, regardless of how the payout is triggered.
+
+## Set your paying limits
+
+<Steps>
+  <Step title="Go to Paying Limits">
+    Select **Paying Limits** from the left sidebar.
+  </Step>
+  <Step title="Set Max per payment">
+    Enter a USD amount in the **Max per payment** field. This is the ceiling for any single payout transaction — Archer will not execute a transfer that exceeds this value.
+  </Step>
+  <Step title="Set Max per period">
+    Enter a USD amount in the **Max per period** field. This is the total cumulative amount allowed across all payouts within the configured time period.
+  </Step>
+  <Step title="Set Max transactions per period">
+    Enter a number in the **transactions per period** field. This limits how many individual payout calls can be made within the period, regardless of their amounts.
+  </Step>
+  <Step title="Set the period">
+    Enter a number and select a unit from the dropdown — **Hours**, **Days**, **Weeks**, or **Months** — to define the rolling time window these limits apply to.
+
+    **Example:** `2 Weeks` means limits reset every two weeks.
+  </Step>
+  <Step title="Save Paying Limits">
+    Click **Save Paying Limits**. Archer submits a transaction to the `ArcherAgentEndpoint` contract to apply your new rules on-chain.
+  </Step>
+</Steps>
+
+<Note>
+  Saving your limits submits a transaction to the `ArcherAgentEndpoint` smart contract. Depending on network conditions, it may take a few seconds for the transaction to confirm. The page will show a success or error message once the result is known.
+</Note>
+
+<Tip>
+  Start with conservative limits and increase them later as you build confidence in your payout workflows. It is much easier to raise limits than to recover funds from an unexpected overpayout.
+</Tip>
+
+## How period resets work
+
+Archer tracks cumulative spend and transaction counts within the period you configure. When the full period duration elapses — for example, two weeks after you first saved the limits — the counters reset automatically and a fresh period begins. You do not need to take any action to trigger a reset.

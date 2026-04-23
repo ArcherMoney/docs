@@ -1,0 +1,41 @@
+---
+title: "Smart Wallets: How Archer Manages Your Payout Keys"
+description: "Understand the two wallet types in Archer — your EOA signing identity and the ERC-4337 smart wallet that funds are sent from on Base."
+sidebarTitle: "Smart Wallets"
+---
+
+When you sign up for Archer, two wallet addresses are created for your account automatically. Understanding the difference between them helps you know where your funds live, who signs transactions, and how the ArcherAgentEndpoint contract fits into each payout.
+
+## Your two wallets
+
+<CardGroup cols={2}>
+  <Card title="EOA (Externally Owned Account)" icon="key">
+    Your canonical identity wallet, created by [Privy](https://privy.io) when you first sign in. This is a standard Ethereum wallet. It acts as your on-chain identity and is used to sign transactions — including calls to the ArcherAgentEndpoint contract when you activate team members or update paying limits.
+  </Card>
+  <Card title="Smart wallet (Kernel / ERC-4337)" icon="wallet">
+    A programmable smart contract wallet deployed on your behalf. This is the wallet that actually holds the funds used for payouts. Its address appears in **Settings** as **Payout Smart Wallet**. When a payout executes, tokens are transferred out of this wallet.
+  </Card>
+</CardGroup>
+
+## How payouts flow through the contract
+
+The ArcherAgentEndpoint contract sits between your smart wallet and your recipients. Every time a payout fires, the contract:
+
+1. Verifies the recipient's wallet address is in your approved allowlist
+2. Checks that the transfer amount is within your configured paying limits (`maxAmountPerTx`, `maxAmountPerPeriod`, `maxCallsPerPeriod`)
+3. Executes the ERC-20 token transfer from your smart wallet to the recipient
+
+If any of those checks fail, the transaction reverts and no funds are moved. This means your spending rules and recipient allowlist are enforced at the protocol level, not just by the Archer application.
+
+## Viewing your wallet addresses
+
+Both addresses are visible in **Settings**:
+
+- **User EOA** — your Privy-managed signing wallet
+- **Payout Smart Wallet** — the ERC-4337 smart contract wallet funds are sent from
+
+You do not need to do anything to set these up. The smart wallet is deployed automatically the first time you sign in to Archer.
+
+<Note>
+Your smart wallet runs on the Base network. In test environments, Archer uses Base Sepolia. All payouts — whether in production or a test environment — are real on-chain transactions on the respective network.
+</Note>
