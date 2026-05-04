@@ -1,10 +1,10 @@
 ---
-title: "Configure On-Chain Spending Limits for Payouts"
-description: "Set per-transaction, per-period, and transaction-count limits that are enforced by Archer's smart contract to protect your payout wallet."
+title: "Configure Spending Limits for Payouts"
+description: "Set per-transaction, per-period, and transaction-count limits that are enforced by Archer's payments engine to protect your payout account."
 sidebarTitle: "Configure Limits"
 ---
 
-Paying limits are spending controls enforced directly by the `ArcherAgentEndpoint` smart contract — not just at the application layer. When you save limits in Archer, a blockchain transaction is submitted to update these rules on-chain. This means no payout can exceed your configured thresholds, regardless of how the payout is triggered.
+Paying limits are spending controls enforced directly by Archer's payments engine — not just at the application layer. When you save limits in Archer, the new rules are applied to your account. This means no payout can exceed your configured thresholds, regardless of how the payout is triggered.
 
 ## Set your paying limits
 
@@ -27,12 +27,12 @@ Paying limits are spending controls enforced directly by the `ArcherAgentEndpoin
     **Example:** `2 Weeks` means limits reset every two weeks.
   </Step>
   <Step title="Save Paying Limits">
-    Click **Save Paying Limits**. Archer submits a transaction to the `ArcherAgentEndpoint` contract to apply your new rules on-chain.
+    Click **Save Paying Limits**. Archer applies your new rules to the payments engine.
   </Step>
 </Steps>
 
 <Note>
-  Saving your limits submits a transaction to the `ArcherAgentEndpoint` smart contract. Depending on network conditions, it may take a few seconds for the transaction to confirm. The page will show a success or error message once the result is known.
+  Saving your limits applies the new rules to your account. It may take a few seconds to confirm. The page will show a success or error message once the result is known.
 </Note>
 
 <Tip>

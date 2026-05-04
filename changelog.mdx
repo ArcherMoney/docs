@@ -6,21 +6,21 @@ description: "The latest updates and improvements to Archer."
 <Update label="2026-04-20" tags={["Feature"]} description="Week of April 20">
   ## Scheduled payouts
 
-  You can now queue one-time USDC transfers for a specific date and time. Create a scheduled payout by providing a recipient, amount, and target datetime — Archer handles execution automatically when the time arrives. Cancel any pending payout before it runs if plans change.
+  You can now queue one-time transfers for a specific date and time. Create a scheduled payout by providing a recipient, amount, and target datetime — Archer handles execution automatically when the time arrives. Cancel any pending payout before it runs if plans change.
 
-  ## On-chain paying limits
+  ## Built-in paying limits
 
-  Set per-transaction, per-period, and call-count spending limits that are enforced by the ArcherAgentEndpoint smart contract. These controls are written on-chain, so no payout can exceed your authorized budget regardless of how it's triggered. [Learn more](/concepts/paying-limits)
+  Set per-transaction, per-period, and call-count spending limits that are enforced by Archer's payments engine. These controls are applied at the engine level, so no payout can exceed your authorized budget regardless of how it's triggered.
 
   ## Bulk team member import via CSV
 
-  Add multiple payout recipients at once using the CSV import feature on the Team Members page. Imported members are created with active status immediately — no separate activation step required. [Learn more](/guides/invite-team-members)
+  Add multiple payout recipients at once using the CSV import feature on the Team Members page. Imported members are created with active status immediately — no separate activation step required.
 
-  ## ACH and wire off-ramp
+  ## ACH and wire withdrawals
 
-  Move funds from your smart wallet back to a traditional bank account. The dashboard now supports both ACH and wire transfers for off-ramping USDC to fiat. [Learn more](/guides/fund-and-offramp)
+  Move funds from your payout account back to a bank account. The dashboard now supports both ACH and wire transfers for sending funds to your bank.
 
   ## REST API
 
-  A full REST API is available for managing accounts, payouts, team members, and wallet operations programmatically. All endpoints accept and return JSON, with JWT-based authentication.
+  A full REST API is available for managing accounts, payouts, team members, and account operations programmatically. All endpoints accept and return JSON, with JWT-based authentication.
 </Update>

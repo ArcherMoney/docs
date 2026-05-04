@@ -1,22 +1,22 @@
 ---
-title: "Paying Limits: On-Chain Spending Controls for Payouts"
-description: "Configure per-transaction, per-period, and call-count limits enforced by the ArcherAgentEndpoint smart contract to safeguard your payout budget."
+title: "Paying Limits: Spending Controls for Payouts"
+description: "Configure per-transaction, per-period, and call-count limits enforced by Archer's payments engine to safeguard your payout budget."
 sidebarTitle: "Paying Limits"
 ---
 
-Paying Limits let you define a budget envelope that Archer enforces every time a payout is attempted. These limits are not soft application-layer checks — they are written to the ArcherAgentEndpoint smart contract and evaluated on-chain before each transfer executes. A transaction that exceeds any limit is reverted; no funds move.
+Paying Limits let you define a budget envelope that Archer enforces every time a payout is attempted. These limits are not soft application-layer checks — they are configured in Archer's payments engine and evaluated before each transfer executes. A transaction that exceeds any limit is rejected; no funds move.
 
 ## The three limit dimensions
 
 <CardGroup cols={3}>
   <Card title="Max per payment" icon="circle-dollar-sign">
-    The highest USD amount that can be sent in a single payout transaction. Maps to `maxAmountPerTx` in the contract.
+    The highest USD amount that can be sent in a single payout transaction.
   </Card>
   <Card title="Max per period" icon="chart-bar">
-    The total USD that can be paid out across all transactions within the configured period. Maps to `maxAmountPerPeriod` in the contract.
+    The total USD that can be paid out across all transactions within the configured period.
   </Card>
   <Card title="Max transactions per period" icon="arrows-left-right">
-    The number of payout calls allowed within the configured period. Maps to `maxCallsPerPeriod` in the contract.
+    The number of payout calls allowed within the configured period.
   </Card>
 </CardGroup>
 
@@ -35,16 +35,16 @@ For example, setting the period to `2 Weeks` means the per-period limits reset e
 
 ## How enforcement works
 
-When a payout is triggered, the ArcherAgentEndpoint contract checks all three limits before transferring any funds:
+When a payout is triggered, Archer's payments engine checks all three limits before transferring any funds:
 
-1. Is the payout amount within `maxAmountPerTx`?
-2. Would this payout push the period total above `maxAmountPerPeriod`?
-3. Would this payout exceed `maxCallsPerPeriod` for the current window?
+1. Is the payout amount within your max per payment?
+2. Would this payout push the period total above your max per period?
+3. Would this payout exceed your max transactions per period for the current window?
 
-If any check fails, the entire transaction reverts with a specific error (`MaxAmountPerTxExceeded`, `MaxAmountPerPeriodExceeded`, or `MaxCallsPerPeriodExceeded`). Nothing is deducted and the payout is not retried automatically.
+If any check fails, the entire transaction is rejected with a specific error. Nothing is deducted and the payout is not retried automatically.
 
 <Warning>
-Saving your Paying Limits submits a blockchain transaction from your smart wallet. Allow a few seconds for the transaction to confirm on Base before expecting the new limits to take effect. If you close the page before confirmation, your changes may not be saved.
+Saving your Paying Limits applies the new rules to your account. Allow a few seconds for the changes to take effect. If you close the page before confirmation, your changes may not be saved.
 </Warning>
 
 ## Agents (coming soon)

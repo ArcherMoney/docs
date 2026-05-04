@@ -1,10 +1,10 @@
 ---
 title: "Archer Payouts: Event-Driven and Scheduled Transfers"
-description: "Understand how Archer's two payout types — event-driven and scheduled — let you automate token transfers to your team on Base."
+description: "Understand how Archer's two payout types — event-driven and scheduled — let you automate transfers to your team."
 sidebarTitle: "Payouts"
 ---
 
-Payouts are the core of Archer: they define when money moves, how much, and to whom. Archer supports two distinct payout types — **event payouts** for condition-based triggers and **scheduled payouts** for time-based transfers. Both types execute within the spending rules you configure in [Paying Limits](/concepts/paying-limits) and are ultimately settled on-chain via the ArcherAgentEndpoint smart contract.
+Payouts are the core of Archer: they define when money moves, how much, and to whom. Archer supports two distinct payout types — **event payouts** for condition-based triggers and **scheduled payouts** for time-based transfers. Both types execute within the spending rules you configure in [Paying Limits](/concepts/paying-limits) and are settled by Archer's payments engine.
 
 ## Event payouts
 
@@ -47,8 +47,8 @@ You can delete a scheduled payout as long as its status is `pending` or `skipped
 
 ## Spending limits apply to all payouts
 
-Every payout — whether event-driven or scheduled — must pass the spending rules set in **Paying Limits** before it executes. If a payout would exceed your configured maximum per transaction, maximum per period, or maximum call count, the transaction is rejected on-chain. See [Paying Limits](/concepts/paying-limits) for details on configuring those rules.
+Every payout — whether event-driven or scheduled — must pass the spending rules set in **Paying Limits** before it executes. If a payout would exceed your configured maximum per transaction, maximum per period, or maximum call count, the transaction is rejected. See [Paying Limits](/concepts/paying-limits) for details on configuring those rules.
 
 <Note>
-Payouts are executed via the ArcherAgentEndpoint smart contract deployed on Base. Each successful transfer emits an on-chain event that serves as an immutable record of the payout.
+Payouts are executed by Archer's payments engine. Each successful transfer creates an immutable record in your transaction history.
 </Note>

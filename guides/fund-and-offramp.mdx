@@ -1,26 +1,26 @@
 ---
-title: "Fund Your Wallet and Move Money Off-Chain"
-description: "Learn how to view your USDC balance, add funds via bank transfer, and move money off-chain using ACH or wire payments from the Archer dashboard."
-sidebarTitle: "Fund & Off-Ramp"
+title: "Fund Your Account and Send Money to a Bank"
+description: "Learn how to view your balance, add funds via bank transfer, and send money to a bank account using ACH or wire payments from the Archer dashboard."
+sidebarTitle: "Fund & Withdraw"
 ---
 
-Archer holds your payout funds in a smart wallet — a blockchain-based account that the Archer agent draws from when executing payouts. The Dashboard gives you a real-time view of that balance and provides controls to add funds or move money back to a traditional bank account.
+Archer holds your payout funds in a dedicated payout account that Archer's agent draws from when executing payouts. The Dashboard gives you a real-time view of that balance and provides controls to add funds or send money to a bank account.
 
 ## View your balance
 
-The Dashboard displays your current **USDC balance** in your payout smart wallet as the first item on the page. The balance is read directly from the blockchain and reflects funds that are available for payouts right now.
+The Dashboard displays your current balance in your payout account as the first item on the page. The balance reflects funds that are available for payouts right now.
 
-## Add funds (on-ramp)
+## Add funds
 
-To top up your smart wallet:
+To top up your payout account:
 
 1. Click **Add money** on the Dashboard.
 2. Connect your bank account using the Plaid integration that appears. Plaid securely links your bank without sharing your credentials with Archer.
-3. Select the account and amount you want to transfer. The funds will be pulled via ACH debit and deposited into your smart wallet once the transfer settles.
+3. Select the account and amount you want to transfer. The funds will be pulled via ACH debit and deposited into your payout account once the transfer settles.
 
-## ACH off-ramp
+## ACH withdrawal
 
-To move funds from your smart wallet to a bank account via ACH:
+To move funds from your payout account to a bank account via ACH:
 
 1. Click **ACH Off-ramp** on the Dashboard. A form modal will open.
 2. Fill in the recipient details:
@@ -30,7 +30,7 @@ To move funds from your smart wallet to a bank account via ACH:
    - **Amount (USD)** — the amount to transfer
 3. Click **Send ACH Payment**. Archer initiates the transfer and returns a payment order confirmation.
 
-## Wire off-ramp
+## Wire withdrawal
 
 To move funds via wire transfer instead of ACH:
 
@@ -39,5 +39,5 @@ To move funds via wire transfer instead of ACH:
 3. Click **Send Wire Payment**. Archer initiates the wire and returns a payment order confirmation.
 
 <Note>
-  Off-ramp transactions — both ACH and wire — may take 1–3 business days to settle depending on your bank and the payment network. The status shown in Archer reflects when Archer submitted the payment order, not when your bank posts the funds.
+  Withdrawals — both ACH and wire — may take 1–3 business days to settle depending on your bank and the payment network. The status shown in Archer reflects when Archer submitted the payment order, not when your bank posts the funds.
 </Note>
