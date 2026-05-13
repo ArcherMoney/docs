@@ -1,7 +1,7 @@
 ---
-title: "Paying Limits: On-Chain Spending Controls for Payouts"
+title: "Paying limits: on-chain spending controls for payouts"
 description: "Configure per-transaction, per-period, and call-count limits enforced by the ArcherAgentEndpoint smart contract to safeguard your payout budget."
-sidebarTitle: "Paying Limits"
+sidebarTitle: "Paying limits"
 ---
 
 Paying Limits let you define a budget envelope that Archer enforces every time a payout is attempted. These limits are not soft application-layer checks — they are written to the ArcherAgentEndpoint smart contract and evaluated on-chain before each transfer executes. A transaction that exceeds any limit is reverted; no funds move.
