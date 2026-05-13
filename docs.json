@@ -23,14 +23,14 @@
         "tab": "Docs",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Get started",
             "pages": [
               "introduction",
               "quickstart"
             ]
           },
           {
-            "group": "Core Concepts",
+            "group": "Core concepts",
             "pages": [
               "concepts/payouts",
               "concepts/team-members",
