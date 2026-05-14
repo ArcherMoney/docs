@@ -65,7 +65,7 @@ When you create a new payout, you first pick the source that delivers events to 
 </Steps>
 
 <Note>
-  Slack agents and webhook agents are scoped to their source. A message from Slack will only be evaluated by Slack agents, and a webhook POST will only be evaluated by webhook agents. This prevents cross-triggering between channels.
+  Slack agents and webhook agents are scoped to their source. Slack agents only evaluate Slack messages, and webhook agents only evaluate webhook requests. This prevents cross-triggering between channels.
 </Note>
 
 ## Managing your payouts
