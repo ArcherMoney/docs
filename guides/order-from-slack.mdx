@@ -1,0 +1,62 @@
+---
+title: "Place an order from Slack with /order"
+description: "Use the /order slash command in Slack to send items to teammates from Archer — open a modal, enter an item and recipient email, and submit."
+sidebarTitle: "Order from Slack"
+---
+
+The `/order` slash command lets you send an item to a teammate directly from Slack. Run the command in any channel or DM where the Archer app is installed, fill in a short modal, and Archer queues the order for fulfillment.
+
+Use this when you want to reward a teammate in the moment — for example, sending a gift or piece of swag — without leaving Slack to open the Archer dashboard.
+
+## Prerequisites
+
+- The Archer Slack app is installed in your workspace.
+- Your workspace is linked to an Archer account.
+- You know the recipient's email address.
+
+## Place an order
+
+<Steps>
+  <Step title="Run the command">
+    In any Slack channel or DM, type `/order` and press **Enter**. The **Place an Order** modal opens.
+  </Step>
+  <Step title="Enter the item">
+    In the **Item Name** field, type the name of the item you want to send.
+
+    **Example:** `Yeti Tumbler`
+  </Step>
+  <Step title="Enter the recipient">
+    In the **Recipient Email** field, enter the email address of the person who should receive the item.
+
+    **Example:** `alice@example.com`
+  </Step>
+  <Step title="Submit">
+    Click **Submit**. Archer queues the order and replaces the modal with a confirmation message:
+
+    ```text
+    ✅ Got it! We'll send Yeti Tumbler to alice@example.com.
+    ```
+
+    Click **Cancel** at any time to close the modal without submitting.
+  </Step>
+</Steps>
+
+## What gets recorded
+
+When you submit the modal, Archer records the order with:
+
+- The item name you entered.
+- The recipient's email address.
+- The Slack user ID of the submitter.
+- The Slack workspace the order was placed from.
+- A UTC timestamp of when the order was received.
+
+Both fields are required. If either is left blank, Slack shows a validation error and the order is not submitted.
+
+<Note>
+  `/order` is separate from `/refer`. Use `/order` to send a physical or digital item to a teammate, and `/refer` to refer a contact into your Archer workflows.
+</Note>
+
+<Tip>
+  Need to send the same item to several people? Run `/order` once per recipient — each submission is recorded as its own order.
+</Tip>
