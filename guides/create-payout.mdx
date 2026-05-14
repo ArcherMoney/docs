@@ -1,34 +1,72 @@
 ---
 title: "Create an event payout in Archer"
-description: "Learn how to create event-driven payouts in Archer — automated transfers that fire when a named condition is met by the Archer agent."
+description: "Create event-driven payouts in Archer triggered by webhook calls or Slack messages — automated USDC transfers that fire when a named condition is met."
 sidebarTitle: "Create payout"
 ---
 
-Event payouts are automated transfers tied to a named condition. When Archer's agent detects that the condition has been satisfied — for example, a sales rep closing a qualifying deal — it executes the payout automatically. You define the name and the condition; Archer handles the rest.
+Event payouts are automated transfers tied to a named condition. When Archer's agent detects that the condition has been satisfied — for example, a sales rep closing a qualifying deal — it executes the payout automatically. You choose the source that triggers the agent, define the condition, and set the spending limits; Archer handles the rest.
 
-## Create a payout
+## Choose a source
+
+When you create a new payout, you first pick the source that delivers events to Archer's agent. Each agent listens to exactly one source, so events from one channel never trigger rules attached to the other.
+
+| Source | When to use it |
+|---|---|
+| **Webhook** | Trigger payouts from any tool that can send an HTTP POST request — Zapier, Airtable, Stripe, internal scripts, or your own backend. |
+| **Slack** | Trigger payouts from a Slack channel using the Archer ordering bot. Best for team-driven workflows where requests start as Slack messages. |
+
+## Create a webhook-triggered payout
 
 <Steps>
   <Step title="Go to Payouts">
     Select **Payouts** from the left sidebar.
   </Step>
   <Step title="Open the creation form">
-    Click the **Create payout** button in the top-right corner of the page. A modal will appear.
+    Click the **Create payout** button in the top-right corner. A modal will appear.
   </Step>
-  <Step title="Enter a payout name">
-    Type a short, descriptive label for this incentive in the **Payout Name** field. This name appears in your payouts list and in payout records.
+  <Step title="Select Webhook">
+    On the **Create a new agent** screen, select **Webhook**.
+  </Step>
+  <Step title="Enter a name and condition">
+    Type a short, descriptive label in the **Payout Name** field (for example, `Q1 Sales Bonus`). In the **Condition** field, describe the trigger event in plain language (for example, `Sales rep closes deal over $10,000`).
+  </Step>
+  <Step title="Set spending limits">
+    Configure the maximum per payment, maximum per period, and number of transactions allowed per period. These limits are enforced on-chain by the ArcherAgentEndpoint contract. See [Paying Limits](/concepts/paying-limits) for details.
+  </Step>
+  <Step title="Copy the webhook URL">
+    Archer generates a unique webhook URL for this agent. Paste it into your tool of choice as a webhook endpoint, or send HTTP POST requests to it directly from your own code.
 
-    **Example:** `Q1 Sales Bonus`
+    ```bash
+    curl -X POST https://api.archermoney.com/event_payout/webhook/<your-agent-id> \
+      -H "Content-Type: application/json" \
+      -d '{"event": "Sales rep closes deal over $10,000", "amount": 500, "recipient": "alex@example.com"}'
+    ```
   </Step>
-  <Step title="Enter a condition">
-    Describe the trigger event in the **Condition** field. Write it as a plain-language statement that Archer's agent will evaluate against incoming data.
-
-    **Example:** `Sales rep closes deal over $10,000`
-  </Step>
-  <Step title="Save the payout">
-    Click **Save**. The new payout immediately appears in your active payouts list and is ready to be triggered.
+  <Step title="Send a test event">
+    Trigger an event from your tool to confirm the agent receives and evaluates it.
   </Step>
 </Steps>
+
+## Create a Slack-triggered payout
+
+<Steps>
+  <Step title="Go to Payouts">
+    Select **Payouts** from the left sidebar.
+  </Step>
+  <Step title="Open the creation form">
+    Click **Create payout** in the top-right corner.
+  </Step>
+  <Step title="Select Slack">
+    On the **Create a new agent** screen, select **Slack**. Archer creates a Slack ordering agent that listens for messages routed from the Archer Slack app.
+  </Step>
+  <Step title="Set spending limits">
+    Configure the maximum per payment, maximum per period, and number of transactions allowed per period, then click **Continue**. Archer saves the agent and authorizes the on-chain rule in a single step.
+  </Step>
+</Steps>
+
+<Note>
+  Slack agents and webhook agents are scoped to their source. A message from Slack will only be evaluated by Slack agents, and a webhook POST will only be evaluated by webhook agents. This prevents cross-triggering between channels.
+</Note>
 
 ## Managing your payouts
 
