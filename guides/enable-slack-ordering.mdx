@@ -1,0 +1,51 @@
+---
+title: "Enable ordering payouts from Slack in Archer"
+description: "Set up Slack ordering in Archer so teammates can trigger payouts from your Slack workspace using a shortcut on the integrations page."
+sidebarTitle: "Enable Slack ordering"
+---
+
+Slack ordering lets your team request payouts directly from your connected Slack workspace. Once enabled, an Archer spending rule listens for ordering events in Slack and runs payouts that match the rule you define. You enable this from the **Integrations** page in two clicks — no need to start from the Payouts dashboard.
+
+## Prerequisites
+
+- A connected Slack workspace. If you haven't connected one yet, click **Connect** on the Slack card on the **Integrations** page and complete the OAuth flow.
+- A configured smart wallet with [paying limits](/concepts/paying-limits) that cover the payouts you expect to run from Slack.
+
+## Enable Slack ordering
+
+<Steps>
+  <Step title="Open Integrations">
+    Select **Integrations** from the left sidebar. The Slack card shows your connected workspace and an ordering footer at the bottom.
+  </Step>
+  <Step title="Select Enable ordering from Slack">
+    In the footer of the Slack card, select the **Enable ordering from Slack** checkbox. The checkbox is disabled briefly while Archer checks for existing Slack rules — wait for it to become active before clicking.
+
+    A modal opens directly in the Slack spending-rule flow, so you don't need to pick a source.
+  </Step>
+  <Step title="Define the spending rule">
+    Enter a name, condition, and any limits for the rule. The condition is a plain-language description of when a Slack order should pay out — for example, `Engineer requests a lunch reimbursement under $40`.
+  </Step>
+  <Step title="Save the rule">
+    Select **Save**. The modal closes and the Slack card footer updates to show a green dot with **Ordering from Slack**, confirming the rule is live.
+  </Step>
+</Steps>
+
+## What the footer states mean
+
+The footer on the Slack integration card reflects your current ordering setup:
+
+| Footer state | What it means |
+|---|---|
+| **Enable ordering from Slack** checkbox (active) | No active Slack ordering rule exists. Select the checkbox to start setup. |
+| **Enable ordering from Slack** checkbox (disabled) | Archer is still loading your Slack rule status. Wait a moment before clicking. |
+| Green dot with **Ordering from Slack** | An active Slack ordering rule exists. Manage it from the **Payouts** dashboard. |
+
+<Note>
+  Archer disables the checkbox while it loads rule status to prevent you from opening setup twice and creating duplicate rules. If the page seems stuck, refresh and try again.
+</Note>
+
+## Manage or remove Slack ordering
+
+Slack ordering rules appear alongside your other event payouts on the **Payouts** dashboard. To stop accepting Slack orders, archive the rule from there — the Slack card footer returns to the **Enable ordering from Slack** state on your next visit.
+
+To disconnect the Slack workspace entirely, select **Delete** on the Slack card. This removes the OAuth connection; archive any active Slack rules separately if you no longer want them.
