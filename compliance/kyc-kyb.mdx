@@ -18,7 +18,7 @@ Archer facilitates real-money transfers on behalf of its users. To do this legal
 
 KYC applies to individual user accounts. During verification, Archer guides you through a **Persona** inquiry flow embedded in the dashboard.
 
-You will typically need to provide:
+You provide:
 
 - A government-issued photo ID (passport, driver's license, or national ID card)
 - A selfie for liveness and identity matching
@@ -27,12 +27,40 @@ Persona handles the document capture and review process securely. You do not nee
 
 ## KYB — business verification
 
-KYB applies to business accounts. You will be asked to provide:
+KYB applies to business accounts. You provide:
 
 - **Company name and registration details** — legal business name and jurisdiction of incorporation
 - **Beneficial owner information** — identity details for individuals who own or control the business
 
 Like KYC, business verification is powered by **Persona** and is conducted through a guided flow within the dashboard.
+
+## Feature availability by account type
+
+Some Archer features are limited to business (KYB) accounts. If you have an individual (KYC) account and attempt to use one of these features — through either the dashboard or the REST API — the request is rejected with a `403 Forbidden` response.
+
+The following features are available to **KYB accounts only**:
+
+- The Archer Agent and any agent-driven workflows
+- Slack workspace integration and Slack event payouts
+- Event URL webhooks (read and regenerate)
+- Run execution endpoints
+- Event payout management (create, read, update, delete)
+- File uploads and CSV imports
+
+Individual (KYC) accounts can still send standard payouts and manage their account settings, but cannot access the features listed above.
+
+### API error response
+
+API calls from KYC accounts to a restricted endpoint return HTTP `403` with the following body:
+
+```json
+{
+  "error": "This feature is not available for your account type.",
+  "code": "kyc_not_allowed"
+}
+```
+
+Check for the `kyc_not_allowed` code in your integration to prompt users to upgrade to a business account if they need access.
 
 ## Verification status
 

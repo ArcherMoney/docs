@@ -1,0 +1,80 @@
+---
+title: "Manage notification preferences for approvals and spending"
+description: "Turn email and push delivery on or off for approval and spending notifications, and review the current settings stored on your Archer account."
+sidebarTitle: "Manage notifications"
+---
+
+Archer lets you control which channels deliver notifications for each category on your account. Use this guide to view your current preferences and update them. For background on what each category covers, see [Notifications](/concepts/notifications).
+
+## Update your preferences
+
+<Steps>
+  <Step title="Open notification settings">
+    Select **Settings → Notifications** from the left sidebar.
+  </Step>
+  <Step title="Review current channels">
+    Each category — **Approvals** and **Spending** — shows two toggles: **Email** and **Push**. The values reflect what Archer currently has stored for your account.
+  </Step>
+  <Step title="Toggle a channel">
+    Switch a toggle on or off to change delivery for that category and channel. Changes save immediately.
+  </Step>
+  <Step title="Confirm the saved state">
+    The toggles update to reflect the new state. Archer uses these preferences the next time it sends a notification in that category.
+  </Step>
+</Steps>
+
+<Note>
+  Push toggles are stored today but mobile push delivery has not yet shipped. Set them now if you want to opt in ahead of time — Archer will use the stored value once push goes live.
+</Note>
+
+## Inspect or update settings via the API
+
+The notification settings endpoint backs the in-app screen. You can also call it directly to read or update preferences for the signed-in account.
+
+### Get the current settings
+
+```bash GET /notification_settings
+GET /notification_settings
+Authorization: Bearer <your token>
+```
+
+The response returns each channel as a boolean:
+
+```json Response
+{
+  "approvals_email": true,
+  "approvals_push": false,
+  "spending_email": true,
+  "spending_push": false
+}
+```
+
+If your account does not yet have a settings record, Archer creates one with the defaults described in [Notifications](/concepts/notifications) and returns it.
+
+### Update one or more channels
+
+Send a `PATCH` request with only the fields you want to change. Each value must be a boolean.
+
+```bash PATCH /notification_settings
+PATCH /notification_settings
+Authorization: Bearer <your token>
+Content-Type: application/json
+
+{
+  "approvals_push": true,
+  "spending_email": false
+}
+```
+
+Archer returns the full, updated settings object so you can confirm the new state in a single round trip.
+
+## Supported fields
+
+| Field | Category | Channel |
+|---|---|---|
+| `approvals_email` | Approvals | Email |
+| `approvals_push` | Approvals | Push |
+| `spending_email` | Spending | Email |
+| `spending_push` | Spending | Push |
+
+Sending any other field name, or a non-boolean value, returns a `400` error and no changes are saved.

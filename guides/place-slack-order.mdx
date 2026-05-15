@@ -1,0 +1,80 @@
+---
+title: "Place an order from Slack with Archer"
+description: "Use the Archer Slack app to place an order and choose whether to send an order form by email or ship the item directly to a street address."
+sidebarTitle: "Place a Slack order"
+---
+
+The Archer Slack app lets you place an order without leaving your workspace. When you start an order, Archer asks how you want it delivered: by emailing an order form to a recipient, or by shipping the item directly to an address. Archer then collects only the details that delivery method needs.
+
+## Prerequisites
+
+- The Archer Slack app is installed in your workspace.
+- You are signed in to a Slack workspace that has Archer enabled.
+
+## Place an order
+
+<Steps>
+  <Step title="Open the order modal">
+    In any channel or DM, run the Archer order command. Archer opens the **Place an Order** modal.
+  </Step>
+  <Step title="Enter the item">
+    In the **Item** field, type the name of what you want to order.
+
+    **Example:** `Logitech MX Master 3S mouse`
+  </Step>
+  <Step title="Choose a delivery method">
+    Under **Delivery Method**, select one of:
+
+    - **Send Order Form** — Archer emails an order form to a recipient you specify. Use this when a vendor, assistant, or procurement contact will complete the purchase on your behalf.
+    - **Send to Address** — Archer ships the item directly to a street address you provide. Use this when you already know where the item should go.
+
+    Click **Next** to continue.
+  </Step>
+  <Step title="Provide delivery details">
+    Depending on your selection, Archer opens one of two follow-up modals:
+
+    - **Send Order Form** — Enter the **Recipient Email** that should receive the order form, then click **Submit**.
+    - **Send to Address** — Enter the **Recipient Name**, **Address Line 1**, optional **Address Line 2**, **City**, **State**, and **ZIP Code**, then click **Submit**.
+  </Step>
+  <Step title="Confirm">
+    Archer shows a confirmation screen summarizing the item and where it will be sent. Close the modal to finish.
+  </Step>
+</Steps>
+
+## Delivery methods
+
+### Send order form by email
+
+Choose this option when someone else will complete the purchase. Archer sends an order form to the email address you provide, and that recipient handles the rest. You only need:
+
+- A valid recipient email address.
+
+Archer validates the email format before submitting. If the address is missing or malformed, the modal returns an error and you can correct it before resubmitting.
+
+### Send to a shipping address
+
+Choose this option when you have a destination ready and want the item shipped there directly. You need:
+
+- Recipient name
+- Address line 1
+- City
+- State
+- ZIP or postal code
+
+Address line 2 (apartment, suite, or unit) is optional. All other fields are required — the modal will not submit until each is filled in.
+
+## Example confirmation
+
+After a successful submission, Archer responds in the modal with a confirmation like:
+
+```text
+✅ Got it! We'll send Logitech MX Master 3S mouse to Jane Doe at 123 Main St, Springfield, IL 62701.
+```
+
+<Tip>
+  You can cancel at any step by clicking **Cancel**. Nothing is submitted until you click **Submit** on the second screen.
+</Tip>
+
+<Note>
+  Order submissions are routed to your Archer account using your Slack workspace ID. If you belong to multiple workspaces, place the order from the workspace connected to the Archer account you want to charge.
+</Note>
