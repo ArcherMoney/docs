@@ -7,46 +7,25 @@ This guide walks you through everything you need to do to go from a blank accoun
 
 <Steps>
   <Step title="Sign up">
-    Go to the Archer dashboard and click the login button in the top-right corner. Authentication is handled by Privy — you can sign in with your email address or connect an existing wallet. If this is your first time, Archer creates a new account for you automatically.
+    Go to [app.archermoney.com](app.archermoney.com) and click the sign up button. 
   </Step>
+  <Step title="Complete verification" stepNumber={2}>
+    Before you can send any payouts, Archer requires identity verification to stay compliant. Go to your email and check for an information request from Persona.
 
-  <Step title="Complete your profile">
-    Go to **Settings** and enter your first name and surname, then click **Save changes**. This information is required before you can proceed with verification or send payouts.
+    - If you're an individual, you'll complete **KYC** (Know Your Customer) verification.
+    - If you're representing a business, you'll complete **KYB** (Know Your Business) verification.
 
-    <Tip>
-      Your smart wallet is provisioned automatically when you sign in for the first time. You can find your wallet address on the Settings page under **Payout Smart Wallet** — no extra setup needed.
-    </Tip>
-  </Step>
-
-  <Step title="Complete verification">
-    Before you can send any payouts, Archer requires identity verification to stay compliant. Go to the **Compliance** section in the dashboard:
-
-    - If you're an individual, complete **KYC** (Know Your Customer) verification.
-    - If you're representing a business, complete **KYB** (Know Your Business) verification.
-
-    Follow the on-screen prompts to submit your information. Verification is typically reviewed quickly, but processing times can vary.
+    Follow the on-screen prompts to submit your information. 
 
     <Warning>
-      You cannot create or execute payouts until verification is approved. Make sure to complete this step before inviting team members or configuring payouts.
+      You cannot log in until verification is approved. Verification is typically reviewed within 3 days, but processing times can vary.
     </Warning>
   </Step>
-
-  <Step title="Set paying limits">
-    Go to **Paying Limits** and configure the spending controls for your account:
-
-    - **Max per payment** — the maximum USDC amount allowed in a single payout.
-    - **Max per period** — the total USDC that can be paid out within a rolling period.
-    - **Max transactions per period** — the maximum number of individual payouts allowed per period.
-
-    When you're done, click **Save Paying Limits**. These limits are enforced on-chain by your smart wallet's contract, so no payout can exceed them regardless of how it's triggered.
-  </Step>
-
   <Step title="Invite a team member">
     Go to **Team Members** and enter your recipient's email address, then send the invite. Archer sends them an onboarding link. Once they sign up and complete their own setup, their wallet is registered and they appear in your team list.
 
-    Activate the team member from your dashboard to mark them as ready to receive payouts.
+    Activate the team member from your pending recipients list to mark them as ready to receive payouts.
   </Step>
-
   <Step title="Create your first payout">
     Go to **Payouts** and click **Create payout**. Give your payout a name and define the condition that should trigger it — for example, a performance milestone or a scheduled time. Save the payout and Archer will begin monitoring the condition and executing the payment automatically when it's met.
   </Step>
@@ -58,9 +37,11 @@ This guide walks you through everything you need to do to go from a blank accoun
   <Card title="Create a payout" icon="bolt" href="/guides/create-payout">
     Learn how to configure event-driven and scheduled payouts in detail.
   </Card>
+
   <Card title="Invite team members" icon="users" href="/guides/invite-team-members">
     A step-by-step guide to adding recipients and managing their onboarding.
   </Card>
+
   <Card title="Configure limits" icon="shield-check" href="/guides/configure-limits">
     Understand how paying limits work and how to adjust them as your program grows.
   </Card>

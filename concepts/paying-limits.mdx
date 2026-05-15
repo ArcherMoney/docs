@@ -9,12 +9,14 @@ Paying limits let you define a budget envelope that Archer enforces every time y
 ## The three limit dimensions
 
 <CardGroup cols={3}>
-  <Card title="Max per payment" icon="circle-dollar-sign">
+  <Card title="Max per payment" color="#ffffff" icon="circle-dollar-sign">
     The highest USD amount that can be sent in a single payout transaction. Maps to `maxAmountPerTx` in the contract.
   </Card>
+
   <Card title="Max per period" icon="chart-bar">
     The total USD that can be paid out across all transactions within the configured period. Maps to `maxAmountPerPeriod` in the contract.
   </Card>
+
   <Card title="Max transactions per period" icon="arrows-left-right">
     The number of payout calls allowed within the configured period. Maps to `maxCallsPerPeriod` in the contract.
   </Card>
@@ -25,7 +27,7 @@ Paying limits let you define a budget envelope that Archer enforces every time y
 All three limits share a single time window. You define this window by entering a number and selecting a unit:
 
 | Unit | Duration |
-|---|---|
+| --- | --- |
 | Hours | 3,600 seconds per unit |
 | Days | 86,400 seconds per unit |
 | Weeks | 604,800 seconds per unit |
@@ -44,9 +46,5 @@ When a payout is triggered, the ArcherAgentEndpoint contract checks all three li
 If any check fails, the entire transaction reverts with a specific error (`MaxAmountPerTxExceeded`, `MaxAmountPerPeriodExceeded`, or `MaxCallsPerPeriodExceeded`). Nothing is deducted and the payout is not retried automatically.
 
 <Warning>
-Saving your paying limits submits a blockchain transaction from your smart wallet. Allow a few seconds for the transaction to confirm on Base before expecting the new limits to take effect. If you close the page before confirmation, your changes may not be saved.
+  Saving your paying limits submits a blockchain transaction from your smart wallet. Allow a few seconds for the transaction to confirm on Base before expecting the new limits to take effect. If you close the page before confirmation, your changes may not be saved.
 </Warning>
-
-## Agents (coming soon)
-
-The **Agents** section below the main limit controls will let you set independent limits for individual agents. This is useful if you want different automated processes to operate within their own budget envelopes rather than sharing a single account-wide limit. This feature is not yet available — check back for updates.
