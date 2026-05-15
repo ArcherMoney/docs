@@ -8,6 +8,24 @@ description: "Release notes for Archer — new features, dashboard improvements,
 
   The Archer Agent, Slack integration, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
 </Update>
+  
+<Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
+  ## Choose how to deliver a Slack order
+
+  When you place an order from Slack, Archer now asks how you want it delivered. Pick **Send Order Form** to email an order form to a recipient, or **Send to Address** to ship the item directly to a street address. Archer collects only the fields that match your choice — an email for order forms, or a full shipping address for direct delivery — and confirms the submission in Slack. [Learn more](/guides/place-slack-order)
+</Update>
+  
+<Update label="2026-05-15" tags={["Improvement"]} description="Week of May 11">
+  ## Slack source label on agent cards
+
+  Agent cards on the Agents page now show **Slack** with a Slack icon when an event payout is backed by Slack events, and **Webhook** with the bolt icon for webhook-triggered payouts. Use this at-a-glance label to see which integration feeds each agent without opening the payout details.
+</Update>
+
+<Update label="2026-05-15" tags={["Feature"]} description="Week of May 11">
+  ## Recipient portal parity
+
+  The recipient portal now includes its own **Recipients** page. You can invite, activate, and archive your own payees without leaving the portal. The portal topbar also gains **Deposit** and **Send** quick actions next to the balance pill, matching the sender dashboard. [Learn more](/concepts/team-members)
+</Update>
 
 <Update label="2026-05-13" tags={["Feature"]} description="Week of May 11">
   ## Pending deposits on the Activity page

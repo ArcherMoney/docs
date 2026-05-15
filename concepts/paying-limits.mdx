@@ -4,7 +4,7 @@ description: "Configure per-transaction, per-period, and call-count limits enfor
 sidebarTitle: "Paying limits"
 ---
 
-Paying Limits let you define a budget envelope that Archer enforces every time a payout is attempted. These limits are not soft application-layer checks — they are written to the ArcherAgentEndpoint smart contract and evaluated on-chain before each transfer executes. A transaction that exceeds any limit is reverted; no funds move.
+Paying limits let you define a budget envelope that Archer enforces every time you attempt a payout. These limits are not soft application-layer checks — Archer writes them to the ArcherAgentEndpoint smart contract and evaluates them on-chain before each transfer executes. A transaction that exceeds any limit reverts, and no funds move.
 
 ## The three limit dimensions
 
@@ -44,7 +44,7 @@ When a payout is triggered, the ArcherAgentEndpoint contract checks all three li
 If any check fails, the entire transaction reverts with a specific error (`MaxAmountPerTxExceeded`, `MaxAmountPerPeriodExceeded`, or `MaxCallsPerPeriodExceeded`). Nothing is deducted and the payout is not retried automatically.
 
 <Warning>
-Saving your Paying Limits submits a blockchain transaction from your smart wallet. Allow a few seconds for the transaction to confirm on Base before expecting the new limits to take effect. If you close the page before confirmation, your changes may not be saved.
+Saving your paying limits submits a blockchain transaction from your smart wallet. Allow a few seconds for the transaction to confirm on Base before expecting the new limits to take effect. If you close the page before confirmation, your changes may not be saved.
 </Warning>
 
 ## Agents (coming soon)
