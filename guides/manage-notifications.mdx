@@ -68,6 +68,69 @@ Content-Type: application/json
 
 Archer returns the full, updated settings object so you can confirm the new state in a single round trip.
 
+## Read and dismiss in-app notifications
+
+The bell icon in the top bar of the web app lists your most recent notifications and shows an unread badge. The `/notifications` endpoint backs that feed and is also available for direct use.
+
+### List recent notifications
+
+```bash GET /notifications
+GET /notifications?limit=20
+Authorization: Bearer <your token>
+```
+
+The `limit` query parameter is optional. It defaults to `20` and is capped at `50`. The response includes the rows in reverse chronological order along with the total unread count for the account.
+
+```json Response
+{
+  "notifications": [
+    {
+      "id": "ntf_01HZX...",
+      "category": "approvals",
+      "title": "Approval needed",
+      "body": "Confirm this recipient.",
+      "link": "/approvals/01HZX...",
+      "created_at": "2026-05-15T01:00:00+00:00",
+      "read_at": null
+    }
+  ],
+  "count": 1,
+  "unread_count": 1
+}
+```
+
+`category` is either `approvals` or `spending`. `read_at` is `null` for unread notifications and an ISO-8601 timestamp once the notification has been marked read.
+
+### Mark a single notification as read
+
+Send a `PATCH` with the notification `id`. Archer sets `read_at` to the current time. Marking an already-read notification is a no-op and leaves the original `read_at` value unchanged.
+
+```bash PATCH /notifications
+PATCH /notifications
+Authorization: Bearer <your token>
+Content-Type: application/json
+
+{
+  "id": "ntf_01HZX..."
+}
+```
+
+### Mark every notification as read
+
+Pass `mark_all_read: true` to clear the unread badge for the whole account in one call. The `id` field is ignored when `mark_all_read` is `true`.
+
+```bash PATCH /notifications
+PATCH /notifications
+Authorization: Bearer <your token>
+Content-Type: application/json
+
+{
+  "mark_all_read": true
+}
+```
+
+Requests that omit both `id` and `mark_all_read` return a `400` error. Requests for a notification that does not belong to your account return `404`.
+
 ## Supported fields
 
 | Field | Category | Channel |
