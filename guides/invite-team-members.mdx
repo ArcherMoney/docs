@@ -1,6 +1,6 @@
 ---
 title: "Invite and activate team members for payouts"
-description: "Learn how to invite recipients, walk them through onboarding, activate their on-chain wallet, and manage your team member list in Archer."
+description: "Invite Archer recipients, activate their on-chain wallets, add external US bank accounts, and manage your full payout recipient list in Archer."
 sidebarTitle: "Invite members"
 ---
 
@@ -39,6 +39,27 @@ If you need to add a large group of recipients at once, use the CSV import featu
 1. Click **Import CSV** in the page header.
 2. In the import modal, upload a CSV file that contains a `name` column and a `wallet_address` column for each person. An `email` column is optional.
 3. Archer processes the file and adds each row as an active team member immediately. Imported members appear in the table with status **Active** and are ready to receive payouts.
+
+## Add a bank account recipient
+
+If your payee receives payouts to a US bank account instead of an on-chain wallet, add them as an **External** recipient. There is no invite or activation step — the recipient is created instantly.
+
+<Steps>
+  <Step title="Open Add by Bank Account">
+    On the Recipients page, click **Add by Bank Account** in the page header.
+  </Step>
+  <Step title="Enter the recipient's name and bank details">
+    Provide the account holder's full name, ACH account number, and nine-digit routing number. Archer validates that the routing number is exactly nine numeric digits.
+  </Step>
+  <Step title="Enter the billing address">
+    Fill in address line 1, city, state, and ZIP code. Address line 2 is optional. Country defaults to `US`.
+  </Step>
+  <Step title="Save the recipient">
+    Click **Add Recipient**. The new payee appears in the Recipients table with an **External** source pill and is immediately available to select when creating a payout.
+  </Step>
+</Steps>
+
+After the recipient is saved, Archer only returns the last four digits of the account and routing numbers. Keep your own secure copy if you need the originals later.
 
 ## Archive a member
 
