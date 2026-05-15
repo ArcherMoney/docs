@@ -4,21 +4,19 @@ description: "Add funds with linked bank accounts, ACH transfers, or crypto, and
 sidebarTitle: "Fund & Off-Ramp"
 ---
 
-Archer holds your payout funds in a smart wallet — a blockchain-based account that the Archer agent draws from when executing payouts. The Dashboard gives you a real-time view of that balance and provides controls to add funds or move money back to a traditional bank account.
+Archer holds your payout funds in a smart wallet — a blockchain-based account that the Archer agent draws from when executing payouts. The dashboard gives you a real-time view of that balance and provides controls to add funds or move money back to a traditional bank account.
 
 ## View your balance
 
-The Dashboard displays your current **USDC balance** in your payout smart wallet as the first item on the page. The balance is read directly from the blockchain and reflects funds that are available for payouts right now.
+The dashboard displays your current **USDC balance** in your payout smart wallet as the first item on the page. The balance is read directly from the blockchain and reflects funds that are available for payouts right now.
 
 ## Deposit funds
 
-Click **Deposit** on the Dashboard to open the Deposit modal. The modal offers three ways to move funds into your Archer balance.
+Click **Deposit** on the dashboard to open the Deposit modal. The modal offers three ways to move funds into your Archer balance.
 
 ### Linked accounts
 
-Connect a US checking account once and reuse it for instant deposits.
-
-Once you initiate a deposit, it appears in the **Pending deposits** section at the top of the Activity page. Each row shows the payment type (ACH or wire), the amount, and the destination account. An amber status indicator describes where the deposit is in the settlement flow:
+Connect a US checking account once and reuse it for instant deposits. Once a deposit is initiated, it appears in the **Pending deposits** section of the Activity page until it settles — see [Track pending deposits](#track-pending-deposits) below.
 
 ### Deposit cash (manual bank transfer)
 
@@ -48,11 +46,11 @@ Send USDC directly from any wallet on Base to your Archer smart wallet.
 
 ## Send funds
 
-Click **Send** on the Dashboard to open the Send modal. The modal has two tabs.
+Click **Send** on the dashboard to open the Send modal. The modal has two tabs.
 
 ### Send to a recipient
 
-Pay any team member that you have already added in **Team members**.
+Pay any team member that you have already added in **Team Members**.
 
 1. Use the search field to filter recipients by name or email.
 2. Select a recipient. Archer loads their default payout bank automatically.
@@ -61,12 +59,22 @@ Pay any team member that you have already added in **Team members**.
 
 If a recipient has no linked payout bank, the Send button is disabled until they connect one.
 
+#### Add a new recipient inline
+
+If the person you want to pay is not in your recipients list, click **Add new recipient** at the bottom of the list. The **Add by Bank Account** modal opens on top of the Send modal so you can capture their details without losing your place.
+
+1. Enter the recipient's name, email, and US bank account information (routing and account number).
+2. Submit the form. Archer creates the recipient and refreshes the list automatically.
+3. Select the new recipient and continue the send.
+
+You can also manage recipients from the dedicated **Recipients** page — use the **Add by Bank Account** button there to add recipients outside of a send flow.
+
 ### Send to my account
 
 Withdraw funds from your Archer balance back to one of your own linked bank accounts.
 
 1. Switch to the **Send to my account** tab.
-2. Pick a linked account from the list. Add a new one with **+ Link new account** if needed.
+2. Select a linked account from the list. Add a new one with **+ Link new account** if needed.
 3. Enter the amount and click **Send**.
 
 Archer sends USDC from your smart wallet and initiates an ACH transfer to the selected bank account.
@@ -77,7 +85,7 @@ Archer sends USDC from your smart wallet and initiates an ACH transfer to the se
 
 ## Track pending deposits
 
-Once you initiate a deposit, it appears in the **Pending deposits** section at the top of the Activity page. Each row shows the payment type (ACH or Wire), the amount, and the destination account. An amber status indicator describes where the deposit is in the settlement flow:
+Once you initiate a deposit, it appears in the **Pending deposits** section at the top of the Activity page. Each row shows the payment type (ACH or wire), the amount, and the destination account. An amber status indicator describes where the deposit is in the settlement flow:
 
 - **Sent** — the payment order has been submitted to the bank network
 - **Settling** — the funds are clearing and will arrive shortly
