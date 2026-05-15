@@ -3,6 +3,12 @@ title: "Archer changelog: product updates and release notes"
 description: "Release notes for Archer — new features, dashboard improvements, smart contract updates, and bug fixes for payouts, paying limits, and team management."
 ---
 
+<Update label="2026-05-14" tags={["Change"]} description="Week of May 11">
+  ## Business-only access for Agent and advanced API features
+
+  The Archer Agent, Slack integration, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
+</Update>
+  
 <Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
   ## Choose how to deliver a Slack order
 
