@@ -35,7 +35,8 @@
               "concepts/payouts",
               "concepts/team-members",
               "concepts/paying-limits",
-              "concepts/smart-wallets"
+              "concepts/smart-wallets",
+              "concepts/notifications"
             ]
           },
           {
@@ -44,7 +45,10 @@
               "guides/create-payout",
               "guides/invite-team-members",
               "guides/configure-limits",
-              "guides/fund-and-offramp"
+              "guides/fund-and-offramp",
+              "guides/connect-slack",
+              "guides/manage-notifications",
+              "guides/place-slack-order"
             ]
           },
           {

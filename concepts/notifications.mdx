@@ -1,0 +1,48 @@
+---
+title: "Notifications: stay informed about approvals and spending"
+description: "Learn how Archer notifies you about approval requests and spending activity, which channels are available, and how default preferences are applied."
+sidebarTitle: "Notifications"
+---
+
+Archer sends notifications when something on your account needs your attention or crosses a threshold you care about. Notifications are grouped into two categories — **Approvals** and **Spending** — and each category can be delivered over email or mobile push. This page explains what each category covers and how delivery is decided.
+
+## Categories
+
+| Category | What it covers |
+|---|---|
+| Approvals | Actions on your account that need a confirmation from you, such as confirming a recipient restore. |
+| Spending | Activity tied to spending thresholds and card transactions on your account. |
+
+Archer always shows in-app notifications regardless of your settings. Email and push are opt-in per category.
+
+## Channels
+
+Each category supports two configurable delivery channels:
+
+- **Email** — sent to the email address on your Archer account.
+- **Push** — sent to the Archer mobile app on devices signed in to your account.
+
+<Note>
+  Mobile push delivery is not yet live. You can toggle push preferences today and Archer will store them, but push messages will only start arriving once mobile delivery ships in a later release. Email is delivered now.
+</Note>
+
+## Default preferences
+
+The first time Archer needs to notify you, it creates a notification settings record on your account with these defaults:
+
+| Setting | Default |
+|---|---|
+| Approvals — email | On |
+| Approvals — push | Off |
+| Spending — email | On |
+| Spending — push | Off |
+
+You can change any of these at any time from **Settings → Notifications**. See [Manage notification preferences](/guides/manage-notifications) for the step-by-step flow.
+
+## How Archer decides delivery
+
+When Archer enqueues a notification, it checks your settings for the matching category and only sends over channels you have enabled. For example, if you turn **Approvals — email** off, an approval notification will still appear in app but no email will go out. Turning everything off for a category silences email and push for that category but leaves in-app notifications intact.
+
+<Tip>
+  Keep **Approvals — email** on if you want a written record of every confirmation step. Approval notifications include a description of the pending action and, where applicable, a link back to Archer to resolve it.
+</Tip>
