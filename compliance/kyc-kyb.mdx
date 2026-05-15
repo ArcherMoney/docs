@@ -8,10 +8,10 @@ Archer requires identity verification before you can send payouts. Individual us
 
 ## Why verification is required
 
-Archer facilitates real-money transfers on behalf of its users. To do this legally and responsibly, Archer must confirm the identity of account holders before allowing payouts to be sent. This protects both you and your recipients by ensuring that funds are only disbursed through verified, legitimate accounts.
+Archer facilitates real-money transfers on your behalf. To do this legally and responsibly, Archer must confirm your identity before you can send payouts. This protects you and your recipients by ensuring that funds only move through verified, legitimate accounts.
 
 <Warning>
-  Payouts may be blocked until your verification is approved. If you attempt to send a payout before your account is verified, the transaction will not be processed.
+  Archer blocks payouts until your verification is approved. If you try to send a payout before your account is verified, the transaction will not process.
 </Warning>
 
 ## KYC — individual verification
@@ -36,7 +36,7 @@ Like KYC, business verification is powered by **Persona** and is conducted throu
 
 ## Feature availability by account type
 
-Some Archer features are limited to business (KYB) accounts. If you have an individual (KYC) account and attempt to use one of these features — through either the dashboard or the REST API — the request is rejected with a `403 Forbidden` response.
+Some Archer features are limited to business (KYB) accounts. If you have an individual (KYC) account, the dashboard and REST API reject these features with a `403 Forbidden` response.
 
 The following features are available to **KYB accounts only**:
 
