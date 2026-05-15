@@ -44,7 +44,8 @@
               "guides/create-payout",
               "guides/invite-team-members",
               "guides/configure-limits",
-              "guides/fund-and-offramp"
+              "guides/fund-and-offramp",
+              "guides/place-slack-order"
             ]
           },
           {
