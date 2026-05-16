@@ -8,25 +8,25 @@ description: "Release notes for Archer — new features, dashboard improvements,
 
   When you finish onboarding, Archer now automatically adds `purchasing@archermoney.com` as a recipient and activates it on-chain. This is the destination Archer uses to fulfill orders placed through the Archer Agent and the `/order` Slack command, so purchasing flows work without a manual invite or activation step. In the production dashboard the recipient is hidden from the Recipients page, Send modal, Activity log, and archived members list to keep your team list focused on people you manage. [Learn more](/concepts/team-members#archer-purchasing-recipient)
 </Update>
-  
+
 <Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
   ## Integrations page with Slack
 
   The Slack settings page is now **Integrations**, a single place to manage every workspace-level connection for your Archer account. Slack is the first integration available — install it from **Integrations** in the left sidebar to use the `/order` and `/refer` slash commands from any channel. If you run a slash command before connecting, Slack now replies with a clear prompt that points you to the Integrations page instead of a generic error. [Learn more](/guides/connect-slack)
 </Update>
-  
+
 <Update label="2026-05-14" tags={["Change"]} description="Week of May 11">
   ## Business-only access for Agent and advanced API features
 
   The Archer Agent, Slack integration, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
 </Update>
-  
+
 <Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
   ## Choose how to deliver a Slack order
 
   When you place an order from Slack, Archer now asks how you want it delivered. Pick **Send Order Form** to email an order form to a recipient, or **Send to Address** to ship the item directly to a street address. Archer collects only the fields that match your choice — an email for order forms, or a full shipping address for direct delivery — and confirms the submission in Slack. [Learn more](/guides/place-slack-order)
 </Update>
-  
+
 <Update label="2026-05-15" tags={["Improvement"]} description="Week of May 11">
   ## Slack source label on agent cards
 
