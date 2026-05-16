@@ -15,6 +15,12 @@ description: "Release notes for Archer — new features, dashboard improvements,
   The Archer Agent, Slack integration, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
 </Update>
   
+<Update label="2026-05-16" tags={["Feature"]} description="Week of May 11">
+  ## Agent can ship goods directly when it knows the address
+
+  The Archer Agent can now place a goods order straight to a shipping address instead of always emailing an order form. When the agent already has the recipient's full address — for example, from a saved memory fact or an earlier event — it creates the order in **submitted** status and notifies the fulfillment team automatically. Use this to skip the form step whenever the destination is already known; the agent still falls back to emailing an order form when any address field is missing.
+</Update>
+  
 <Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
   ## Choose how to deliver a Slack order
 
