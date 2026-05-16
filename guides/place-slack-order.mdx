@@ -78,3 +78,17 @@ After a successful submission, Archer responds in the modal with a confirmation 
 <Note>
   Order submissions are routed to your Archer account using your Slack workspace ID. If you belong to multiple workspaces, place the order from the workspace connected to the Archer account you want to charge.
 </Note>
+
+## How email order forms get paid
+
+When you choose **Send Order Form**, Archer needs an allowlisted recipient that can receive payment for the order. To keep this seamless, Archer automatically provisions a built-in purchasing recipient (`purchasing@archermoney.com`) the first time you finish onboarding. You do not need to invite, activate, or manage this recipient — Archer:
+
+- Creates the recipient record during your onboarding flow if it does not exist.
+- Signs the on-chain `setRecipient` intent so the wallet is allowlisted on your `ArcherAgentEndpoint` contract.
+- Reactivates the recipient automatically if it was previously archived.
+
+In production, this internal recipient is hidden from the Recipients page, the Send modal, the Activity page, and the Archived Members list so it does not clutter your team roster. Slack order forms still resolve to it behind the scenes so emailed orders can be paid out without any manual setup.
+
+<Tip>
+  If you choose **Send to Address** instead, the purchasing recipient is not used — Archer ships the item directly to the address you provide.
+</Tip>

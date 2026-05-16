@@ -62,3 +62,13 @@ If you need to add many Archer wallet recipients at once, use the **Import CSV**
 <Tip>
 Only Archer team members with `active` status can receive on-chain payouts. Their wallet address must be registered on the ArcherAgentEndpoint contract before any USDC transfer will succeed. External recipients bypass this check because they are paid through ACH or wire rails instead of the smart contract.
 </Tip>
+
+## Built-in purchasing recipient
+
+To power Slack-placed orders that pay vendors by emailed order form, Archer automatically provisions a built-in recipient at `purchasing@archermoney.com` the first time you finish onboarding. Archer:
+
+- Creates the recipient if it does not already exist on your account.
+- Signs the on-chain `setRecipient` intent so the wallet is allowlisted on your `ArcherAgentEndpoint` contract.
+- Reactivates and unarchives the recipient on subsequent loads if it was disabled, so order-form payouts continue to work.
+
+In production, this recipient is hidden from the Recipients page, the Send modal, the Activity page, and the Archived Members list so it does not clutter your team roster. You do not need to invite, activate, or manage it manually. See [Place a Slack order](/guides/place-slack-order) for how email order forms use this recipient.
