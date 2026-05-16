@@ -21,7 +21,7 @@ External recipients display masked bank details — only the last four digits of
 
 <Steps>
   <Step title="Invite">
-    Enter the recipient's email address in the Team Members page and click **Send Invite**. Archer sends them an invitation email and creates a record with status `invited`. You can also import multiple recipients at once using a CSV file — see the **Import CSV** button in the top toolbar.
+    Enter the recipient's email address in the Team Members page and click **Send Invite**. Archer sends them an invitation email and creates a record with status `invited`.
   </Step>
   <Step title="Onboarded">
     The recipient clicks the invite link, signs up, and completes their profile. Once their account is created and their smart wallet address is registered, their status automatically updates to `onboarded`. No action is required from you at this step.
@@ -55,9 +55,14 @@ External recipients are created instantly — there is no invite email, no onboa
 Archer never returns full bank account or routing numbers after they are saved. The Recipients page and the `/fiat_recipient` API only expose the last four digits of each value. Store the originals in a secure system of record if you need to retrieve them later.
 </Tip>
 
-## Bulk import via CSV
+## Where to manage recipients
 
-If you need to add many Archer wallet recipients at once, use the **Import CSV** button in the Recipients header. Your CSV must include a `name` column and a `wallet_address` column for each row. An `email` column is optional but recommended. Recipients imported this way are created with `active` status immediately — no separate activation step is required. CSV import is for on-chain recipients only; add bank accounts one at a time using **Add by Bank Account**.
+The Recipients page is available to both account types:
+
+- **Business (KYB) accounts** open **Team Members** in the sender dashboard sidebar.
+- **Individual (KYC) accounts** open **Recipients** in the recipient portal sidebar at `/portal/recipients`.
+
+Both views share the same management UI and lifecycle. Archer routes you to the correct surface automatically based on your account type after sign-in.
 
 <Tip>
 Only Archer team members with `active` status can receive on-chain payouts. Their wallet address must be registered on the ArcherAgentEndpoint contract before any USDC transfer will succeed. External recipients bypass this check because they are paid through ACH or wire rails instead of the smart contract.
