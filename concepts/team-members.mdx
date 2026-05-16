@@ -55,6 +55,16 @@ External recipients are created instantly — there is no invite email, no onboa
 Archer never returns full bank account or routing numbers after they are saved. The Recipients page and the `/fiat_recipient` API only expose the last four digits of each value. Store the originals in a secure system of record if you need to retrieve them later.
 </Tip>
 
+## Archer Purchasing recipient
+
+When you finish onboarding, Archer automatically adds `purchasing@archermoney.com` to your recipient list and activates it on-chain. This is the destination Archer uses to fulfill orders placed through the Archer Agent and the `/order` Slack command — for example, when you ask the agent to buy something and have it shipped or invoiced on your behalf.
+
+You do not need to invite, activate, or manage this recipient yourself. In the production dashboard, it is hidden from the Recipients page, the Send modal, the Activity log, and the archived members list so it does not clutter your team. The on-chain allowlist entry remains in place so purchasing flows can complete without an extra approval step.
+
+<Note>
+  If you do not plan to use Archer's purchasing features, you can leave the recipient in place — it has no effect on your account unless a purchasing flow sends funds to it.
+</Note>
+
 ## Bulk import via CSV
 
 If you need to add many Archer wallet recipients at once, use the **Import CSV** button in the Recipients header. Your CSV must include a `name` column and a `wallet_address` column for each row. An `email` column is optional but recommended. Recipients imported this way are created with `active` status immediately — no separate activation step is required. CSV import is for on-chain recipients only; add bank accounts one at a time using **Add by Bank Account**.
