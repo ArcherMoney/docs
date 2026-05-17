@@ -1,0 +1,51 @@
+---
+title: "Goods order approvals: quote, approve, and fulfill"
+description: "Understand how Archer quotes a goods order, routes it to you for approval, and fulfills it only after you confirm the vendor, link, and price."
+sidebarTitle: "Goods order approvals"
+---
+
+When you place a goods order through Slack or an agent, Archer does not buy the item immediately. The order moves through a short workflow that ends with you confirming the vendor, product link, and price before any funds leave your account. This page explains each status and what triggers the next one.
+
+## The approval workflow
+
+A goods order passes through five statuses from creation to fulfillment:
+
+| Status | What it means | Who moves it forward |
+|---|---|---|
+| `pending` | The order exists but is waiting on shipping details from the recipient. | Recipient (via the emailed order form) or the requester (if a shipping address was provided upfront). |
+| `submitted` | Shipping details are complete and the order is ready to be priced. | Archer purchasing team |
+| `pending_approval` | The purchasing team has attached a vendor, product URL, and price. The order is waiting on your approval. | You, the account owner |
+| `approved` | You approved the vendor, link, and price. The order is cleared for purchase. | Archer purchasing team |
+| `fulfilled` | The purchasing team completed the buy and the matching transaction was posted to your account. | — |
+
+<Note>
+  Approval always happens in the Archer product frontend at **Approvals**, not in Slack or email. Archer routes every order through this gate so a person on your account confirms the final amount before it is charged.
+</Note>
+
+## What you see at approval time
+
+Each pending approval shows three pieces of information drawn from the quoted order:
+
+- **Item** — the original request from Slack or your agent.
+- **Vendor** — the seller the purchasing team plans to buy from.
+- **Price** — the exact USD amount that will be charged when the order is fulfilled.
+
+Approving the order locks in that price. If the purchasing team needs to change the vendor, URL, or price after you have approved, the order is moved back to `pending_approval` and you are asked to approve again.
+
+## Why orders may be re-quoted
+
+The purchasing team can edit a quote while the order is in `pending_approval` or `approved`. If any of `price`, `vendor`, or `url` change on an already-approved order, Archer automatically reverts the order to `pending_approval` so the new quote goes through the same approval gate. Fulfillment is blocked until you re-approve.
+
+## How fulfillment uses the approved price
+
+Fulfillment uses the price stored on the order at the moment of approval — Archer does not accept a separate amount at fulfillment time. This means:
+
+- An order with no price set cannot be fulfilled.
+- Editing the price after approval forces another approval round before the order can be fulfilled.
+- The amount that appears in your transaction history matches the approved price exactly.
+
+## Related
+
+- [Approve a goods order](/guides/approve-goods-order) — step-by-step walkthrough of the **Approvals** page.
+- [Place a Slack order](/guides/place-slack-order) — how the workflow starts.
+- [Notifications](/concepts/notifications) — how Archer alerts you when an order needs your approval.

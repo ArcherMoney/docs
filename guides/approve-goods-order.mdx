@@ -1,0 +1,90 @@
+---
+title: "Approve a goods order in Archer"
+description: "Review pending goods order quotes on the Approvals page and approve the vendor, link, and price before Archer fulfills the order."
+sidebarTitle: "Approve a goods order"
+---
+
+Archer never buys a goods order until you approve the vendor, product link, and price. Use the **Approvals** page to review and clear orders that the purchasing team has quoted. For background on the full workflow, see [Goods order approvals](/concepts/goods-order-approvals).
+
+## Prerequisites
+
+- You are signed in to Archer as an owner on the account.
+- One or more goods orders are in `pending_approval` — the purchasing team has attached a price, vendor, and URL.
+
+## Approve a quoted order
+
+<Steps>
+  <Step title="Open the Approvals page">
+    Select **Approvals** from the left sidebar. Archer lists every goods order on your account that is currently waiting on your approval, with the most recent at the top.
+  </Step>
+  <Step title="Review the quote">
+    For each order, check:
+
+    - **Item** — what was originally requested.
+    - **Vendor** — the seller the purchasing team will buy from.
+    - **Price** — the USD amount that will be charged when the order is fulfilled.
+  </Step>
+  <Step title="Approve">
+    Click **Approve** on the row. The order disappears from the list and Archer confirms with a toast. The purchasing team can now fulfill the order at exactly that price.
+  </Step>
+</Steps>
+
+If the list shows **No orders pending approval**, every order on your account is either still being quoted, already approved, or fulfilled.
+
+## What happens after you approve
+
+- The order moves from `pending_approval` to `approved`.
+- The purchasing team can fulfill the order, which posts a transaction to your account for the approved price.
+- If the purchasing team later changes the price, vendor, or URL, Archer reverts the order to `pending_approval` and it reappears on this page for a second approval.
+
+<Note>
+  Approval is per-quote, not per-order. Every time the price, vendor, or URL changes on an order you have already cleared, you will be asked to approve again before fulfillment can proceed.
+</Note>
+
+## Approve via the API
+
+The **Approvals** page is backed by an authenticated endpoint you can also call directly.
+
+### List orders pending approval
+
+```bash GET /goods_order/approvals
+GET /goods_order/approvals
+Authorization: Bearer <your token>
+```
+
+The response contains every order on your account currently in `pending_approval`:
+
+```json Response
+{
+  "orders": [
+    {
+      "id": "ord_01HABCXYZ",
+      "item": "Logitech MX Master 3S mouse",
+      "vendor": "Logitech",
+      "url": "https://www.logitech.com/...",
+      "price": 99.99,
+      "status": "pending_approval"
+    }
+  ],
+  "count": 1
+}
+```
+
+### Approve an order
+
+Send a `PATCH` with the `order_id` query parameter. No body is required — Archer approves the order using the price, vendor, and URL already on file.
+
+```bash PATCH /goods_order/approvals
+PATCH /goods_order/approvals?order_id=ord_01HABCXYZ
+Authorization: Bearer <your token>
+```
+
+Archer returns the updated order with `"status": "approved"` and `"message": "Order approved"`.
+
+## Errors you may see
+
+| Status | Error | What it means |
+|---|---|---|
+| `400` | `Only PENDING_APPROVAL orders can be approved` | The order has already been approved, fulfilled, or was rolled back before you could approve it. Reload the list. |
+| `403` | `Forbidden` | The order belongs to a different account. Sign in as the correct owner. |
+| `404` | `Order not found` | The `order_id` does not exist. Check the value and try again. |
