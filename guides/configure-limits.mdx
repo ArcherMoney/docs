@@ -4,6 +4,10 @@ description: "Set per-transaction, per-period, and transaction-count limits that
 sidebarTitle: "Configure limits"
 ---
 
+<Note>
+  On-chain enforcement via the `ArcherAgentEndpoint` contract is no longer part of Archer's active runtime. Paying limits still apply as a budget envelope that Archer's backend evaluates before a payout executes, but the on-chain transaction described below reflects the previous runtime. See the [changelog](/changelog).
+</Note>
+
 Paying limits are spending controls enforced directly by the `ArcherAgentEndpoint` smart contract — not just at the application layer. When you save limits in Archer, a blockchain transaction is submitted to update these rules on-chain. This means no payout can exceed your configured thresholds, regardless of how the payout is triggered.
 
 ## Set your paying limits

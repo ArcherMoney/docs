@@ -4,6 +4,10 @@ description: "Understand the two wallet types in Archer — your EOA signing ide
 sidebarTitle: "Smart wallets"
 ---
 
+<Warning>
+  Archer is moving off Privy-managed wallets and on-chain payout execution. Privy login, Privy-provisioned EOAs, ERC-4337 smart-wallet provisioning, and the `ArcherAgentEndpoint` rule engine are no longer the active runtime. This page describes the previous architecture and is kept for reference until the new provider-neutral login and managed payout flows are documented. See the [changelog](/changelog) for the latest status.
+</Warning>
+
 When you sign up for Archer, two wallet addresses are created for your account automatically. Understanding the difference between them helps you know where your funds live, who signs transactions, and how the ArcherAgentEndpoint contract fits into each payout.
 
 ## Your two wallets

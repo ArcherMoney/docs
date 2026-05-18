@@ -4,6 +4,10 @@ description: "Invite Archer recipients, activate their on-chain wallets, add ext
 sidebarTitle: "Invite members"
 ---
 
+<Note>
+  On-chain wallet allowlisting through the `ArcherAgentEndpoint` contract is no longer part of Archer's active runtime. Activating an Archer recipient still marks them as ready to receive payouts, but the underlying execution is moving to a managed backend. The on-chain transaction details described below reflect the previous runtime. See the [changelog](/changelog).
+</Note>
+
 Before Archer can send a payout to someone, that person must be invited, complete onboarding, and be activated by you. Activation registers their wallet address on-chain as an approved recipient — without this step, the smart contract will not accept transfers to their address. This guide walks through the full lifecycle from first invite to active recipient.
 
 ## Invite and activate a member

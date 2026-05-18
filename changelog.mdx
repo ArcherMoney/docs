@@ -3,6 +3,18 @@ title: "Archer changelog: product updates and release notes"
 description: "Release notes for Archer — new features, dashboard improvements, smart contract updates, and bug fixes for payouts, paying limits, and team management."
 ---
 
+<Update label="2026-05-18" tags={["Change"]} description="Week of May 18">
+  ## Provider-neutral login and managed payout execution
+
+  Archer is moving off Privy-managed wallets and on-chain payout execution. Sign-in now runs through a provider-neutral authentication layer that will be backed by Auth0 in the next release, and payout execution is shifting to a managed Modern Treasury backend. As part of this transition:
+
+  - Privy login, Privy-provisioned EOAs, and ERC-4337 smart-wallet provisioning are no longer part of the active runtime.
+  - Wallet Actions, Kernel/Pimlico signing, and the `ArcherAgentEndpoint`-driven on-chain rule engine are not used to settle payouts today.
+  - References to "smart wallet", on-chain allowlists, and on-chain limit enforcement in the dashboard and docs reflect the previous runtime and will be updated as the new login and payout flows ship.
+
+  Existing accounts remain valid. Sender and recipient invitations, KYC/KYB, scheduled payouts, and the Slack and webhook integrations continue to work. If you build against the REST API, expect new authentication headers and a slimmer wallet surface in upcoming releases — watch this changelog for the follow-up entries.
+</Update>
+
 <Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
   ## Integrations page with Slack
 
