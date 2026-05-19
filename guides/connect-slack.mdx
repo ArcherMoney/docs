@@ -4,7 +4,9 @@ description: "Connect a Slack workspace to Archer from the Integrations page, th
 sidebarTitle: "Connect Slack"
 ---
 
-The Integrations page is where you connect Archer to the other tools your team already uses. Slack is the first integration available. Once your workspace is connected, anyone in it can launch the order and referral flows with a slash command instead of opening the dashboard.
+The **Integrations** page is where you connect tools your team already uses. Slack is the first integration available. Once your workspace is connected, anyone in it can launch the order and referral flows with a slash command instead of opening the dashboard.
+
+When your workspace is linked, the Slack card shows the workspace URL as a clickable link that opens Slack in a new tab, so you can jump straight from Archer into the connected workspace.
 
 ## When to use this
 
@@ -17,13 +19,13 @@ Use the Slack integration if your team kicks off payouts or referrals from chat,
     Select **Integrations** from the left sidebar of the Archer dashboard.
   </Step>
   <Step title="Start the install">
-    Under the **Slack** section, click **Add to Slack**. Archer redirects you to Slack's authorization screen.
+    On the **Slack** card, click **Add**. Archer redirects you to Slack's authorization screen.
   </Step>
   <Step title="Approve the requested scopes">
     Slack shows the scopes the Archer app requests — `chat:write`, `app_mentions:read`, `channels:join`, and `commands`. Select the workspace you want to connect and click **Allow**.
   </Step>
   <Step title="Confirm the connection">
-    Slack redirects you back to Archer. The Slack section now shows your workspace ID with a green **Connected** badge.
+    Slack redirects you back to Archer and finishes the install. When it's done, the Slack card shows a green **Connected** badge along with your workspace URL (or workspace ID if the URL isn't available yet).
   </Step>
 </Steps>
 
@@ -48,4 +50,4 @@ If the command returns the message **"Slack Workspace not found. Open the Archer
 
 ## Disconnect your Slack workspace
 
-To remove the integration, open **Integrations**, find the **Slack** section, and click **Delete** next to the connected workspace. Archer revokes the bot token and the slash commands stop working immediately. You can reconnect at any time by clicking **Add to Slack** again.
+To remove the integration, open **Integrations**, find the **Slack** card, and click **Remove** next to the connected workspace. The button shows **Removing…** while Archer revokes the bot token, and the slash commands stop working as soon as it finishes. You can reconnect at any time by clicking **Add** again.
