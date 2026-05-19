@@ -17,7 +17,7 @@ Every agent has four pieces:
 | `category` | One of `office`, `customer`, or `partner`. Categories help you filter agents and align rewards with audience. |
 | `trigger` | One of `webhook`, `slack`, or `schedule`. The source that fires the agent. |
 
-Each webhook agent also has a unique `webhookToken` you paste into the upstream system that should call it.
+Each webhook agent gets its own unique URL — the agent's `webhookToken` is embedded directly in the path — so you paste that URL into the upstream system that should call it.
 
 ## Trigger kinds
 
@@ -25,12 +25,11 @@ You pick the trigger when you create the agent. You cannot change a trigger late
 
 ### Webhook
 
-The default trigger. Any tool that can send an HTTP POST — Segment, your CRM, Zapier, your own backend — can fire a webhook agent. Archer matches the incoming event to the agent using a discriminant on the agent itself, so each agent gets its own dedicated URL.
+The default trigger. Any tool that can send an HTTP POST — Segment, your CRM, Zapier, your own backend — can fire a webhook agent. Archer matches the incoming event to the agent using the token in the URL path, so each agent gets its own dedicated URL.
 
 ```bash
-curl -X POST https://api.archermoney.com/events/webhook \
+curl -X POST https://api.archermoney.com/events/<webhookToken> \
   -H "Content-Type: application/json" \
-  -H "x-archer-agent-token: <webhookToken>" \
   -d '{"event_id": "evt_123", "recipient_email": "maya@example.com"}'
 ```
 

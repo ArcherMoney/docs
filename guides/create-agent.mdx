@@ -43,12 +43,11 @@ Agents are how you automate reward sending in Archer. This guide walks through c
     Choose a `category` — `office`, `customer`, or `partner` — and select the reward to send. Available rewards include cake, pizza, coffee, branded hoodies, donations, and concert tickets.
   </Step>
   <Step title="Save and test">
-    Save the agent. If you chose a webhook trigger, Archer shows the URL and `x-archer-agent-token` value to use:
+    Save the agent. If you chose a webhook trigger, Archer shows the agent's unique URL — the token is embedded in the path, so paste the URL directly into your upstream system:
 
     ```bash
-    curl -X POST https://api.archermoney.com/events/webhook \
+    curl -X POST https://api.archermoney.com/events/<webhookToken> \
       -H "Content-Type: application/json" \
-      -H "x-archer-agent-token: <webhookToken>" \
       -d '{"event_id": "test-001", "recipient_email": "you@example.com"}'
     ```
 
