@@ -1,0 +1,48 @@
+---
+title: "Sign in to Archer with email, Google, or Microsoft"
+description: "Create an Archer account, sign in with email and password or a social provider, and understand how Archer links identities that share a verified email."
+sidebarTitle: "Sign in"
+---
+
+Archer uses [Auth0](https://auth0.com) Universal Login to handle sign-up and sign-in. You can create your account with an email and password, with Google, or with Microsoft — and switch between methods later as long as they share the same verified email address.
+
+## Choose how to sign in
+
+When you visit the sign-up or login page on [app.archermoney.com](https://app.archermoney.com), Archer shows the same Universal Login screen for both flows:
+
+- **Email and password.** Enter your work email and choose a password. Auth0 sends a verification email; you must click the link before Archer treats the email as verified.
+- **Google.** Use **Continue with Google** to sign in with any Google or Google Workspace account.
+- **Microsoft.** Use **Continue with Microsoft** to sign in with a personal Microsoft account or an Entra ID (formerly Azure AD) work account.
+
+<Note>
+  The first time you sign up, Archer creates a Business account for you automatically. You can invite team members and configure workspace details from **Settings** afterward.
+</Note>
+
+## Switching sign-in methods
+
+If you originally signed up with email and password and later click **Continue with Google** (or Microsoft) using the same verified email, Archer links the two identities into a single account. Your user id, smart wallet, payouts, and team stay the same — only the way you sign in changes.
+
+For linking to happen automatically:
+
+1. The email on both providers must match exactly.
+2. Both providers must mark the email as verified. For email and password, this means you clicked the verification link Auth0 sent you.
+
+If either side is unverified, Auth0 treats the second login as a separate account. Verify the email and sign in again to trigger linking.
+
+## Signing out
+
+Use the account menu in the top bar and select **Log out**. Archer ends your session and returns you to the login page. The next time you visit a protected page, you'll be redirected back through Universal Login.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="I see a different account after switching sign-in methods">
+    The email on one of the providers is probably unverified. Open the provider's account settings, confirm the email is verified, then sign in to Archer again. If the wrong account was created in the meantime, contact support so we can merge the records.
+  </Accordion>
+  <Accordion title="Google or Microsoft sign-in is blocked by my organization">
+    Your Workspace or Entra ID admin may need to approve the Archer application. Share the consent prompt with your IT team, or sign up with email and password instead.
+  </Accordion>
+  <Accordion title="I didn't receive the verification email">
+    Check your spam folder for a message from Auth0. If it's not there, return to the login screen and request a new verification email by attempting to sign in again.
+  </Accordion>
+</AccordionGroup>

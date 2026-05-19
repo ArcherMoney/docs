@@ -42,6 +42,7 @@
           {
             "group": "Guides",
             "pages": [
+              "guides/sign-in",
               "guides/create-payout",
               "guides/invite-team-members",
               "guides/configure-limits",
