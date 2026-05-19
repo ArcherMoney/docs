@@ -1,72 +1,62 @@
 ---
-title: "Invite and activate team members for payouts"
-description: "Invite Archer recipients, activate their on-chain wallets, add external US bank accounts, and manage your full payout recipient list in Archer."
+title: "Invite team members and assign roles in Archer"
+description: "Send Archer invites, pick a role — owner, admin, approver, or member — and manage pending invites and active members from Settings → Team."
 sidebarTitle: "Invite members"
 ---
 
-Before Archer can send a payout to someone, that person must be invited, complete onboarding, and be activated by you. Activation registers their wallet address on-chain as an approved recipient — without this step, the smart contract will not accept transfers to their address. This guide walks through the full lifecycle from first invite to active recipient.
+Teammates need an invite from an existing owner or admin before they can sign in to Archer. This guide walks through sending invites, picking the right role, and managing active and pending members.
 
-## Invite and activate a member
+## Prerequisites
+
+- A role of `owner` or `admin`.
+- The email addresses of the teammates you want to invite.
+
+## Send an invite
 
 <Steps>
-  <Step title="Go to Team Members">
-    Select **Team Members** from the left sidebar.
+  <Step title="Open the Team tab">
+    Go to **Settings → Team**. You'll see two sections: **Members** (active accounts) and **Pending invites**.
   </Step>
-  <Step title="Enter the recipient's email">
-    Type the recipient's email address into the **Email address** field in the invite form at the top of the page.
+  <Step title="Click Invite member">
+    Enter the teammate's **email** and choose a **role**:
+
+    - `owner` — full workspace control. Reserve for people who run the program.
+    - `admin` — same operational access as owner, including agent and Slack management.
+    - `approver` — can approve or decline pending orders, but cannot edit agents or settings.
+    - `member` — read-only access to agents, activity, team, and their own notification preferences.
+
+    See [Team members](/concepts/team-members) for the full permission matrix.
   </Step>
   <Step title="Send the invite">
-    Click **Send Invite**. Archer sends the recipient an onboarding email with instructions to create their account and connect a wallet.
+    Click **Send invite**. Archer creates a pending user row with the email and role you chose, and emails the teammate a sign-in link.
   </Step>
-  <Step title="Wait for the Invited status">
-    The member appears in the team members table with a status of **Invited**. They have received the email but have not yet completed sign-up.
-  </Step>
-  <Step title="Wait for the Onboarded status">
-    Once the recipient completes the onboarding flow and connects their wallet, their status changes to **Onboarded**. Their wallet address will appear in the table row.
-  </Step>
-  <Step title="Activate the member">
-    Click **Activate** next to the member's name. This submits a blockchain transaction that registers their wallet address on the on-chain allowlist for your account.
-  </Step>
-  <Step title="Confirm Active status">
-    Once the transaction confirms, the member's status changes to **Active**. They can now receive payouts from your account.
+  <Step title="Wait for acceptance">
+    Once the invitee follows the link and signs in, their pending row is promoted to an active member. They appear in the **Members** list and the pending row disappears.
   </Step>
 </Steps>
 
-## Bulk import via CSV
+## Manage pending invites
 
-If you need to add a large group of recipients at once, use the CSV import feature instead of inviting one by one.
+From the **Pending invites** section you can:
 
-1. Click **Import CSV** in the page header.
-2. In the import modal, upload a CSV file that contains a `name` column and a `wallet_address` column for each person. An `email` column is optional.
-3. Archer processes the file and adds each row as an active team member immediately. Imported members appear in the table with status **Active** and are ready to receive payouts.
+- **Resend** — generate a fresh sign-in link if the original was lost or expired.
+- **Change role** — update the role on a pending invite before it is accepted.
+- **Cancel** — remove the pending row. The sign-in link stops working immediately.
 
-## Add a bank account recipient
+## Manage active members
 
-If your payee receives payouts to a US bank account instead of an on-chain wallet, add them as an **External** recipient. There is no invite or activation step — the recipient is created instantly.
+From the **Members** section you can:
 
-<Steps>
-  <Step title="Open Add by Bank Account">
-    On the Recipients page, click **Add by Bank Account** in the page header.
-  </Step>
-  <Step title="Enter the recipient's name and bank details">
-    Provide the account holder's full name, ACH account number, and nine-digit routing number. Archer validates that the routing number is exactly nine numeric digits.
-  </Step>
-  <Step title="Enter the billing address">
-    Fill in address line 1, city, state, and ZIP code. Address line 2 is optional. Country defaults to `US`.
-  </Step>
-  <Step title="Save the recipient">
-    Click **Add Recipient**. The new payee appears in the Recipients table with an **External** source pill and is immediately available to select when creating a payout.
-  </Step>
-</Steps>
+- **Change role** — promote or demote a member. The change takes effect on their next request.
+- **Remove** — revoke access immediately. The member is signed out and must be re-invited to return.
 
-After the recipient is saved, Archer only returns the last four digits of the account and routing numbers. Keep your own secure copy if you need the originals later.
+## Tips
 
-## Archive a member
+- Keep at least two `owner` accounts so no single person can lock the workspace by leaving.
+- Use `approver` for finance or ops contacts who only need to release pending orders.
+- Use `member` for stakeholders who want visibility into Activity without the ability to change anything.
 
-To remove a member's access, click the archive icon in their table row. If the member was **Active**, this also submits a blockchain transaction to remove their wallet from the on-chain allowlist — they will no longer be able to receive payouts.
+## Next steps
 
-Archived members are hidden from the main table but can be found and restored by clicking **Archived Members** in the page header.
-
-<Warning>
-  Only activate members whose wallet address has been verified during the Archer onboarding flow. Activating an address you do not control or have not verified could result in funds being sent to the wrong recipient.
-</Warning>
+- [Team members](/concepts/team-members) — concept reference for roles and lifecycle.
+- [Approve orders](/guides/approve-orders) — what the `approver` role unlocks.

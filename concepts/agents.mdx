@@ -1,0 +1,69 @@
+---
+title: "Agents: how Archer automates reward sending"
+description: "Learn how Archer agents listen for webhook, Slack, or scheduled triggers and send the right reward to the right recipient automatically."
+sidebarTitle: "Agents"
+---
+
+Agents are the engine of Archer. An agent listens for a trigger, evaluates a plain-language **logic** statement, and sends a reward when the trigger fires. You define each agent once and Archer handles the rest.
+
+## What an agent is
+
+Every agent has four pieces:
+
+| Field | Description |
+|---|---|
+| `name` | A human-readable label like `Customer onboarding cake` or `Quarterly partner donation`. |
+| `logic` | Plain-language description of when the agent should run. Archer's runtime stores this as the agent's condition. |
+| `category` | One of `office`, `customer`, or `partner`. Categories help you filter agents and align rewards with audience. |
+| `trigger` | One of `webhook`, `slack`, or `schedule`. The source that fires the agent. |
+
+Each webhook agent also has a unique `webhookToken` you paste into the upstream system that should call it.
+
+## Trigger kinds
+
+You pick the trigger when you create the agent. You cannot change a trigger later — create a new agent instead.
+
+### Webhook
+
+The default trigger. Any tool that can send an HTTP POST — Segment, your CRM, Zapier, your own backend — can fire a webhook agent. Archer matches the incoming event to the agent using a discriminant on the agent itself, so each agent gets its own dedicated URL.
+
+```bash
+curl -X POST https://api.archermoney.com/events/webhook \
+  -H "Content-Type: application/json" \
+  -H "x-archer-agent-token: <webhookToken>" \
+  -d '{"event_id": "evt_123", "recipient_email": "maya@example.com"}'
+```
+
+Archer enqueues the event and the agent runtime processes it once. Replays of the same `event_id` against the same agent are idempotent — only one reward goes out.
+
+### Slack
+
+Slack agents fire when a teammate runs the Archer order command from a Slack workspace that's connected to your account. See [Place an order from Slack](/guides/place-slack-order).
+
+### Schedule
+
+Schedule agents run on a fixed cadence — daily, weekly, quarterly, or annual — and pick recipients based on the agent's logic and category.
+
+## Categories
+
+Categories let you organize agents and give your team a quick visual filter on the dashboard:
+
+| Category | Typical use |
+|---|---|
+| `office` | Internal rewards like birthday cakes, anniversary coffee, or new-hire swag. |
+| `customer` | Customer onboarding, milestones, win-back, or thank-you gifts. |
+| `partner` | Quarterly partner gifts, referral payouts, or vendor recognition. |
+
+## Status
+
+Agents are either `active` or `paused`. Pause an agent to stop it firing without deleting it; pausing keeps the configuration, history, and webhook token intact. Pausing is the recommended way to temporarily halt an agent — for example, while you adjust upstream data or test a new logic statement.
+
+## Idempotency
+
+Every event the runtime processes is keyed by `(event_id, agent_id)`. If the same event id arrives twice for the same agent — for example, because an upstream system retries — Archer records the duplicate but does not send a second reward. This makes it safe for trigger sources to retry on failure.
+
+## Next steps
+
+- [Create an agent](/guides/create-agent) — walk through configuring a new agent end to end.
+- [Activity](/concepts/activity) — see how the events your agents handle show up in the dashboard.
+- [Approvals](/concepts/approvals) — review pending orders before they ship.

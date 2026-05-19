@@ -32,30 +32,23 @@
           {
             "group": "Core concepts",
             "pages": [
-              "concepts/payouts",
+              "concepts/agents",
+              "concepts/activity",
+              "concepts/approvals",
               "concepts/team-members",
-              "concepts/paying-limits",
-              "concepts/smart-wallets",
               "concepts/notifications"
             ]
           },
           {
             "group": "Guides",
             "pages": [
-              "guides/create-payout",
+              "guides/create-agent",
+              "guides/approve-orders",
               "guides/invite-team-members",
-              "guides/configure-limits",
-              "guides/fund-and-offramp",
+              "guides/configure-workspace",
               "guides/connect-slack",
               "guides/manage-notifications",
               "guides/place-slack-order"
-            ]
-          },
-          {
-            "group": "Compliance",
-            "pages": [
-              "compliance/kyc-kyb",
-              "compliance/transaction-history"
             ]
           }
         ]

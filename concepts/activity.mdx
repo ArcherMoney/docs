@@ -1,0 +1,42 @@
+---
+title: "Activity: the full timeline of rewards Archer sends"
+description: "Use the Activity view to see every reward your agents and team have sent, grouped by day, with statuses, recipients, and CSV export."
+sidebarTitle: "Activity"
+---
+
+The Activity view is the running record of everything Archer has shipped on your behalf. Each row represents one reward an agent or teammate sent, grouped by day and showing the recipient, reward, agent that triggered it, and current status.
+
+## Statuses
+
+Activity rows surface only the statuses that are useful to people running the program:
+
+| Status | Meaning |
+|---|---|
+| `delivered` | The reward was fulfilled and shipped. This maps to a fulfilled goods order on the back end. |
+| `pending` | The reward is waiting on approval. It appears in [Approvals](/concepts/approvals) and ships once an approver accepts it. |
+
+Declined orders are intentionally hidden from Activity — the assumption is that a declined order is not part of your reward history.
+
+## Filtering and export
+
+You can filter Activity by:
+
+- **Day** — rows are grouped by day in the timeline view.
+- **Agent** — narrow to a single agent.
+- **Recipient** — find every reward a specific person has received.
+- **Category** — see only `office`, `customer`, or `partner` rewards.
+
+Use **Export** to download the same filtered set as CSV. The CSV includes one row per reward with the agent id, reward, recipient, status, and timestamp — useful for reporting or sharing with finance.
+
+```text Example row
+2026-05-19, onboarding-cake, cake, maya@example.com, delivered
+```
+
+## How Activity relates to orders
+
+Every Activity row is backed by a goods order in Archer's system. When an agent fires, Archer creates a goods order, ships it through the ordering portal, and exposes it as an Activity row. The `pending` and `delivered` statuses in Activity correspond to `pending_approval` and `fulfilled` on the underlying order — Archer does the translation so you don't have to think about it.
+
+## Next steps
+
+- [Approvals](/concepts/approvals) — review the pending orders that haven't shipped yet.
+- [Agents](/concepts/agents) — understand what created each Activity row.

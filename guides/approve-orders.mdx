@@ -1,0 +1,51 @@
+---
+title: "Approve or decline pending orders in Archer"
+description: "Review the Approvals queue, approve orders so they ship, or decline orders to drop them. Available to owners, admins, and approvers."
+sidebarTitle: "Approve orders"
+---
+
+The Approvals queue is where rewards that need a human sign-off wait. This guide walks through reviewing the queue and deciding whether each order should ship.
+
+## Prerequisites
+
+- A role of `owner`, `admin`, or `approver`. Members cannot see the queue.
+- At least one agent or Slack order configured to require approval.
+
+## Review the queue
+
+<Steps>
+  <Step title="Open Approvals">
+    Select **Approvals** from the left sidebar. The queue lists every order in `pending` state, with the newest at the top.
+  </Step>
+  <Step title="Inspect each order">
+    Each row shows the reward, recipient, the agent or teammate that created the order, and when it was placed. Click a row to expand the order detail, including shipping address and any notes from the trigger event.
+  </Step>
+  <Step title="Approve or decline">
+    From the row or detail panel:
+
+    - **Approve** — the order moves to `fulfilled`. It appears in [Activity](/concepts/activity) as `delivered` and the ordering portal ships it.
+    - **Decline** — the order is dropped. Declined orders are not returned by the queue and do not appear in Activity.
+
+    Both actions are immediate and recorded against your account.
+  </Step>
+</Steps>
+
+## What approvers can and cannot do
+
+| Action | `owner` / `admin` | `approver` | `member` |
+|---|---|---|---|
+| View the Approvals queue | ✓ | ✓ | ✗ |
+| Approve or decline orders | ✓ | ✓ | ✗ |
+| Edit the agent that created the order | ✓ | ✗ | ✗ |
+| Change workspace or Slack settings | ✓ | ✗ | ✗ |
+
+If you need to fix an agent's logic mid-review, ask an owner or admin — `approver` is intentionally narrow.
+
+## Notifications
+
+Turn on the **Approval needed** email under **Settings → Notifications** to get an email whenever a new order enters the queue. See [Manage notifications](/guides/manage-notifications).
+
+## Next steps
+
+- [Approvals](/concepts/approvals) — concept reference for the queue.
+- [Activity](/concepts/activity) — where approved orders show up after they ship.

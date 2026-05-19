@@ -1,42 +1,44 @@
 ---
-title: "What is Archer? Agent-powered rewards"
-description: "Archer automates USDC payouts to your team using smart wallets and on-chain spending rules — so you can reward performance without manual work."
+title: "What is Archer? Agent-driven rewards for your team"
+description: "Archer is a rewards platform that uses agents to send physical and digital gifts to your team, customers, and partners — triggered by webhooks, Slack, or a schedule."
 ---
 
-Archer is a rewards platform that lets you automate programmable payouts and physical rewards. Define the payout rules once, and Archer executes them automatically every time.
+Archer is a rewards platform that automates sending physical and digital gifts — cake, coffee, swag, donations, and more — to your team, customers, and partners. You define an **agent** with a trigger and category once, and Archer sends the right reward every time the trigger fires.
 
 ## What Archer does
 
-Archer brings together a web dashboard and smart contract infrastructure so you can design, control, and run incentive programs at any scale. Here's what you can do:
+Archer pairs a web dashboard with a Slack app so you can design, run, and approve reward programs at any scale.
 
-**Event-driven payouts.** Create payouts that trigger when a condition is met, such as a sales target hit or a milestone reached. Archer monitors conditions and executes payouts automatically within your defined limits.
+**Agent-driven rewards.** Create an agent that listens for a webhook, a Slack event, or a schedule. When the trigger fires, the agent sends a reward to the right recipient automatically — no manual work for your team.
 
-**On-chain paying limits.** Set maximum amounts per payment, per period, and per number of transactions. These limits aren't just application-level guardrails — they're enforced by the smart contract, so no payout can exceed what you've authorized regardless of how it's triggered.
+**Order approvals.** Configure agents to send automatically or to wait for a human in the loop. Pending orders show up in the Approvals queue, where an owner, admin, or approver can approve or decline before anything ships.
 
-**Team member management.** Invite recipients by email. Once they complete onboarding and register their wallet, they're ready to receive monetary payouts. You control who is active and can adjust access at any time.
+**Activity timeline.** Every reward Archer sends — whether delivered or pending approval — appears in the Activity view, grouped by day and exportable to CSV for reporting.
 
-**KYC and KYB compliance.** Before sending payouts, Archer requires identity verification — Know Your Customer (KYC) for individuals and Know Your Business (KYB) for organizations. This keeps your program compliant and your records clean.
+**Slack integration.** Connect a Slack workspace to let teammates place ad-hoc orders with a slash command. Orders go through the same approval and shipping flow as agent-driven rewards.
+
+**Team and workspace controls.** Invite teammates with role-based access (owner, admin, approver, member), set workspace name and sender details, and store your business address for shipping confirmations.
 
 <Note>
-  All payouts run on the Base network and are executed through your Archer smart wallet. You do not need to manage private keys — your smart wallet is provisioned automatically when you sign in.
+  Archer is designed for sending goods and digital rewards. It does not move funds on a blockchain or hold cryptocurrency on your behalf.
 </Note>
 
 ## Key concepts
 
 <CardGroup cols={2}>
-  <Card title="Payouts" icon="bolt" href="/concepts/payouts">
-    Learn how event-driven and scheduled payouts work, and how conditions are evaluated.
+  <Card title="Agents" icon="bolt" href="/concepts/agents">
+    Learn how agents listen for events and pick the right reward to send.
+  </Card>
+
+  <Card title="Activity" icon="clock-rotate-left" href="/concepts/activity">
+    See the running record of every reward your agents have sent.
+  </Card>
+
+  <Card title="Approvals" icon="circle-check" href="/concepts/approvals">
+    Understand which orders need a human review and how to act on them.
   </Card>
 
   <Card title="Team members" icon="users" href="/concepts/team-members">
-    Understand how to invite recipients, manage their status, and register their wallets.
-  </Card>
-
-  <Card title="Paying limits" icon="shield-check" href="/concepts/paying-limits">
-    See how per-payment and per-period limits are configured and enforced on-chain.
-  </Card>
-
-  <Card title="Smart wallets" icon="wallet" href="/concepts/smart-wallets">
-    Discover how Archer provisions and uses smart wallets to execute payouts on your behalf.
+    Invite teammates and choose the role that fits each person.
   </Card>
 </CardGroup>

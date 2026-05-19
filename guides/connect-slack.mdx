@@ -1,20 +1,25 @@
 ---
-title: "Connect Slack to send payouts and referrals from chat"
-description: "Connect a Slack workspace to Archer from the Integrations page, then run /order and /refer slash commands to send payouts without leaving chat."
+title: "Connect Slack to place orders from chat"
+description: "Install the Archer Slack app on a workspace, then run the order slash command to send rewards without leaving Slack."
 sidebarTitle: "Connect Slack"
 ---
 
-The Integrations page is where you connect Archer to the other tools your team already uses. Slack is the first integration available. Once your workspace is connected, anyone in it can launch the order and referral flows with a slash command instead of opening the dashboard.
+The Integrations page is where you connect Archer to the other tools your team already uses. Slack is the first integration available. Once your workspace is connected, anyone in it can place an order with a slash command instead of opening the dashboard.
 
 ## When to use this
 
-Use the Slack integration if your team kicks off payouts or referrals from chat, or if you want a single place to manage workspace-level connections for your Archer account.
+Use the Slack integration if your team kicks off rewards from chat, or if you want Slack-triggered agents to fire when a teammate runs the Archer order command.
+
+## Prerequisites
+
+- A role of `owner` or `admin`.
+- Permission to install apps in the target Slack workspace.
 
 ## Connect your Slack workspace
 
 <Steps>
   <Step title="Open Integrations">
-    Select **Integrations** from the left sidebar of the Archer dashboard.
+    Select **Settings → Integrations** from the Archer dashboard.
   </Step>
   <Step title="Start the install">
     Under the **Slack** section, click **Add to Slack**. Archer redirects you to Slack's authorization screen.
@@ -23,29 +28,33 @@ Use the Slack integration if your team kicks off payouts or referrals from chat,
     Slack shows the scopes the Archer app requests — `chat:write`, `app_mentions:read`, `channels:join`, and `commands`. Select the workspace you want to connect and click **Allow**.
   </Step>
   <Step title="Confirm the connection">
-    Slack redirects you back to Archer. The Slack section now shows your workspace ID with a green **Connected** badge.
+    Slack redirects you back to Archer. The Slack section now shows your workspace with a green **Connected** badge.
   </Step>
 </Steps>
 
 Only one Slack workspace can be linked to an Archer account at a time. To swap workspaces, disconnect the current one first.
 
-## Use the slash commands
+## Use the slash command
 
-Once your workspace is connected, every member of that Slack workspace can run these commands in any channel or DM where the Archer app is installed:
+Once your workspace is connected, every member of that Slack workspace can run the order command in any channel or DM where the Archer app is installed:
 
-| Command  | What it does                                                          |
-| -------- | --------------------------------------------------------------------- |
-| `/order` | Opens a modal to create a new payout from your Archer account.        |
-| `/refer` | Opens a modal to send a referral to a new recipient.                  |
+| Command  | What it does                                                                 |
+| -------- | ---------------------------------------------------------------------------- |
+| `/order` | Opens a modal to place a goods order. See [Place an order from Slack](/guides/place-slack-order). |
 
-Submitting either modal runs the action against the Archer account that installed the workspace, using the same paying limits and team member rules as the dashboard.
+Submitting the modal runs the order against the Archer account that installed the workspace, using the same approval rules as the dashboard.
 
 ```text Example
 /order
 ```
 
-If the command returns the message **"Slack Workspace not found. Open the Archer app, click Integrations on the left, and connect your Slack workspace."**, the workspace isn't linked yet — connect it from the Integrations page and try again.
+If the command returns the message **"Slack Workspace not found. Open the Archer app, go to Settings → Integrations, and connect your Slack workspace."**, the workspace isn't linked yet — connect it from the Integrations page and try again.
 
 ## Disconnect your Slack workspace
 
-To remove the integration, open **Integrations**, find the **Slack** section, and click **Delete** next to the connected workspace. Archer revokes the bot token and the slash commands stop working immediately. You can reconnect at any time by clicking **Add to Slack** again.
+To remove the integration, open **Settings → Integrations**, find the **Slack** section, and click **Delete** next to the connected workspace. Archer revokes the bot token and the slash command stops working immediately. You can reconnect at any time by clicking **Add to Slack** again.
+
+## Next steps
+
+- [Place an order from Slack](/guides/place-slack-order) — walk through the `/order` modal.
+- [Approvals](/concepts/approvals) — Slack orders flow through the same approval queue as agent-driven orders.

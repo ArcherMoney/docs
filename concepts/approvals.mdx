@@ -1,0 +1,44 @@
+---
+title: "Approvals: review pending rewards before they ship"
+description: "Use the Approvals queue to review goods orders that need a human sign-off, then approve or decline each one. Only owners, admins, and approvers can act."
+sidebarTitle: "Approvals"
+---
+
+Approvals is the queue of rewards waiting on a human review. When an agent or Slack order requires sign-off, the order lands here in `pending` state. An approver can approve it (the order ships) or decline it (the order is dropped and hidden from [Activity](/concepts/activity)).
+
+## When orders need approval
+
+An order ends up in Approvals when the agent that produced it — or the Slack flow that placed it — is configured to require a human in the loop. Automatic agents bypass Approvals and go straight to fulfillment.
+
+## Who can act on the queue
+
+Approval actions are governed by role-based access:
+
+| Role | Can view queue | Can approve or decline |
+|---|---|---|
+| `owner` | ✓ | ✓ |
+| `admin` | ✓ | ✓ |
+| `approver` | ✓ | ✓ |
+| `member` | ✗ | ✗ |
+
+If you do not have a qualifying role, the **Approvals** entry in the sidebar is hidden. See [Invite team members](/guides/invite-team-members) for how to assign roles.
+
+## What you see in the queue
+
+Each Approvals row shows:
+
+- The reward and any variant the order picked (for example, `cake · vanilla · 8"`).
+- The recipient and where it will ship.
+- The agent or Slack user that placed the order.
+- The time the order was created.
+
+Approving moves the order to `fulfilled`, where it appears in Activity as `delivered`. Declining drops the order entirely — declined orders are not returned by the queue and are not surfaced in Activity.
+
+## Notifications
+
+Account members with the **Approval needed** preference enabled receive an email whenever a new order lands in Approvals. See [Manage notifications](/guides/manage-notifications) to toggle this.
+
+## Next steps
+
+- [Approve orders](/guides/approve-orders) — step-by-step walkthrough of acting on the queue.
+- [Activity](/concepts/activity) — where approved orders end up after they ship.

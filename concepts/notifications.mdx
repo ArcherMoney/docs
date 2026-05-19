@@ -1,48 +1,36 @@
 ---
-title: "Notifications: stay informed about approvals and spending"
-description: "Learn how Archer notifies you about approval requests and spending activity, which channels are available, and how default preferences are applied."
+title: "Notifications: what Archer emails you about"
+description: "Learn which events trigger an Archer email — approval requests, weekly summaries, and daily digests — and how to control delivery per account."
 sidebarTitle: "Notifications"
 ---
 
-Archer sends notifications when something on your account needs your attention or crosses a threshold you care about. Notifications are grouped into two categories — **Approvals** and **Spending** — and each category can be delivered over email or mobile push. This page explains what each category covers and how delivery is decided.
+Archer sends email notifications when something on your account needs your attention or summarizes recent activity. You control delivery per account from **Settings → Notifications**.
 
 ## Categories
 
-| Category | What it covers |
+Each notification belongs to one of three categories. You can turn email delivery on or off per category — there is no separate push channel today.
+
+| Category | When it sends |
 |---|---|
-| Approvals | Actions on your account that need a confirmation from you, such as confirming a recipient restore. |
-| Spending | Activity tied to spending thresholds and card transactions on your account. |
+| **Approval needed** | A new order lands in [Approvals](/concepts/approvals) and is waiting on your sign-off. Best left on for anyone with the `owner`, `admin`, or `approver` role. |
+| **Weekly summary** | A Monday digest of every reward your agents sent in the previous seven days, grouped by agent and category. |
+| **Daily digest** | One quiet daily summary at end-of-day, instead of a notification per event. Useful for owners who want a single pulse-check email. |
 
-Archer always shows in-app notifications regardless of your settings. Email and push are opt-in per category.
+## Defaults
 
-## Channels
+New accounts start with:
 
-Each category supports two configurable delivery channels:
+- **Approval needed** — on
+- **Weekly summary** — off
+- **Daily digest** — off
 
-- **Email** — sent to the email address on your Archer account.
-- **Push** — sent to the Archer mobile app on devices signed in to your account.
+The defaults are designed so a brand-new workspace surfaces the email you actually need to act on (approvals) without dropping a stream of summary emails into your inbox.
 
-<Note>
-  Mobile push delivery is not yet live. You can toggle push preferences today and Archer will store them, but push messages will only start arriving once mobile delivery ships in a later release. Email is delivered now.
-</Note>
+## Per-member preferences
 
-## Default preferences
+Notification settings are per account member. Every signed-in user can toggle their own preferences and only sees their own settings — there is no global override. Owners and admins can view their own preferences but cannot change another member's settings on their behalf.
 
-The first time Archer needs to notify you, it creates a notification settings record on your account with these defaults:
+## Next steps
 
-| Setting | Default |
-|---|---|
-| Approvals — email | On |
-| Approvals — push | Off |
-| Spending — email | On |
-| Spending — push | Off |
-
-You can change any of these at any time from **Settings → Notifications**. See [Manage notification preferences](/guides/manage-notifications) for the step-by-step flow.
-
-## How Archer decides delivery
-
-When Archer enqueues a notification, it checks your settings for the matching category and only sends over channels you have enabled. For example, if you turn **Approvals — email** off, an approval notification will still appear in-app but no email will go out. Turning everything off for a category silences email and push for that category but leaves in-app notifications intact.
-
-<Tip>
-  Keep **Approvals — email** on if you want a written record of every confirmation step. Approval notifications include a description of the pending action and, where applicable, a link back to Archer to resolve it.
-</Tip>
+- [Manage notifications](/guides/manage-notifications) — how to update your preferences in the dashboard.
+- [Approvals](/concepts/approvals) — what the **Approval needed** email links to.

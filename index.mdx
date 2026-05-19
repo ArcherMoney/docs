@@ -1,43 +1,46 @@
 ---
-title: "Archer: automate incentive payouts on the blockchain"
-description: "Archer lets you automate rule-based and scheduled USDC payouts to your team using smart wallets, on-chain spending controls, and a full audit trail."
+title: "Archer: automated agent-driven rewards for your team"
+description: "Archer ships physical and digital rewards to your team, customers, and partners — triggered by webhooks, Slack commands, or schedules, with optional approval review."
 ---
 
-Archer is a blockchain-powered incentive platform that helps businesses send automated, programmable payouts to team members. Set up spending rules, invite recipients, and let Archer handle execution — with every transaction enforced on-chain for full auditability.
+Archer is a rewards platform that helps businesses send automated gifts and goods to team members, customers, and partners. Build an agent, point it at a trigger, and let Archer ship the right reward to the right person every time.
 
 <CardGroup cols={2}>
   <Card title="Quick start" icon="rocket" href="/quickstart">
-    Create your account, set up your smart wallet, and send your first payout in minutes.
+    Create your workspace, build your first agent, and ship your first reward in minutes.
   </Card>
-  <Card title="Core concepts" icon="book-open" href="/concepts/payouts">
-    Learn how payouts, rules, and smart wallets work together in Archer.
+  <Card title="Core concepts" icon="book-open" href="/concepts/agents">
+    Learn how agents, activity, approvals, and team roles fit together.
   </Card>
-  <Card title="Guides" icon="map" href="/guides/create-payout">
-    Step-by-step walkthroughs for common tasks like creating payouts and inviting team members.
+  <Card title="Guides" icon="map" href="/guides/create-agent">
+    Step-by-step walkthroughs for building agents, approving orders, and inviting teammates.
   </Card>
 </CardGroup>
 
 ## How Archer works
 
-Archer combines a web dashboard with an on-chain smart contract to give you complete control over automated payouts — with enforceable spending limits and a full transaction audit trail.
+Archer combines a web dashboard with a Slack app to automate sending rewards — without the manual coordination of picking, ordering, and shipping.
 
 <Steps>
-  <Step title="Create your account">
-    Sign up and Archer automatically provisions a smart wallet for you. This is the wallet that sends payouts on your behalf.
+  <Step title="Configure your workspace">
+    Sign up and fill in your workspace name, sender display name, reply-to email, and business address. Recipients see the sender on every reward and the business address on shipping confirmations.
   </Step>
-  <Step title="Set spending limits">
-    Configure per-transaction and per-period maximums. Limits are enforced on-chain by the ArcherAgentEndpoint contract — not just at the application layer.
+  <Step title="Invite your team">
+    Add teammates with role-based access — `owner`, `admin`, `approver`, or `member`. Roles control who can edit agents, approve orders, or just read activity.
   </Step>
-  <Step title="Invite team members">
-    Add recipients by email. Once they complete onboarding, their wallet address is registered on-chain as an approved recipient.
+  <Step title="Build agents">
+    Create agents that listen for webhooks, Slack commands, or schedules. Each agent has a plain-language logic statement, a category (`office`, `customer`, or `partner`), and a reward.
   </Step>
-  <Step title="Create and run payouts">
-    Set up event-driven payouts (triggered by conditions) or scheduled payouts (triggered by time). Archer executes them automatically within your defined limits.
+  <Step title="Approve and track">
+    Orders that need a human in the loop land in **Approvals**. Approved orders ship, and every reward appears in **Activity** for reporting and CSV export.
   </Step>
 </Steps>
 
 <CardGroup cols={2}>
-  <Card title="Compliance" icon="shield-check" href="/compliance/kyc-kyb">
-    Complete KYC/KYB verification and access your full transaction history.
+  <Card title="Approvals" icon="circle-check" href="/concepts/approvals">
+    Review pending orders before they ship and keep your reward program on guardrails.
+  </Card>
+  <Card title="Connect Slack" icon="slack" href="/guides/connect-slack">
+    Install the Archer Slack app so teammates can place orders from chat.
   </Card>
 </CardGroup>

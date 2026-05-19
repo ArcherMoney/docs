@@ -1,0 +1,56 @@
+---
+title: "Configure your Archer workspace settings"
+description: "Set your workspace name, sender display name, reply-to email, and business address so recipients see the right details on every reward."
+sidebarTitle: "Configure workspace"
+---
+
+Your workspace settings control what recipients see on every reward email and what address Archer uses on shipping confirmations. This guide walks through filling out **Settings → General**.
+
+## Prerequisites
+
+- A role of `owner` or `admin`. Other roles can read these fields but cannot change them.
+
+## Fill in the fields
+
+<Steps>
+  <Step title="Open General settings">
+    From the dashboard, go to **Settings → General**.
+  </Step>
+  <Step title="Set workspace name">
+    Enter the name your team uses internally — for example, `Northwind Co.` Archer uses this on the dashboard and in admin emails. It is not surfaced to reward recipients.
+  </Step>
+  <Step title="Set sender display name">
+    This is the name recipients see as the sender on every reward email. Use something personal and recognizable like `Vivek at Northwind` rather than a generic company name.
+  </Step>
+  <Step title="Set reply-to email">
+    Enter the inbox you want recipient replies to land in — for example, `hello@northwind.io`. Reward emails set this as the `Reply-To` header so recipients who hit reply reach a human, not a no-reply mailbox.
+  </Step>
+  <Step title="Edit business address">
+    Click **Edit** next to **Business address** and fill in the modal:
+
+    - **Address line 1** (required)
+    - **Address line 2** (optional — apartment, suite, or floor)
+    - **City** (required)
+    - **State** (required)
+    - **Postal code** (required)
+    - **Country** (required)
+
+    Click **Save address**. Archer stores the structured address and uses it on shipping confirmations for orders you place.
+
+    The Save button stays disabled until every required field has content.
+  </Step>
+</Steps>
+
+## When recipients see each field
+
+| Field | Where it appears |
+|---|---|
+| Workspace name | Dashboard chrome, admin emails. |
+| Sender display name | `From` line on every reward email. |
+| Reply-to email | `Reply-To` header on every reward email. |
+| Business address | Shipping confirmations and order summaries. |
+
+## Next steps
+
+- [Invite team members](/guides/invite-team-members) — once your workspace is set up, bring teammates in.
+- [Connect Slack](/guides/connect-slack) — let teammates place orders from chat.

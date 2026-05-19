@@ -1,0 +1,68 @@
+---
+title: "Create an agent in Archer"
+description: "Build an agent that listens for a webhook, Slack event, or schedule, then sends the right reward to the right recipient — step by step."
+sidebarTitle: "Create agent"
+---
+
+Agents are how you automate reward sending in Archer. This guide walks through creating one end to end: picking a trigger, writing the logic, choosing a category, and testing the first event.
+
+## Prerequisites
+
+- A workspace with **General** settings completed (workspace name, sender display name, reply-to email, business address).
+- If you plan to use a Slack trigger: the Archer Slack app installed. See [Connect Slack](/guides/connect-slack).
+- A role of `owner` or `admin`. Approvers and members can read agents but cannot create them.
+
+## Create the agent
+
+<Steps>
+  <Step title="Open the Agents page">
+    Select **Agents** from the left sidebar of the Archer dashboard, then click **New agent**.
+  </Step>
+  <Step title="Name the agent">
+    Enter a descriptive `name` — something a teammate would recognize, like `Customer onboarding cake` or `Quarterly partner donation`.
+  </Step>
+  <Step title="Pick a trigger">
+    Choose how the agent will fire:
+
+    - **Webhook** — Archer generates a unique URL and token. Use this for any tool that can send an HTTP POST.
+    - **Slack** — the agent fires when a teammate runs the Archer order command. The Slack app must already be installed.
+    - **Schedule** — pick `daily`, `weekly`, `quarterly`, or `annual`.
+
+    You cannot change the trigger after the agent is saved. To switch, create a new agent and pause the old one.
+  </Step>
+  <Step title="Write the logic">
+    In the **Logic** field, describe in plain language when the agent should run. Examples:
+
+    - `Send a cake when a customer completes onboarding.`
+    - `Send coffee to every direct report on their work anniversary.`
+    - `Send a quarterly donation to every active partner.`
+
+    Archer stores this on the agent and uses it to decide what to do when the trigger fires.
+  </Step>
+  <Step title="Pick a category and reward">
+    Choose a `category` — `office`, `customer`, or `partner` — and select the reward to send. Available rewards include cake, pizza, coffee, branded hoodies, donations, and concert tickets.
+  </Step>
+  <Step title="Save and test">
+    Save the agent. If you chose a webhook trigger, Archer shows the URL and `x-archer-agent-token` value to use:
+
+    ```bash
+    curl -X POST https://api.archermoney.com/events/webhook \
+      -H "Content-Type: application/json" \
+      -H "x-archer-agent-token: <webhookToken>" \
+      -d '{"event_id": "test-001", "recipient_email": "you@example.com"}'
+    ```
+
+    Replays of the same `event_id` are idempotent — only one reward goes out per `(event_id, agent)` pair.
+  </Step>
+</Steps>
+
+## After the first event
+
+- Open **Activity** to see the row your test created. It will show `pending` if the agent requires approval or `delivered` if it shipped automatically.
+- If the agent requires sign-off, open [Approvals](/concepts/approvals) to release the order.
+- To stop the agent without losing its history or token, set its status to `paused` from the agent detail page.
+
+## Next steps
+
+- [Approve orders](/guides/approve-orders) — release pending orders from the queue.
+- [Place an order from Slack](/guides/place-slack-order) — let teammates send ad-hoc rewards from chat.
