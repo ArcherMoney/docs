@@ -10,7 +10,7 @@ When you sign up for Archer, two wallet addresses are created for your account a
 
 <CardGroup cols={2}>
   <Card title="EOA (Externally Owned Account)" icon="key">
-    Your canonical identity wallet, created by [Privy](https://privy.io) when you first sign in. This is a standard Ethereum wallet. It acts as your on-chain identity and is used to sign transactions — including calls to the ArcherAgentEndpoint contract when you activate team members or update paying limits.
+    Your canonical identity wallet, provisioned automatically when you first sign in. This is a standard Ethereum wallet. It acts as your on-chain identity and is used to sign transactions — including calls to the ArcherAgentEndpoint contract when you activate team members or update paying limits.
   </Card>
   <Card title="Smart wallet (Kernel / ERC-4337)" icon="wallet">
     A programmable smart contract wallet deployed on your behalf. This is the wallet that actually holds the funds used for payouts. Its address appears in **Settings** as **Payout Smart Wallet**. When a payout executes, tokens are transferred out of this wallet.
@@ -31,7 +31,7 @@ If any of those checks fail, the transaction reverts and no funds are moved. Thi
 
 Both addresses are visible in **Settings**:
 
-- **User EOA** — your Privy-managed signing wallet
+- **User EOA** — your managed signing wallet
 - **Payout Smart Wallet** — the ERC-4337 smart contract wallet funds are sent from
 
 You do not need to do anything to set these up. The smart wallet is deployed automatically the first time you sign in to Archer.
