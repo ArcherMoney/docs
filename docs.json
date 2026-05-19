@@ -43,12 +43,14 @@
             "group": "Guides",
             "pages": [
               "guides/create-payout",
+              "guides/configure-agent-settings",
               "guides/invite-team-members",
               "guides/configure-limits",
               "guides/fund-and-offramp",
               "guides/connect-slack",
               "guides/manage-notifications",
-              "guides/place-slack-order"
+              "guides/place-slack-order",
+              "guides/set-business-address"
             ]
           },
           {

@@ -1,0 +1,115 @@
+---
+title: "Configure agent settings, branding, and email copy"
+description: "Edit an Archer agent's name, category, status, and branding from the Settings tab — including primary color, logo, and email title and body."
+sidebarTitle: "Configure agent settings"
+---
+
+Every agent now has a **Settings** tab on its detail page. Use it to rename the agent, change its category, rewrite the trigger logic, pause or resume it, and customize the email and form that recipients see when the agent fires. This guide walks through each control and when to reach for it.
+
+## When to use this
+
+Reach for the Settings tab when you need to:
+
+- Rename an existing agent or move it to a different category.
+- Pause an agent without archiving it.
+- Customize the email subject, body, and CTA color that the recipient sees.
+- Upload a logo and pick a primary color for the claim form.
+- Hide the **Powered by Archer** footer on emails and forms.
+- Send a one-off test to confirm the agent works end-to-end.
+
+## Open the Settings tab
+
+<Steps>
+  <Step title="Go to Agents">
+    Select **Agents** from the left sidebar.
+  </Step>
+  <Step title="Open an agent">
+    Click any agent card to open its detail page.
+  </Step>
+  <Step title="Switch to Settings">
+    Select the **Settings** tab next to **Summary** under the agent header.
+  </Step>
+</Steps>
+
+The Summary tab still shows the trigger, webhook URL or Slack connection, and recent activity. The Settings tab is where you change configuration.
+
+## Edit the basics
+
+The top panel on the Settings tab covers the fields you'll change most often.
+
+| Field | What it controls |
+|---|---|
+| **Agent name** | The label shown on the Agents page and in activity rows. Slack agents are named **Slack Agent** and can't be renamed. |
+| **Trigger** | Read-only. Set when you created the agent — see [Create a payout](/guides/create-payout) to make a new one with a different trigger. |
+| **Category** | Whether this is an **Office Order**, **Customer Gift**, or **Partner Gift**. Drives the chip color and grouping across Agents, Activity, and Approvals. |
+| **Logic** | The plain-language condition Archer uses to match incoming events. Keep it to two clauses or fewer. |
+| **Agent is active** | Toggle off to pause the agent. Paused agents stop firing immediately but keep their settings. |
+
+Click **Save changes** to apply your edits. The button briefly shows **Saved!** to confirm.
+
+## Customize email and form branding
+
+Expand **Advanced settings** at the bottom of the Settings tab to reveal the branding controls. Every option here is optional — leave the defaults if you want Archer's standard look.
+
+### Primary color
+
+Pick the brand color used for the email CTA button and the form submit button. Use the swatch to open the system color picker, or paste a hex value (for example, `#0EAD7E`) into the text field.
+
+### Remove "Powered by Archer"
+
+Check **Remove "Powered by Archer" text** to hide the footer line on both the email and the claim form. Leave it unchecked to keep the attribution visible.
+
+### Email title and body
+
+Write the subject line and body that recipients receive when this agent fires. You can use two placeholders inline:
+
+| Placeholder | Replaced with |
+|---|---|
+| `{Recipient}` | The recipient's first name. |
+| `{Company}` | Your workspace name from **Settings → General**. |
+
+```text Example email body
+Hi {Recipient},
+
+{Company} would like to send you a small token of appreciation. Click
+the button below to claim your reward — it only takes a moment.
+
+Thank you for your time.
+```
+
+Click **Preview email** above the title field to see the rendered email with your color, copy, and footer setting applied.
+
+### Form logo
+
+Click **Upload logo** under the **Form** section to add a brand mark to the claim form. Archer accepts any standard image file and stores it as part of the agent. Click **Remove** to clear the logo and fall back to text-only branding. Click **Preview form** to see the form recipients land on after clicking the email CTA.
+
+## Simulate a delivery
+
+The **Simulate** button on the Summary tab sends a real test gift through the agent's full email and form flow, as if the agent had fired for a recipient. Use it to validate copy, branding, and links before turning the agent on for production traffic.
+
+<Steps>
+  <Step title="Open the agent's Summary tab">
+    From the agent detail page, stay on **Summary** (the default tab).
+  </Step>
+  <Step title="Click Simulate">
+    Click **Simulate** in the **Trigger** panel to open the modal.
+  </Step>
+  <Step title="Enter a test recipient email">
+    Type any address you control and click **Send test →**. Archer sends a real test email to that address.
+  </Step>
+  <Step title="Confirm receipt">
+    Check the inbox, open the email, and complete the claim form to verify the full flow.
+  </Step>
+</Steps>
+
+<Tip>
+  Send the simulation to yourself before sharing an agent with stakeholders. It's the fastest way to catch typos, broken placeholders, or off-brand colors.
+</Tip>
+
+## Archive an agent
+
+Click **Archive** in the top-right of the agent detail header to remove the agent from your active list. Archived agents stop firing immediately. Pause an agent instead if you only need a temporary halt — pausing preserves the agent so you can re-enable it from the **Agent is active** toggle later.
+
+<Note>
+  Branding and email copy live on the agent record. Each agent can have its own color, logo, subject, and body — so you can ship different programs (onboarding gifts, partner referrals, team supplies) with distinct looks without spinning up new workspaces.
+</Note>
