@@ -1,0 +1,89 @@
+---
+title: "Events API"
+description: "HTTP contract for sending events to Archer reward webhooks."
+---
+
+The events API is the public ingress for triggering rewards. Each reward owns one URL; that URL is the only thing your producer needs.
+
+## Send an event
+
+```
+POST /events/{webhook_token}
+Content-Type: application/json
+```
+
+- **Authentication**: none. The URL is the secret.
+- **Path parameter**: `webhook_token` is the reward's `discriminant` (matches `[a-z0-9_-]+`).
+- **Body**: any JSON object, ≤ 100 KB.
+
+### Conventional fields
+
+| Field | Description |
+|---|---|
+| `event_id` | Idempotency key. Required for safe retries. |
+| `type` | Optional short event type string. Logged at ingress. |
+
+```json
+{
+  "event_id": "evt_2026_05_20_abc",
+  "type": "referral.converted",
+  "referrer_email": "alice@example.com",
+  "amount_usd": 25
+}
+```
+
+### Successful response
+
+```
+202 Accepted
+Content-Type: application/json
+```
+
+```json
+{
+  "accepted": true,
+  "discriminant": "0xabc..."
+}
+```
+
+The `discriminant` echoed back lets you confirm Archer routed the event to the reward you expected.
+
+### Error responses
+
+| Status | Body | Cause |
+|---|---|---|
+| `400` | `{ "error": "Invalid JSON in request body" }` | Malformed JSON. |
+| `400` | `{ "error": "Request body is required" }` | Empty body. |
+| `400` | `{ "error": "Invalid base64-encoded request body" }` | API Gateway sent base64 you can't decode. |
+| `404` | `{ "error": "Not found", "path": "..." }` | URL doesn't match `/events/{discriminant}`. |
+| `405` | `{ "error": "Method not allowed" }` | Wrong HTTP method. |
+| `413` | `{ "error": "Payload too large" }` | Body > 100 KB. |
+| `500` | `{ "error": "Internal server error" }` | Archer-side failure; retry. |
+
+## Health check
+
+```
+GET /events/health
+```
+
+Returns `{"ok": true, "endpoint": "events"}`. No auth required. Use to verify connectivity.
+
+## Slack events
+
+Slack-triggered rewards receive events through a separate ingress:
+
+```
+POST /slackevent
+```
+
+Authenticated via Slack signing secret. You do not call this directly from your code — Slack does. Install the Slack app via [Connect Slack](/guides/connect-slack) to enable it.
+
+## Google Forms
+
+Goods-order address collection accepts payloads at:
+
+```
+POST /webhooks/google_forms
+```
+
+Other `/webhooks/{source}` values are rejected. Provider-specific webhook handlers can be re-enabled by Archer if your account needs them.

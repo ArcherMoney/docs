@@ -1,62 +1,22 @@
 ---
-title: "Archer changelog: product updates and release notes"
-description: "Release notes for Archer — new features, dashboard improvements, smart contract updates, and bug fixes for payouts, paying limits, and team management."
+title: "Changelog"
+description: "Release notes for the Archer rewards platform — new APIs, agent runtime updates, and product changes."
 ---
 
-<Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
-  ## Integrations page with Slack
+<Update label="2026-05-20" tags={["Pivot"]} description="Week of May 18">
+  ## Archer is now a rewards platform
 
-  The Slack settings page is now **Integrations**, a single place to manage every workspace-level connection for your Archer account. Slack is the first integration available — install it from **Integrations** in the left sidebar to use the `/order` and `/refer` slash commands from any channel. If you run a slash command before connecting, Slack now replies with a clear prompt that points you to the Integrations page instead of a generic error. [Learn more](/guides/connect-slack)
-</Update>
-  
-<Update label="2026-05-14" tags={["Change"]} description="Week of May 11">
-  ## Business-only access for Agent and advanced API features
+  We rebuilt Archer as a developer-first rewards platform. The old payouts, smart wallet, and on-/off-ramp surfaces are retired. The new product centers on three primitives:
 
-  The Archer Agent, Slack integration, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
-</Update>
-  
-<Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
-  ## Choose how to deliver a Slack order
+  - **Rewards** — rules created via `/agent` that describe a trigger and a reward in plain English.
+  - **Events** — JSON payloads `POST`ed to a reward's unique webhook URL (or fired from a Slack slash command).
+  - **Agent runtime** — the Lambda that resolves each event to its reward and runs it idempotently.
 
-  When you place an order from Slack, Archer now asks how you want it delivered. Pick **Send Order Form** to email an order form to a recipient, or **Send to Address** to ship the item directly to a street address. Archer collects only the fields that match your choice — an email for order forms, or a full shipping address for direct delivery — and confirms the submission in Slack. [Learn more](/guides/place-slack-order)
-</Update>
-  
-<Update label="2026-05-15" tags={["Improvement"]} description="Week of May 11">
-  ## Slack source label on agent cards
-
-  Agent cards on the Agents page now show **Slack** with a Slack icon for Slack-backed event payouts, and **Webhook** with the bolt icon for webhook-triggered payouts. Use this at-a-glance label to see which integration feeds each agent without opening the payout details.
+  See the new [Introduction](/introduction) and [Quickstart](/quickstart). Existing payout, smart wallet, paying limits, and fund/off-ramp docs have been removed.
 </Update>
 
-<Update label="2026-05-15" tags={["Feature"]} description="Week of May 11">
-  ## Recipient portal parity
+<Update label="2026-05-13" tags={["Internal"]} description="Week of May 11">
+  ## Agent runtime stabilizes
 
-  The recipient portal now includes its own **Recipients** page. You can invite, activate, and archive your own payees without leaving the portal. The portal topbar also gains **Deposit** and **Send** quick actions next to the balance pill, matching the sender dashboard. [Learn more](/concepts/team-members)
-</Update>
-
-<Update label="2026-05-13" tags={["Feature"]} description="Week of May 11">
-  ## Pending deposits on the Activity page
-
-  In-flight ACH and wire deposits now appear in a dedicated **Pending deposits** section at the top of the Activity page. An amber status indicator shows where each deposit is in the settlement flow, and the section clears automatically once a deposit settles. Failed deposits now report a **Failed** status in your transaction history instead of remaining stuck as initiated. [Learn more](/guides/fund-and-offramp)
-</Update>
-
-<Update label="2026-04-20" tags={["Feature"]} description="Week of April 20">
-  ## Scheduled payouts
-
-  You can now queue one-time USDC transfers for a specific date and time. Create a scheduled payout by providing a recipient, amount, and target datetime — Archer handles execution automatically when the time arrives. Cancel any pending payout before it runs if plans change.
-
-  ## On-chain paying limits
-
-  Set per-transaction, per-period, and call-count spending limits that are enforced by the ArcherAgentEndpoint smart contract. These controls are written on-chain, so no payout can exceed your authorized budget regardless of how it's triggered. [Learn more](/concepts/paying-limits)
-
-  ## Bulk team member import via CSV
-
-  Add multiple payout recipients at once using the CSV import feature on the Team Members page. Imported members are created with active status immediately — no separate activation step required. [Learn more](/guides/invite-team-members)
-
-  ## ACH and wire off-ramp
-
-  Move funds from your smart wallet back to a traditional bank account. The dashboard now supports both ACH and wire transfers for off-ramping USDC to fiat. [Learn more](/guides/fund-and-offramp)
-
-  ## REST API
-
-  A full REST API is available for managing accounts, payouts, team members, and wallet operations programmatically. All endpoints accept and return JSON, with JWT-based authentication.
+  The agent Lambda now resolves event-queue messages directly via `Agent.discriminant` — no LLM classification, no Slack-team fallback. Messages without a resolvable discriminant are acknowledged and dropped. Reward execution is idempotent per `(event_id, agent_id)`.
 </Update>

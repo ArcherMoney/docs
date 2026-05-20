@@ -30,32 +30,42 @@
             ]
           },
           {
-            "group": "Core concepts",
+            "group": "Concepts",
             "pages": [
-              "concepts/payouts",
-              "concepts/team-members",
-              "concepts/paying-limits",
-              "concepts/smart-wallets",
-              "concepts/notifications"
+              "concepts/rewards",
+              "concepts/events",
+              "concepts/triggers",
+              "concepts/agent-runtime",
+              "concepts/activity"
             ]
           },
           {
             "group": "Guides",
             "pages": [
-              "guides/create-payout",
-              "guides/invite-team-members",
-              "guides/configure-limits",
-              "guides/fund-and-offramp",
+              "guides/create-reward",
+              "guides/send-events",
               "guides/connect-slack",
-              "guides/manage-notifications",
-              "guides/place-slack-order"
+              "guides/invite-team-members"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/authentication"
             ]
           },
           {
-            "group": "Compliance",
+            "group": "Endpoints",
             "pages": [
-              "compliance/kyc-kyb",
-              "compliance/transaction-history"
+              "api/rewards",
+              "api/events",
+              "api/activity",
+              "api/account"
             ]
           }
         ]

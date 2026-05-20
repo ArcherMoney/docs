@@ -1,0 +1,63 @@
+---
+title: "Triggers"
+description: "How webhook triggers and Slack triggers connect external systems to Archer rewards."
+---
+
+A **trigger** is the channel that delivers events to a reward. Every reward picks one of two trigger kinds when it's created.
+
+## Webhook triggers
+
+`trigger_kind: "webhook"` is the default. Archer generates a unique URL for each reward:
+
+```
+POST https://api.archermoney.com/events/{webhook_token}
+Content-Type: application/json
+```
+
+- **Authentication**: none on the event endpoint. Anyone with the URL can send events. Treat the URL as a shared secret.
+- **Body**: any JSON object up to 100 KB.
+- **Response**: `202 Accepted` with `{ "accepted": true, "discriminant": "..." }`.
+
+Webhook URLs are stable for the lifetime of the reward. They survive `PATCH /agent` updates but are invalidated when you delete the reward.
+
+### Use webhooks for
+
+- Internal applications and backend services
+- Third-party providers that can `POST` JSON (Segment, Zapier, custom CI hooks)
+- Mobile and web clients that emit product events
+
+## Slack triggers
+
+`trigger_kind: "slack"` lets a teammate fire a reward by running a slash command in your connected Slack workspace.
+
+- Install Slack on your Archer account first. See [Connect Slack](/guides/connect-slack).
+- Only **one active Slack-triggered reward** per account. Creating a second Slack reward returns `409 Conflict`.
+- The Slack ingest Lambda verifies request signatures and enqueues by `team_id`. The agent runtime resolves the queue message to the account's single Slack reward.
+
+### Use Slack for
+
+- Office orders driven by teammates ("send swag to this new hire")
+- Ad-hoc customer gifts that don't have a programmatic source
+- Manual approval flows where the requester is a person, not a system
+
+## Pausing a trigger
+
+Set `status: "paused"` on the reward to stop processing without losing the webhook URL or Slack binding:
+
+```bash
+curl -X PATCH "https://api.archermoney.com/agent?agent_id=$AGENT_ID" \
+  -H "Authorization: Bearer $ARCHER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"status": "paused"}'
+```
+
+Re-enable with `{"status": "active"}`. Events received while paused are acknowledged and dropped — they will not be replayed when you reactivate.
+
+## Choosing the right trigger
+
+| Use case | Trigger |
+|---|---|
+| CI pipeline notifies on green build | Webhook |
+| Marketing tool fires on funnel conversion | Webhook |
+| Teammate sends a gift card from a chat | Slack |
+| Backend service settles an affiliate payout | Webhook |

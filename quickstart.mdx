@@ -1,48 +1,96 @@
 ---
-title: "Get started with Archer: your first payout in minutes"
-description: "Sign up, verify your identity, configure spending limits, and send your first automated USDC payout — all in a few straightforward steps."
+title: "Quickstart"
+description: "Create your first reward, grab its webhook URL, and fire a test event to Archer in under five minutes."
 ---
 
-This guide walks you through everything you need to do to go from a blank account to a live, automated payout. The process takes about 10–15 minutes, with the most time spent on identity verification depending on your provider.
+This guide walks you through end-to-end integration: create a reward rule, capture its webhook URL, and `POST` a test event that triggers it.
 
-<Steps>
-  <Step title="Sign up">
-    Go to [app.archermoney.com](https://app.archermoney.com) and click the sign up button. 
-  </Step>
-  <Step title="Complete verification" stepNumber={2}>
-    Before you can send any payouts, Archer requires identity verification to stay compliant. Go to your email and check for an information request from Persona.
+## Prerequisites
 
-    - If you're an individual, you'll complete **KYC** (Know Your Customer) verification.
-    - If you're representing a business, you'll complete **KYB** (Know Your Business) verification.
+- An Archer account at [archermoney.com](https://archermoney.com). New accounts are provisioned as Business accounts on first sign-in.
+- An Auth0 access token for the API. Sign in to the dashboard and copy it from your developer settings, or use the Auth0 client credentials flow.
+- `curl` or any HTTP client.
 
-    Follow the on-screen prompts to submit your information. 
+<Note>
+  All protected endpoints accept the access token as `Authorization: Bearer <token>`. The Archer API is served from `https://api.archermoney.com`.
+</Note>
 
-    <Warning>
-      You cannot log in until verification is approved. Verification is typically reviewed within 3 days, but processing times can vary.
-    </Warning>
-  </Step>
-  <Step title="Invite a team member">
-    Go to **Team Members** and enter your recipient's email address, then send the invite. Archer sends them an onboarding link. Once they sign up and complete their own setup, their wallet is registered and they appear in your team list.
+## 1. Create a reward
 
-    Activate the team member from your pending recipients list to mark them as ready to receive payouts.
-  </Step>
-  <Step title="Create your first payout">
-    Go to **Payouts** and click **Create payout**. Give your payout a name and define the condition that should trigger it — for example, a performance milestone or a scheduled time. Save the payout and Archer will begin monitoring the condition and executing the payment automatically when it's met.
-  </Step>
-</Steps>
+`POST /agent` creates a reward rule. `name` and `logic` are required, and `category` must be one of `office`, `customer`, or `partner`.
 
-## What's next
+```bash
+curl -X POST https://api.archermoney.com/agent \
+  -H "Authorization: Bearer $ARCHER_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Onboarding completed",
+    "logic": "When a referred user completes onboarding, pay the referrer $25",
+    "category": "partner",
+    "trigger_kind": "webhook"
+  }'
+```
+
+The response includes the reward's `id`, `webhook_token`, and `webhook_url`:
+
+```json
+{
+  "id": "5b2a...",
+  "name": "Onboarding completed",
+  "logic": "When a referred user completes onboarding, pay the referrer $25",
+  "category": "partner",
+  "trigger_kind": "webhook",
+  "status": "active",
+  "webhook_token": "0xabc...",
+  "webhook_url": "https://api.archermoney.com/events/0xabc..."
+}
+```
+
+## 2. Send a test event
+
+Post any JSON payload to the reward's `webhook_url`. Archer accepts the event and returns `202 Accepted`.
+
+```bash
+curl -X POST "$WEBHOOK_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_id": "evt_test_001",
+    "type": "onboarding.completed",
+    "referrer_email": "alice@example.com",
+    "user_email": "bob@example.com"
+  }'
+```
+
+Archer enqueues the event and the agent runtime resolves the `discriminant` in the URL back to your reward rule. Processing is idempotent per `(event_id, agent_id)` — sending the same `event_id` twice will not double-execute the reward.
+
+<Tip>
+  Always include an `event_id` you control. Archer uses it for idempotency and surfaces it on the Activity page for debugging.
+</Tip>
+
+## 3. Verify the result
+
+Open the dashboard and check the **Activity** page, or call the API:
+
+```bash
+curl "https://api.archermoney.com/activity" \
+  -H "Authorization: Bearer $ARCHER_TOKEN"
+```
+
+Fulfilled rewards appear as `delivered`; rewards waiting on approval (for example, office orders that require an admin sign-off) appear as `pending`.
+
+## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Create a payout" icon="bolt" href="/guides/create-payout">
-    Learn how to configure event-driven and scheduled payouts in detail.
+  <Card title="Rewards concepts" icon="gift" href="/concepts/rewards">
+    Categories, statuses, Slack vs. webhook triggers.
   </Card>
-
-  <Card title="Invite team members" icon="users" href="/guides/invite-team-members">
-    A step-by-step guide to adding recipients and managing their onboarding.
+  <Card title="Send events" icon="bolt" href="/guides/send-events">
+    Payload conventions and idempotency rules.
   </Card>
-
-  <Card title="Configure limits" icon="shield-check" href="/guides/configure-limits">
-    Understand how paying limits work and how to adjust them as your program grows.
+  <Card title="API reference" icon="book" href="/api/rewards">
+    Full request and response schemas.
+  </Card>
+  <Card title="Connect Slack" icon="slack" href="/guides/connect-slack">
+    Trigger rewards from a Slack slash command.
   </Card>
 </CardGroup>

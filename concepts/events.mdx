@@ -1,0 +1,65 @@
+---
+title: "Events"
+description: "What events look like in Archer, how they're ingested and queued, and how the agent runtime resolves them to a reward."
+---
+
+An **event** is the signal that fires a reward. Archer accepts events through three ingress paths and unifies them on a single event queue before the agent runtime processes them.
+
+## Event shape
+
+Events are JSON. Archer does not enforce a fixed schema for the payload — your reward's `logic` description is what tells the agent what to look for. Two fields are conventional:
+
+| Field | Purpose |
+|---|---|
+| `event_id` | Idempotency key. Archer skips processing if the same `(event_id, agent_id)` pair has already produced an `EventRun`. |
+| `type` | Optional short string (`onboarding.completed`, `referral.converted`). Logged at ingress for observability. |
+
+Anything else in the payload — emails, amounts, identifiers, metadata — is available to the agent at execution time.
+
+```json
+{
+  "event_id": "evt_2026_05_20_abc",
+  "type": "referral.converted",
+  "referrer_email": "alice@example.com",
+  "amount_usd": 25,
+  "deal_id": "deal_8821"
+}
+```
+
+Payloads are capped at **100 KB**. Larger requests get `413 Payload too large`.
+
+## Ingress paths
+
+| Path | Source | When to use |
+|---|---|---|
+| `POST /events/{discriminant}` | Webhook | Any system that can `POST` JSON. The default trigger for new rewards. |
+| `POST /slackevent` | Slack slash command | Slack-installed accounts; only one Slack-triggered reward is allowed per account. |
+| `POST /webhooks/google_forms` | Google Forms | Goods-order address collection. Other webhook sources are rejected until handlers are restored. |
+
+All three ingress Lambdas enqueue messages onto the same event queue. From there, the agent runtime is the only consumer.
+
+## Idempotency
+
+Archer guarantees at-most-once execution per `(event_id, agent_id)`. If you retry an event with the same `event_id`, the agent runtime records the duplicate as a no-op and returns the original `EventRun` result. Omitting `event_id` disables idempotency — Archer will treat every retry as a fresh event.
+
+<Warning>
+  Always set `event_id` when your producer can retry on network failures. Without it you may double-pay a partner or double-ship an office order.
+</Warning>
+
+## Discriminants
+
+The `discriminant` in the URL path is the reward's unique webhook token. Archer derives it from the reward's `id` at creation time:
+
+```
+keccak256("agent:<agent_id>")
+```
+
+It's URL-safe (`[a-z0-9_-]+`), opaque, and tied to a single reward. Rotating it requires deleting and recreating the reward.
+
+## Failure modes
+
+- **No resolvable discriminant** — message is acknowledged and dropped. The reward may have been archived after the event was enqueued.
+- **Reward is paused** — message is acknowledged and ignored without producing an `EventRun`.
+- **Agent runtime error** — SQS retries with backoff; persistent failures land in the dead-letter queue.
+
+See [Agent runtime](/concepts/agent-runtime) for execution details.
