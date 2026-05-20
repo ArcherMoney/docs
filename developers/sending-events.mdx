@@ -1,0 +1,130 @@
+---
+title: "Sending events"
+description: "How to fire a webhook-triggered Archer agent from your product, backend, or any system that can POST JSON."
+---
+
+Webhook agents in Archer have a single integration point: a URL you `POST` JSON events to. Each event becomes a reward.
+
+This is the only HTTP API most teams need. Everything else — creating agents, branding, approvals, team management — happens in the [dashboard](https://archermoney.com).
+
+## Get the URL
+
+Open the agent in the dashboard and copy its **Webhook URL** from the detail page. The URL looks like:
+
+```
+https://api.archermoney.com/events/{webhook_token}
+```
+
+The `webhook_token` is opaque, unique per agent, and stable for the lifetime of the agent. Treat the full URL as a secret:
+
+- Store it in environment variables, not in source.
+- Never include it in client-side bundles or logs.
+- Rotate it by archiving and recreating the agent if it leaks.
+
+## Send an event
+
+```bash
+curl -X POST "$ARCHER_WEBHOOK_URL" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event_id": "evt_2026_05_20_abc",
+    "type": "onboarding.completed",
+    "recipient_email": "alice@example.com",
+    "amount_usd": 25
+  }'
+```
+
+No `Authorization` header. The URL itself authenticates the request.
+
+## Payload conventions
+
+Archer accepts any JSON object up to **100 KB**. Two fields are conventional and should be set on every event:
+
+| Field | Purpose |
+|---|---|
+| `event_id` | Your idempotency key. Required for safe retries. |
+| `type` | Short event type string like `onboarding.completed`. Logged for observability. |
+
+Everything else in the payload — emails, names, amounts, identifiers — is available to the agent when it fires. Match it to what the agent's **Logic** field describes:
+
+```json
+{
+  "event_id": "evt_2026_05_20_abc",
+  "type": "referral.converted",
+  "referrer_email": "alice@example.com",
+  "user_email": "bob@example.com",
+  "deal_id": "deal_8821",
+  "amount_usd": 25
+}
+```
+
+## Response
+
+A successful request returns `202 Accepted`:
+
+```json
+{
+  "accepted": true,
+  "discriminant": "0xabc..."
+}
+```
+
+The echoed `discriminant` is the agent's webhook token — you can use it to confirm Archer routed the event to the agent you expected.
+
+## Idempotency
+
+Archer dedupes on `(event_id, agent)`. If your producer retries the same `event_id` to the same agent, the second call is a no-op:
+
+```text
+First  POST → 202 Accepted, reward fires
+Second POST → 202 Accepted, duplicate ignored, no reward
+```
+
+Without `event_id` Archer cannot dedupe — every retry fires a fresh reward. **Always set it** when your transport can retry (HTTP timeouts, queue redelivery, cron job retries).
+
+A good `event_id` is:
+
+- Stable for a single real-world event
+- Unique across your producers (prefix with `crm-`, `ci-`, `app-`)
+- ≤ 128 characters
+
+## Errors and retries
+
+| Status | Meaning | Retry? |
+|---|---|---|
+| `202` | Accepted | No |
+| `400` | Invalid JSON or missing body | No — fix the payload |
+| `404` | Webhook token not recognized | No — check the URL |
+| `405` | Wrong HTTP method (use `POST`) | No |
+| `413` | Payload over 100 KB | No — shrink the payload |
+| `5xx` | Archer-side error | Yes, with exponential backoff |
+
+Aim for exponential backoff with jitter and cap retries at 5–10 attempts over a few minutes.
+
+## Paused or archived agents
+
+If the agent is paused, events are still accepted (`202`) but no reward fires. Reactivate the agent to resume — events received while paused are not replayed.
+
+If the agent is archived, events are accepted at the door and dropped silently downstream. Archer doesn't return an error for archived agents, so make sure your producer references a live agent's URL.
+
+## Verifying delivery
+
+After a `202`:
+
+1. Check the agent's **Recent activity** on its detail page in the dashboard.
+2. Or look at the **Activity** page for a new `pending` (Office Order) or `delivered` row.
+
+If a webhook agent isn't firing rewards:
+
+1. Confirm the agent is **Active**, not paused or archived.
+2. Confirm your producer is hitting the agent's exact `webhook_url`.
+3. Send a test from your terminal with `curl` and check the response body — Archer echoes the `discriminant` it parsed.
+4. Fire the **Simulate agent** button on the detail page to confirm branding and end-to-end delivery work independently of the producer.
+
+## Health check
+
+```
+GET https://api.archermoney.com/events/health
+```
+
+Returns `{"ok": true, "endpoint": "events"}`. Public, unauthenticated — handy for monitoring and uptime checks.

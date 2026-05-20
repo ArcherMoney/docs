@@ -1,0 +1,74 @@
+---
+title: "Create an agent"
+description: "Walk through creating a new agent in the Archer dashboard — naming, choosing a category, writing the logic, and picking a trigger."
+---
+
+This guide shows how to create an agent end-to-end from the dashboard. By the end you'll have an active agent with branding configured and a working test gift.
+
+## Prerequisites
+
+- An Archer account.
+- The **Owner** or **Admin** role. Members and Approvers can read agents but can't create or edit them.
+
+## 1. Open the Agents page
+
+In the dashboard sidebar, click **Agents**. Click **New agent** in the top right. The agent editor opens with the **Settings** tab selected.
+
+## 2. Pick a category
+
+Pick one of:
+
+- **Office Order** — for internal swag and supplies. Will land in the Approvals queue.
+- **Customer Gift** — for end users. Sends immediately.
+- **Partner Gift** — for partners and affiliates. Sends immediately.
+
+See [Categories](/concepts/categories) for fulfillment differences.
+
+## 3. Name the agent
+
+Give it a short, internal label like "Onboarding gift" or "Q3 affiliate payout". This is what you and your team see in Agents, Activity, and Approvals.
+
+<Note>
+  Slack-triggered agents always show as **Slack Agent** in lists regardless of the name you set. You can only have one Slack agent per workspace.
+</Note>
+
+## 4. Write the logic
+
+The **Logic** field is the most important thing on the page. It's a plain-language description Archer uses to match incoming events. Two-clause sentences work best:
+
+- ✅ "When a referred user finishes onboarding, send the referrer a $25 Amazon gift card."
+- ✅ "When a teammate runs `/archer` with a recipient and item, ship the item to their address."
+- ❌ "Reward partners."
+
+Be specific about the trigger condition, who receives the reward, and what the reward is.
+
+## 5. Pick a trigger
+
+Choose **Webhook** for programmatic firing or **Slack** for chat-based firing. Slack requires the Archer Slack app to be installed — see [Connect Slack](/guides/connect-slack).
+
+## 6. Save
+
+Click **Save**. The agent is created as **Active**. The detail page now shows the agent's:
+
+- **Webhook URL** (for webhook agents) — copy this into your producer.
+- **Email and form branding** — customize how recipients see the reward.
+- **Recent activity** — empty for now.
+
+## 7. Send a test gift
+
+Scroll to **Simulate agent** on the detail page. Enter your own email under **Recipient email** and click **Send test →**. Archer sends a real reward email so you can preview exactly what recipients will receive.
+
+## 8. Wire up the real trigger
+
+For webhook agents, hand the **Webhook URL** to whoever is integrating your product or backend. They'll find request format and idempotency rules in [Sending events](/developers/sending-events).
+
+For Slack agents, run the slash command in any channel of your connected workspace.
+
+## Editing an agent later
+
+Open the agent from the Agents page and use the **Settings** tab to update name, category, logic, status, and branding. The webhook URL doesn't change when you edit other fields.
+
+## Pausing or archiving
+
+- **Pause** — flip the "Agent is active" toggle on the Settings tab. Webhook events keep arriving but no rewards send.
+- **Archive** — delete the agent. The webhook URL stops producing rewards. Archived agents can't be restored; create a new one if you need the same rule back.

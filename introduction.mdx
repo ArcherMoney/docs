@@ -1,28 +1,30 @@
 ---
 title: "Introduction"
-description: "Archer turns any event into a reward. Define a trigger and a reward in plain English, send Archer the event, and the reward runs automatically."
+description: "Archer is a rewards platform for businesses. Describe a reward in plain English, decide what triggers it, and Archer sends the reward — every time."
 ---
 
-Archer is a rewards platform for developers. You describe a behavior in plain English ("when a referred user completes onboarding, send a gift card"), point your system at Archer's event endpoint, and Archer runs the reward every time the event fires.
+Archer is a rewards platform that helps businesses send gifts, gift cards, and payouts automatically. You set up **agents** — natural-language automations that send rewards on your behalf — and Archer fires them whenever a triggering event happens.
 
-## What you build with Archer
+Most of Archer lives in the [dashboard](https://archermoney.com). For teams that want to fire agents from their own product or internal systems, each agent comes with a webhook URL you can `POST` events to.
 
-- **User activation rewards** — pay or gift users the moment they finish onboarding, hit an activation milestone, or upgrade.
-- **Partner and affiliate payouts** — reward partners automatically when a referred deal closes or a referred user converts.
-- **Employee and contractor incentives** — fire one-off or recurring rewards from any internal event (CI pass, ticket closed, NPS submitted).
-- **Customer gifts and office orders** — send physical goods, swag, or gift cards from Slack or directly from an event.
+## What you can build with Archer
 
-## How it works
+- **User activation rewards** — gift users the moment they finish onboarding or hit a milestone.
+- **Partner and affiliate payouts** — pay partners automatically when a referred deal closes.
+- **Employee and contractor incentives** — fire one-off or recurring rewards from internal triggers.
+- **Office swag and customer gifts** — send branded goods from Slack or directly from an event.
+
+## How Archer works
 
 <Steps>
-  <Step title="Define a reward">
-    Create a reward rule with a `name`, a plain-English `logic` description of the trigger, a `category` (`customer`, `partner`, or `office`), and a `trigger_kind` (`webhook` or `slack`). See [Rewards](/concepts/rewards).
+  <Step title="Create an agent">
+    In the **Agents** page, give the agent a name, a category, and a plain-English description of the reward. Pick a trigger (webhook or Slack).
   </Step>
   <Step title="Wire up the trigger">
-    Archer returns a unique `webhook_url` for each reward. `POST` your events to that URL — Archer ingests them at `/events/{discriminant}` and queues them for processing. See [Events](/concepts/events).
+    For webhook agents, copy the agent's webhook URL and have your system `POST` events to it. For Slack agents, install the Archer Slack app and run the slash command.
   </Step>
-  <Step title="Archer runs the reward">
-    The agent runtime resolves each event to its reward rule and executes idempotently per `(event_id, agent_id)`. Fulfillment shows up on the [Activity](/concepts/activity) page.
+  <Step title="Archer sends the reward">
+    Every triggering event becomes a reward. Recipients get a branded email with a claim link; admins can approve office orders before they ship. Fulfillment shows up in **Activity**.
   </Step>
 </Steps>
 
@@ -30,15 +32,15 @@ Archer is a rewards platform for developers. You describe a behavior in plain En
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Create your first reward and fire a test event in under five minutes.
+    Sign in, create your first agent, and send a test gift in a few minutes.
   </Card>
-  <Card title="Rewards" icon="gift" href="/concepts/rewards">
-    Learn how reward rules are modeled, categorized, and triggered.
+  <Card title="Agents" icon="bolt" href="/concepts/agents">
+    The core concept — how agents map events to rewards.
   </Card>
-  <Card title="Events API" icon="bolt" href="/api/events">
-    The HTTP contract for sending events to Archer.
+  <Card title="Create an agent" icon="wand-magic-sparkles" href="/guides/create-an-agent">
+    Step-by-step walkthrough using the dashboard.
   </Card>
-  <Card title="Rewards API" icon="code" href="/api/rewards">
-    CRUD endpoints for managing reward rules programmatically.
+  <Card title="Sending events" icon="webhook" href="/developers/sending-events">
+    Hook your product or backend up to a webhook-triggered agent.
   </Card>
 </CardGroup>

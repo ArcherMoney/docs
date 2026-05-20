@@ -1,0 +1,38 @@
+---
+title: "Categories"
+description: "Categories decide how Archer fulfills a reward — direct send, customer claim flow, or approval-gated office order."
+---
+
+Every agent has a **category**. The category controls how the reward is delivered and whether anyone on your team has to approve it before it goes out.
+
+## The three categories
+
+### Customer Gift
+
+A reward sent to an end user — typically a gift card or branded item. Archer emails the recipient a claim link with your agent's branding (subject, body, color, logo). The recipient picks their gift or fills in a shipping address, and Archer ships or settles directly.
+
+**Use it for**: onboarding gifts, milestone rewards, NPS thank-yous, churn save offers.
+
+### Partner Gift
+
+A payout to a partner, affiliate, or contractor — usually triggered when a referred outcome happens (a deal closes, a referred user converts). Archer routes to the partner's saved payout method.
+
+**Use it for**: affiliate commissions, referral payouts, contractor bonuses.
+
+### Office Order
+
+An internal reward — swag, supplies, or gifts for employees. Office Orders land in the **Approvals** queue before they ship. Owners, admins, and approvers can approve or decline each one.
+
+**Use it for**: new-hire kits, employee gifts, office supplies fired from Slack.
+
+## Comparison
+
+| Category | Needs approval | Recipient sees | Common trigger |
+|---|---|---|---|
+| Customer Gift | No | Branded claim email | Webhook from your product |
+| Partner Gift | No | Branded claim email or direct payout | Webhook from your CRM |
+| Office Order | Yes (admin / approver) | Branded claim email | Slack slash command |
+
+## Switching categories
+
+You can change an agent's category from the Agents page at any time. The change takes effect for new events only — rewards already in the Approvals queue keep their original routing.

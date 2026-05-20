@@ -13,8 +13,9 @@
   },
   "navbar": {
     "primary": {
-      "type": "github",
-      "href": "https://github.com/ArcherMoney/Archer"
+      "type": "button",
+      "label": "Open dashboard",
+      "href": "https://archermoney.com"
     }
   },
   "navigation": {
@@ -32,40 +33,27 @@
           {
             "group": "Concepts",
             "pages": [
-              "concepts/rewards",
-              "concepts/events",
+              "concepts/agents",
+              "concepts/categories",
               "concepts/triggers",
-              "concepts/agent-runtime",
-              "concepts/activity"
+              "concepts/activity-and-approvals"
             ]
           },
           {
-            "group": "Guides",
+            "group": "Dashboard guides",
             "pages": [
-              "guides/create-reward",
-              "guides/send-events",
+              "guides/create-an-agent",
+              "guides/customize-rewards",
               "guides/connect-slack",
-              "guides/invite-team-members"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "api/authentication"
+              "guides/approve-rewards",
+              "guides/invite-team",
+              "guides/workspace-settings"
             ]
           },
           {
-            "group": "Endpoints",
+            "group": "Developers",
             "pages": [
-              "api/rewards",
-              "api/events",
-              "api/activity",
-              "api/account"
+              "developers/sending-events"
             ]
           }
         ]
