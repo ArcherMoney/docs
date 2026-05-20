@@ -16,14 +16,14 @@ Connecting Slack lets teammates fire an agent by typing `/archer` in any channel
   <Step title="Open Integrations">
     In the dashboard sidebar, click **Integrations**.
   </Step>
-  <Step title="Install Slack">
-    Click **Install Slack**. Slack's OAuth screen opens.
+  <Step title="Add Slack">
+    On the Slack card, click **Add**. Slack's OAuth screen opens.
   </Step>
   <Step title="Pick a workspace and approve">
     Choose the workspace you want to connect, review the requested scopes, and click **Allow**.
   </Step>
   <Step title="Confirm the connection">
-    Slack redirects you back to Archer. The Integrations page now shows **Connected to \{Workspace Name\}** with a **Reinstall** button.
+    Slack redirects you back to Archer. The Slack card now shows a green **Connected** badge and a link to your workspace URL.
   </Step>
 </Steps>
 
@@ -56,12 +56,12 @@ In any channel in the connected workspace, type:
 
 Archer routes the command to your Slack agent. If the agent is an Office Order, it lands in the **Approvals** queue waiting on a sign-off. Customer Gift and Partner Gift Slack agents send immediately.
 
-## Reinstalling or disconnecting
+## Removing or reconnecting
 
-From **Integrations**:
+From **Integrations**, on the Slack card:
 
-- **Reinstall Slack** — refreshes the OAuth token. Use this after a Slack workspace owner change or a permissions update.
-- **Disconnect** — removes the Slack integration. Your Slack agent will stop firing until you reinstall.
+- **Remove** — disconnects the workspace from Archer. Your Slack agent will stop firing until you add Slack again.
+- To refresh the OAuth token (for example, after a Slack workspace owner change or a permissions update), click **Remove**, then **Add** to reinstall.
 
 ## Troubleshooting
 
@@ -70,4 +70,5 @@ From **Integrations**:
 | `/archer` does nothing | Confirm the Slack agent is **Active**, not paused or archived. |
 | "An active Slack agent already exists" | Pause or archive the existing Slack agent before creating a new one. |
 | Slash command runs but the wrong reward sends | Check the agent's **Logic** field. The phrasing is what Archer matches against. |
-| The command suddenly stops working | Reinstall Slack from **Integrations**. The OAuth token may have rotated. |
+| The command suddenly stops working | Remove Slack from **Integrations** and click **Add** to reinstall. The OAuth token may have rotated. |
+| "Something went wrong connecting Slack" toast | Try **Add** again. If it persists, confirm your Archer account has the **Owner** or **Admin** role. |
