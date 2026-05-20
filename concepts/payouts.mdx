@@ -10,16 +10,9 @@ Payouts are the core of Archer: they define when money moves, how much, and to w
 
 An event payout fires when a specific condition is met. You give it a name and write a condition — a plain-language description of the trigger (for example, "User completes onboarding" or "Monthly sales target reached"). Archer's backend evaluates that condition and initiates the payout when it's satisfied.
 
-### Event sources
+### Event source
 
-Each event payout uses a single **event source** — the channel that delivers trigger events to Archer's agent. You pick the source when you create the agent, and you cannot change it afterward.
-
-| Source | Description |
-|---|---|
-| `webhook` | Default source. Any tool that can send an HTTP POST request — Zapier, Airtable, Stripe, or your own backend — can trigger the agent. |
-| `slack` | Events originate from a Slack channel via the Archer ordering bot. Use this for team-driven payout flows that start as Slack messages. |
-
-Agents only evaluate events that match their source. A Slack message will never trigger a webhook agent, and a webhook POST will never trigger a Slack agent. See [Create a payout](/guides/create-payout) for setup instructions.
+Event payouts are triggered by **webhook** events. Any tool that can send an HTTP POST request — Zapier, Airtable, Stripe, or your own backend — can fire the agent. See [Create a payout](/guides/create-payout) for setup instructions.
 
 You manage event payouts from the **Payouts** dashboard. From there you can:
 
@@ -36,7 +29,6 @@ You manage event payouts from the **Payouts** dashboard. From there you can:
 | `id` | Unique identifier for the payout |
 | `event_payout_name` | Human-readable name you assign when creating the payout |
 | `condition` | Plain-language description of the trigger condition |
-| `event_source` | Source that can trigger this agent: `webhook` or `slack` |
 | `created_at` | ISO 8601 timestamp of when the payout was created |
 | `is_archived` | `true` when the payout has been archived; archived payouts do not fire |
 

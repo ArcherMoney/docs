@@ -3,28 +3,16 @@ title: "Archer changelog: product updates and release notes"
 description: "Release notes for Archer — new features, dashboard improvements, smart contract updates, and bug fixes for payouts, paying limits, and team management."
 ---
 
-<Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
-  ## Integrations page with Slack
+<Update label="2026-05-20" tags={["Change"]} description="Week of May 18">
+  ## Slack integration temporarily removed
 
-  The Slack settings page is now **Integrations**, a single place to manage every workspace-level connection for your Archer account. Slack is the first integration available — install it from **Integrations** in the left sidebar to use the `/order` and `/refer` slash commands from any channel. If you run a slash command before connecting, Slack now replies with a clear prompt that points you to the Integrations page instead of a generic error. [Learn more](/guides/connect-slack)
+  The Slack integration has been rolled back while we rework it. The Integrations page, the `/order` and `/refer` slash commands, and Slack-sourced event agents are no longer available. Existing event payouts continue to run through webhooks. We'll publish updated guides when the integration ships again.
 </Update>
-  
+
 <Update label="2026-05-14" tags={["Change"]} description="Week of May 11">
   ## Business-only access for Agent and advanced API features
 
-  The Archer Agent, Slack integration, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
-</Update>
-  
-<Update label="2026-05-14" tags={["Feature"]} description="Week of May 11">
-  ## Choose how to deliver a Slack order
-
-  When you place an order from Slack, Archer now asks how you want it delivered. Pick **Send Order Form** to email an order form to a recipient, or **Send to Address** to ship the item directly to a street address. Archer collects only the fields that match your choice — an email for order forms, or a full shipping address for direct delivery — and confirms the submission in Slack. [Learn more](/guides/place-slack-order)
-</Update>
-  
-<Update label="2026-05-15" tags={["Improvement"]} description="Week of May 11">
-  ## Slack source label on agent cards
-
-  Agent cards on the Agents page now show **Slack** with a Slack icon for Slack-backed event payouts, and **Webhook** with the bolt icon for webhook-triggered payouts. Use this at-a-glance label to see which integration feeds each agent without opening the payout details.
+  The Archer Agent, event URL webhooks, run execution, event payout management, file uploads, and CSV imports are now restricted to business (KYB) accounts. Individual (KYC) accounts that call these endpoints receive a `403 Forbidden` response with the code `kyc_not_allowed`. Standard payouts and account management remain available for individual accounts. [Learn more](/compliance/kyc-kyb)
 </Update>
 
 <Update label="2026-05-15" tags={["Feature"]} description="Week of May 11">
