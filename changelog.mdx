@@ -1,22 +1,22 @@
 ---
 title: "Changelog"
-description: "Weekly release notes for the Archer rewards platform, including API changes, agent runtime updates, Slack integration, and product pivots."
+description: "Release notes for Archer — new agent features, dashboard improvements, Slack integration, and product updates."
 ---
 
 <Update label="2026-05-20" tags={["Pivot"]} description="Week of May 18">
   ## Archer is now a rewards platform
 
-  We rebuilt Archer as a developer-first rewards platform. The old payouts, smart wallet, and on-/off-ramp surfaces are retired. The new product centers on three primitives:
+  We rebuilt Archer around three things:
 
-  - **Rewards** — rules created via `/agent` that describe a trigger and a reward in plain English.
-  - **Events** — JSON payloads `POST`ed to a reward's unique webhook URL (or fired from a Slack slash command).
-  - **Agent runtime** — the Lambda that resolves each event to its reward and runs it idempotently.
+  - **Agents** — natural-language automations that send rewards on your behalf.
+  - **Webhook and Slack triggers** — fire agents from your product, CRM, or chat.
+  - **Approvals** — sign off on Office Orders before they ship.
 
-  See the new [Introduction](/introduction) and [Quickstart](/quickstart). Existing payout, smart wallet, paying limits, and fund/off-ramp docs have been removed.
+  The old payouts, smart wallet, and on-/off-ramp surfaces are retired. Start with the new [Introduction](/introduction) and [Quickstart](/quickstart).
 </Update>
 
-<Update label="2026-05-13" tags={["Internal"]} description="Week of May 11">
-  ## Agent runtime stabilizes
+<Update label="2026-05-13" tags={["Improvement"]} description="Week of May 11">
+  ## Direct agent matching
 
-  The agent Lambda now resolves event-queue messages directly via `Agent.discriminant` — no LLM classification, no Slack-team fallback. Messages without a resolvable discriminant are acknowledged and dropped. Reward execution is idempotent per `(event_id, agent_id)`.
+  Webhook and Slack events now route directly to the agent that owns them — no fuzzy classification across agents in the same workspace. Agents fire faster and predictably, and duplicate events with the same `event_id` are deduped per agent.
 </Update>

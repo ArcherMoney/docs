@@ -1,0 +1,61 @@
+---
+title: "Customize reward branding"
+description: "Tune the email subject, body, brand color, and form logo each agent uses so rewards look like they came from your company."
+---
+
+Every agent has its own branding for the emails and claim forms it sends. You can edit this on the agent detail page, under **Email & form branding**.
+
+## What you can customize
+
+| Field | Where it appears |
+|---|---|
+| **Email title** | Subject line of the reward email. Defaults to "You've got a reward waiting". |
+| **Email body** | Body of the reward email. Supports placeholders like `{Recipient}` and `{Company}`. |
+| **Primary color** | Accent color used on the email button and on the claim form. |
+| **Form logo** | Logo shown at the top of the claim form. PNG or SVG, transparent background recommended. |
+| **Remove "Powered by Archer"** | Hides the Archer attribution from emails and forms. Available on paid plans. |
+
+## Workflow
+
+<Steps>
+  <Step title="Open the agent">
+    From the Agents page, click into the agent you want to brand.
+  </Step>
+  <Step title="Open Settings → Email & form branding">
+    Scroll to the **Email & form branding** section.
+  </Step>
+  <Step title="Edit the fields">
+    Update the title, body, color, and logo. Use the **Preview email** and **Preview form** buttons to see your changes before saving.
+  </Step>
+  <Step title="Save">
+    Click **Save** at the bottom of the page. The branding applies to the next reward this agent fires.
+  </Step>
+  <Step title="Send a test">
+    Use **Simulate agent** to send a real test email to yourself and confirm the branding renders as expected across devices.
+  </Step>
+</Steps>
+
+## Placeholders
+
+The email body supports a few placeholders that Archer substitutes per recipient:
+
+- `{Recipient}` — the recipient's first name (or email if no name is on file).
+- `{Company}` — your workspace's **Sender display name** from Settings.
+
+Anything else in `{ }` is rendered as-is.
+
+## Workspace defaults
+
+A few branding details are set once at the workspace level, not per agent:
+
+- **Sender display name** — shown as the "From" line on every reward email. Edit it in **Settings → General**.
+- **Reply-to email** — where recipient replies land. Also under **Settings → General**.
+- **Business address** — used for fulfillment and shown in compliance footers. Under **Settings → Business address**.
+
+Per-agent branding overrides workspace defaults where they overlap.
+
+## Tips
+
+- Use a square or horizontal logo. Tall logos get squished in the header.
+- Keep the email body under ~120 words. Recipients skim.
+- Test in both light and dark mode email clients — the primary color is used as both background and accent in different places.

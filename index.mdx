@@ -1,35 +1,35 @@
 ---
-title: "Archer: reward any behavior, anywhere"
-description: "Archer is a developer-first rewards platform. Define a trigger and a reward in plain English, send Archer the event, and the reward runs automatically."
+title: "Archer: a rewards platform for businesses"
+description: "Set up natural-language agents in the Archer dashboard and let them send rewards automatically when events happen."
 ---
 
-Archer turns any event into a reward. Define a rule, send Archer the event, and Archer handles fulfillment — gift cards, partner payouts, office swag, customer gifts.
+Archer helps businesses send gifts, gift cards, and payouts automatically. Create an agent in the dashboard, describe in plain English what should fire it, and Archer takes care of the rest — branded emails, recipient claim flow, approvals, and fulfillment.
 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Create your first reward and fire a test event in under five minutes.
+    Sign in, create your first agent, and send yourself a test gift.
   </Card>
-  <Card title="Concepts" icon="book-open" href="/concepts/rewards">
-    Rewards, events, triggers, and the agent runtime.
+  <Card title="Agents" icon="bolt" href="/concepts/agents">
+    The core concept — how agents map events to rewards.
   </Card>
-  <Card title="Guides" icon="map" href="/guides/create-reward">
-    Step-by-step walkthroughs for creating rewards and wiring up events.
+  <Card title="Create an agent" icon="wand-magic-sparkles" href="/guides/create-an-agent">
+    Step-by-step dashboard walkthrough.
   </Card>
-  <Card title="API reference" icon="code" href="/api/rewards">
-    Full HTTP contract for rewards, events, activity, and account endpoints.
+  <Card title="Sending events" icon="webhook" href="/developers/sending-events">
+    Wire your product or backend to a webhook-triggered agent.
   </Card>
 </CardGroup>
 
 ## How Archer works
 
 <Steps>
-  <Step title="Define a reward">
-    Describe the trigger and reward in plain English. Pick a category (`office`, `customer`, `partner`) and a trigger kind (webhook or Slack).
+  <Step title="Create an agent in the dashboard">
+    Name it, pick a category, write the logic in plain English, and choose a webhook or Slack trigger.
   </Step>
   <Step title="Wire up the trigger">
-    Archer gives each reward a unique webhook URL. `POST` your events to it from any system.
+    Copy the agent's webhook URL into your product, or install Slack and run `/archer` in any channel.
   </Step>
-  <Step title="Archer runs the reward">
-    The agent runtime resolves each event to its reward and executes idempotently. Fulfillment shows up on the Activity page.
+  <Step title="Archer sends the reward">
+    Recipients get a branded claim email or, for Office Orders, the request lands in your Approvals queue first.
   </Step>
 </Steps>
