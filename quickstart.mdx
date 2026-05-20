@@ -1,96 +1,64 @@
 ---
 title: "Quickstart"
-description: "Create your first reward, grab its webhook URL, and fire a test event to Archer in under five minutes."
+description: "Sign in to Archer, create your first agent, and send yourself a test gift in under five minutes."
 ---
 
-This guide walks you through end-to-end integration: create a reward rule, capture its webhook URL, and `POST` a test event that triggers it.
+This guide gets a working agent live in your account. You'll do everything from the dashboard — no code required.
 
 ## Prerequisites
 
-- An Archer account at [archermoney.com](https://archermoney.com). New accounts are provisioned as Business accounts on first sign-in.
-- An Auth0 access token for the API. Sign in to the dashboard and copy it from your developer settings, or use the Auth0 client credentials flow.
-- `curl` or any HTTP client.
+- An Archer account at [archermoney.com](https://archermoney.com). New accounts are provisioned as Business workspaces on first sign-in via Auth0 (email, Google, or Microsoft).
+- About five minutes.
 
-<Note>
-  All protected endpoints accept the access token as `Authorization: Bearer <token>`. The Archer API is served from `https://api.archermoney.com`.
-</Note>
+## 1. Sign in and finish workspace setup
 
-## 1. Create a reward
+Open the dashboard and complete the first-time setup prompts. At minimum, set:
 
-`POST /agent` creates a reward rule. `name` and `logic` are required, and `category` must be one of `office`, `customer`, or `partner`.
+- **Workspace name** — shown internally.
+- **Sender display name** — what recipients see as the sender on reward emails.
+- **Reply-to email** — where recipient replies go.
+- **Business address** — used for fulfillment.
 
-```bash
-curl -X POST https://api.archermoney.com/agent \
-  -H "Authorization: Bearer $ARCHER_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Onboarding completed",
-    "logic": "When a referred user completes onboarding, pay the referrer $25",
-    "category": "partner",
-    "trigger_kind": "webhook"
-  }'
-```
+You can change all of these later under **Settings**.
 
-The response includes the reward's `id`, `webhook_token`, and `webhook_url`:
+## 2. Create your first agent
 
-```json
-{
-  "id": "5b2a...",
-  "name": "Onboarding completed",
-  "logic": "When a referred user completes onboarding, pay the referrer $25",
-  "category": "partner",
-  "trigger_kind": "webhook",
-  "status": "active",
-  "webhook_token": "0xabc...",
-  "webhook_url": "https://api.archermoney.com/events/0xabc..."
-}
-```
+Open the **Agents** page and click **New agent**. Fill out:
 
-## 2. Send a test event
+- **Name** — a short label (e.g. "Onboarding gift").
+- **Category** — `Office Order`, `Customer Gift`, or `Partner Gift`. This decides how the reward is fulfilled and whether it needs approval.
+- **Logic** — a one- or two-sentence description of when the reward fires and what to send. Archer matches incoming events against this description.
+- **Trigger** — pick **Webhook** for now (Slack agents are covered in [Connect Slack](/guides/connect-slack)).
 
-Post any JSON payload to the reward's `webhook_url`. Archer accepts the event and returns `202 Accepted`.
+Save. The agent appears in the list with **Active** status.
 
-```bash
-curl -X POST "$WEBHOOK_URL" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "event_id": "evt_test_001",
-    "type": "onboarding.completed",
-    "referrer_email": "alice@example.com",
-    "user_email": "bob@example.com"
-  }'
-```
+## 3. Send a test gift
 
-Archer enqueues the event and the agent runtime resolves the `discriminant` in the URL back to your reward rule. Processing is idempotent per `(event_id, agent_id)` — sending the same `event_id` twice will not double-execute the reward.
+On the agent's detail page, scroll to **Simulate agent**. Enter your own email under **Recipient email** and click **Send test →**.
+
+Archer sends a real reward email to that address as if the agent had fired. You'll see the agent's branding (subject line, body, color, optional "Powered by Archer" toggle) and the claim flow your recipients will go through.
 
 <Tip>
-  Always include an `event_id` you control. Archer uses it for idempotency and surfaces it on the Activity page for debugging.
+  Use the simulator any time you change an agent's branding or category. It's the fastest way to sanity-check what recipients will actually receive.
 </Tip>
 
-## 3. Verify the result
+## 4. Wire up the real trigger (optional)
 
-Open the dashboard and check the **Activity** page, or call the API:
+If you want your product or backend to fire this agent automatically, copy the agent's **Webhook URL** from the detail page and have your system `POST` events to it. See [Sending events](/developers/sending-events) for the request shape and best practices.
 
-```bash
-curl "https://api.archermoney.com/activity" \
-  -H "Authorization: Bearer $ARCHER_TOKEN"
-```
-
-Fulfilled rewards appear as `delivered`; rewards waiting on approval (for example, office orders that require an admin sign-off) appear as `pending`.
-
-## Next steps
+## What's next
 
 <CardGroup cols={2}>
-  <Card title="Rewards concepts" icon="gift" href="/concepts/rewards">
-    Categories, statuses, Slack vs. webhook triggers.
+  <Card title="Customize rewards" icon="palette" href="/guides/customize-rewards">
+    Tune the email subject, body, brand color, and form logo per agent.
   </Card>
-  <Card title="Send events" icon="bolt" href="/guides/send-events">
-    Payload conventions and idempotency rules.
+  <Card title="Approve rewards" icon="circle-check" href="/guides/approve-rewards">
+    Office orders may land in the approval queue. Decide who acts on them.
   </Card>
-  <Card title="API reference" icon="book" href="/api/rewards">
-    Full request and response schemas.
+  <Card title="Invite your team" icon="users" href="/guides/invite-team">
+    Add admins, approvers, and members with role-based access.
   </Card>
-  <Card title="Connect Slack" icon="slack" href="/guides/connect-slack">
-    Trigger rewards from a Slack slash command.
+  <Card title="Activity & approvals" icon="list-check" href="/concepts/activity-and-approvals">
+    Where reward fulfillment shows up and how statuses work.
   </Card>
 </CardGroup>

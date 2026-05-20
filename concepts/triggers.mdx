@@ -1,63 +1,49 @@
 ---
 title: "Triggers"
-description: "How webhook triggers and Slack triggers connect external systems to Archer rewards."
+description: "Webhook triggers connect Archer to your product or backend. Slack triggers let teammates fire rewards from chat."
 ---
 
-A **trigger** is the channel that delivers events to a reward. Every reward picks one of two trigger kinds when it's created.
+A **trigger** is the channel that delivers events to an agent. Each agent picks one of two trigger kinds when it's created. You can't switch an existing agent between trigger kinds — create a new agent if you need the other.
 
-## Webhook triggers
+## Webhook trigger
 
-`trigger_kind: "webhook"` is the default. Archer generates a unique URL for each reward:
+The default. Archer assigns each webhook agent its own URL on the **Agent** detail page:
 
 ```
-POST https://api.archermoney.com/events/{webhook_token}
-Content-Type: application/json
+https://api.archermoney.com/events/{webhook_token}
 ```
 
-- **Authentication**: none on the event endpoint. Anyone with the URL can send events. Treat the URL as a shared secret.
-- **Body**: any JSON object up to 100 KB.
-- **Response**: `202 Accepted` with `{ "accepted": true, "discriminant": "..." }`.
+Your system `POST`s a JSON event to the URL and Archer fires the agent. No bearer token, no signature — the URL itself is the secret, so keep it out of client-side code and source control.
 
-Webhook URLs are stable for the lifetime of the reward. They survive `PATCH /agent` updates but are invalidated when you delete the reward.
+**Best for**: anything programmatic. CRMs, product backends, CI pipelines, marketing automation, internal tools.
 
-### Use webhooks for
+See [Sending events](/developers/sending-events) for the request shape, idempotency, and retry guidance.
 
-- Internal applications and backend services
-- Third-party providers that can `POST` JSON (Segment, Zapier, custom CI hooks)
-- Mobile and web clients that emit product events
+## Slack trigger
 
-## Slack triggers
+Connect Slack from the **Integrations** page, then create one agent with **Slack** as its trigger. After install, a teammate types:
 
-`trigger_kind: "slack"` lets a teammate fire a reward by running a slash command in your connected Slack workspace.
+```
+/archer Send a YETI tumbler to jordan@acme.com
+```
 
-- Install Slack on your Archer account first. See [Connect Slack](/guides/connect-slack).
-- Only **one active Slack-triggered reward** per account. Creating a second Slack reward returns `409 Conflict`.
-- The Slack ingest Lambda verifies request signatures and enqueues by `team_id`. The agent runtime resolves the queue message to the account's single Slack reward.
+Archer verifies the Slack request, routes it to your Slack agent, and fires the reward. Office Order Slack agents land in the Approvals queue; Customer and Partner Gift Slack agents send immediately.
 
-### Use Slack for
+**Best for**: ad-hoc requests from teammates — new-hire swag, customer thank-yous, last-minute gifts.
 
-- Office orders driven by teammates ("send swag to this new hire")
-- Ad-hoc customer gifts that don't have a programmatic source
-- Manual approval flows where the requester is a person, not a system
+You can have **at most one active Slack-triggered agent per workspace**. Pause or archive the existing Slack agent first if you need to replace it.
 
 ## Pausing a trigger
 
-Set `status: "paused"` on the reward to stop processing without losing the webhook URL or Slack binding:
+Set an agent to **Paused** from its detail page (the "Agent is active" toggle) to stop processing without losing the webhook URL or Slack binding. Events received while paused are accepted and silently dropped — they will not be replayed when you reactivate the agent.
 
-```bash
-curl -X PATCH "https://api.archermoney.com/agent?agent_id=$AGENT_ID" \
-  -H "Authorization: Bearer $ARCHER_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"status": "paused"}'
-```
+## Which trigger should I use?
 
-Re-enable with `{"status": "active"}`. Events received while paused are acknowledged and dropped — they will not be replayed when you reactivate.
-
-## Choosing the right trigger
-
-| Use case | Trigger |
+| Signal source | Trigger |
 |---|---|
-| CI pipeline notifies on green build | Webhook |
-| Marketing tool fires on funnel conversion | Webhook |
-| Teammate sends a gift card from a chat | Slack |
-| Backend service settles an affiliate payout | Webhook |
+| Your backend / product code | Webhook |
+| Your CRM or sales tool | Webhook |
+| CI pipeline event | Webhook |
+| A teammate typing in Slack | Slack |
+| A marketing automation step | Webhook |
+| One-off office order | Slack |

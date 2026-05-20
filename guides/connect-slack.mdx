@@ -1,77 +1,73 @@
 ---
 title: "Connect Slack"
-description: "Install the Archer Slack app, link it to your workspace, and trigger rewards from a slash command."
+description: "Install the Archer Slack app and let teammates fire rewards with a slash command."
 ---
 
-Connecting Slack lets a teammate fire a reward by running a slash command. This is the right path for office orders, ad-hoc customer gifts, and any flow where the requester is a human rather than a system.
+Connecting Slack lets teammates fire an agent by typing `/archer` in any channel. It's the right fit for office orders and other ad-hoc requests that don't come from a programmatic source.
 
 ## Prerequisites
 
 - A Slack workspace where you can install apps.
-- Owner or Admin role on your Archer account.
+- The **Owner** or **Admin** role on your Archer account.
 
-## 1. Install the Slack app
+## 1. Install the Archer Slack app
 
-In the Archer dashboard, open **Settings → Slack** and click **Install Slack**. You'll be redirected through Slack's OAuth flow:
+<Steps>
+  <Step title="Open Integrations">
+    In the dashboard sidebar, click **Integrations**.
+  </Step>
+  <Step title="Install Slack">
+    Click **Install Slack**. Slack's OAuth screen opens.
+  </Step>
+  <Step title="Pick a workspace and approve">
+    Choose the workspace you want to connect, review the requested scopes, and click **Allow**.
+  </Step>
+  <Step title="Confirm the connection">
+    Slack redirects you back to Archer. The Integrations page now shows **Connected to \{Workspace Name\}** with a **Reinstall** button.
+  </Step>
+</Steps>
 
-1. Choose the workspace to install into.
-2. Approve the requested scopes.
-3. Slack returns you to Archer, which stores the workspace via `POST /slack_workspace`.
+## 2. Create a Slack-triggered agent
 
-After install, `GET /slack_workspace` returns the workspace metadata:
+Slack agents work just like webhook agents, except their trigger is set to **Slack**. You can only have one active Slack agent at a time.
 
-```json
-{
-  "team_id": "T0123456",
-  "team_name": "Acme Inc.",
-  "installed_at": "2026-05-20T18:00:00Z",
-  "url": "https://acme.slack.com"
-}
-```
-
-## 2. Create a Slack-triggered reward
-
-You can have at most one active Slack reward per account.
-
-```bash
-curl -X POST https://api.archermoney.com/agent \
-  -H "Authorization: Bearer $ARCHER_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Office swag",
-    "logic": "When a teammate runs /archer with a recipient and item, ship the item to their address",
-    "category": "office",
-    "trigger_kind": "slack"
-  }'
-```
-
-If a Slack reward already exists you'll get:
-
-```json
-{ "error": "An active Slack agent already exists." }
-```
-
-Archive the existing reward (or change its `trigger_kind` to webhook) before creating a new one.
+<Steps>
+  <Step title="Open Agents → New agent">
+    Click **New agent** on the Agents page.
+  </Step>
+  <Step title="Pick a category">
+    Office Order is the most common choice for Slack agents.
+  </Step>
+  <Step title="Write the logic">
+    For example: "When a teammate runs `/archer` with a recipient and item, ship the item to their address."
+  </Step>
+  <Step title="Set trigger to Slack and save">
+    Save the agent. If a Slack agent already exists, Archer will tell you to pause or archive the existing one first.
+  </Step>
+</Steps>
 
 ## 3. Fire the slash command
 
-In any channel of the connected workspace, run the Archer slash command:
+In any channel in the connected workspace, type:
 
 ```
 /archer Send a YETI tumbler to jordan@acme.com
 ```
 
-The Slack ingest Lambda verifies the request signature and enqueues by `team_id`. The agent runtime resolves it to your single Slack-triggered reward and runs it. Office and customer rewards may land in the approval queue first.
+Archer routes the command to your Slack agent. If the agent is an Office Order, it lands in the **Approvals** queue waiting on a sign-off. Customer Gift and Partner Gift Slack agents send immediately.
 
-## 4. Manage the install
+## Reinstalling or disconnecting
 
-- **Update** — `PATCH /slack_workspace` to refresh tokens or metadata.
-- **Disconnect** — `DELETE /slack_workspace`. The Slack-triggered reward stops firing until you reinstall.
+From **Integrations**:
+
+- **Reinstall Slack** — refreshes the OAuth token. Use this after a Slack workspace owner change or a permissions update.
+- **Disconnect** — removes the Slack integration. Your Slack agent will stop firing until you reinstall.
 
 ## Troubleshooting
 
-| Symptom | Likely cause |
+| Symptom | Likely fix |
 |---|---|
-| Slash command returns silently | Slack reward is paused or archived. |
-| `signature verification failed` in logs | Slack signing secret rotated; reinstall the app. |
-| Command runs but nothing reaches Activity | Reward's `logic` doesn't match the message; check `EventRun` logs. |
+| `/archer` does nothing | Confirm the Slack agent is **Active**, not paused or archived. |
+| "An active Slack agent already exists" | Pause or archive the existing Slack agent before creating a new one. |
+| Slash command runs but the wrong reward sends | Check the agent's **Logic** field. The phrasing is what Archer matches against. |
+| The command suddenly stops working | Reinstall Slack from **Integrations**. The OAuth token may have rotated. |

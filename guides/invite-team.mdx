@@ -1,0 +1,48 @@
+---
+title: "Invite your team"
+description: "Add teammates to your Archer workspace and assign roles for agent management and approvals."
+---
+
+Archer workspaces support multiple users with role-based access. Invite teammates from **Settings → Team**.
+
+## Roles
+
+| Role | Can do |
+|---|---|
+| **Owner** | Everything an admin can, plus account-level destructive actions like deleting the workspace. |
+| **Admin** | Create, edit, and archive agents; install Slack; manage team; approve Office Orders; edit workspace settings. |
+| **Approver** | Approve or decline Office Orders. Read agents and Activity. |
+| **Member** | Read-only access to agents, Activity, and the team list. |
+
+## Send an invite
+
+<Steps>
+  <Step title="Open Settings → Team">
+    From the dashboard sidebar, click **Settings**, then scroll to **Team**.
+  </Step>
+  <Step title="Click Invite">
+    Click **Invite**. A modal opens.
+  </Step>
+  <Step title="Enter email and role">
+    Type the invitee's work email and pick a role from the dropdown. Click **Send invite**.
+  </Step>
+  <Step title="Invitee accepts">
+    The invitee receives a Slack-style email link. They sign in through Auth0 (email, Google, or Microsoft) with the **same verified email** the invite was sent to.
+  </Step>
+</Steps>
+
+The role activates as soon as the invitee signs in. Until then, the invite shows as **Pending** in the team list.
+
+## Change a role
+
+From **Settings → Team**, click the role badge next to a user's name. Pick the new role and confirm. Owners cannot demote themselves — ask another owner to do it, or transfer ownership first.
+
+## Remove a teammate
+
+Click the user's row in **Settings → Team** and choose **Remove**. The user loses access immediately. Agents they created are unaffected — agents are owned by the workspace, not by individuals.
+
+## Tips
+
+- Use **Approver** for finance and ops folks who should sign off on Office Orders but shouldn't be creating or editing agents.
+- Keep at least two **Owners** at all times so no single person becomes a bottleneck.
+- Invite teammates with their work email (the one they sign in to Google or Microsoft with). Auth0 will match the verified identity automatically.
