@@ -1,6 +1,6 @@
 ---
 title: "Events"
-description: "What events look like in Archer, how they're ingested and queued, and how the agent runtime resolves them to a reward."
+description: "How Archer ingests JSON events through webhook and Slack channels, enqueues them, and routes each payload to the matching reward via its discriminant."
 ---
 
 An **event** is the signal that fires a reward. Archer accepts events through three ingress paths and unifies them on a single event queue before the agent runtime processes them.
