@@ -1,0 +1,71 @@
+---
+title: "Rewards"
+description: "How Archer models reward rules — categories, statuses, triggers, and the lifecycle from creation to fulfillment."
+---
+
+A **reward** is a rule that tells Archer what to do when an event fires. Rewards are persisted as `Agent` rows in Archer's database and exposed through the `/agent` endpoint.
+
+## Fields
+
+| Field | Required | Description |
+|---|---|---|
+| `name` | yes | Human-readable label shown in the dashboard and Activity feed. |
+| `logic` | yes | Plain-English description of the trigger and the desired reward. The agent runtime uses this as the reward's instruction. |
+| `category` | yes on create | One of `office`, `customer`, `partner`. Determines fulfillment routing. |
+| `trigger_kind` | optional | `webhook` (default) or `slack`. Controls how events reach the reward. |
+| `status` | optional | `active` (default) or `paused`. Paused rewards ignore incoming events. |
+
+## Categories
+
+Categories tell Archer how to fulfill the reward and which approval queue (if any) it lands in.
+
+- **`office`** — internal orders such as swag for employees or office supplies. Routed through the [goods order](/api/activity#goods-orders) flow with optional admin approval.
+- **`customer`** — gifts sent to end users (gift cards, branded goods). Visible to the customer when relevant.
+- **`partner`** — payouts to affiliates and partners triggered when a referred outcome occurs.
+
+Only one reward per account may use `trigger_kind: "slack"` at a time. Webhook-triggered rewards have no such limit.
+
+## Statuses
+
+- **`active`** — incoming events are processed.
+- **`paused`** — incoming events are accepted at the ingress layer but the agent runtime acknowledges and ignores them. Useful for temporarily disabling a reward without losing its webhook URL.
+- **Archived rewards** are hidden from listings. Archer deletes by setting `is_archived: true`; you cannot recover an archived reward through the API.
+
+## Triggers
+
+Every reward owns a unique `webhook_token` (the `discriminant`) and a derived `webhook_url`:
+
+```
+https://api.archermoney.com/events/{webhook_token}
+```
+
+When you `POST` to that URL, the event ingest Lambda enqueues the payload with the reward's discriminant attached. The agent Lambda dequeues, resolves the discriminant straight to the `Agent` row, and runs the reward. Messages with no resolvable discriminant are acknowledged and dropped.
+
+See [Triggers](/concepts/triggers) for the full request/response contract and [Agent runtime](/concepts/agent-runtime) for execution semantics.
+
+## Lifecycle
+
+<Steps>
+  <Step title="Create">
+    `POST /agent` with `name`, `logic`, `category`, optional `trigger_kind`. Archer returns the reward plus its `webhook_url`.
+  </Step>
+  <Step title="Trigger">
+    Your system posts events to `webhook_url`, or a teammate runs the Slack slash command (for Slack-triggered rewards).
+  </Step>
+  <Step title="Process">
+    The agent runtime resolves the discriminant, loads the reward, and executes idempotently per `(event_id, agent_id)`. Each run is persisted as an `EventRun` row.
+  </Step>
+  <Step title="Fulfill">
+    Office and customer rewards may create a [goods order](/api/activity#goods-orders) that an admin or approver can approve, decline, or fulfill. Fulfilled orders surface on the Activity page.
+  </Step>
+</Steps>
+
+## Permissions
+
+Role-based access control (RBAC) is enforced per route:
+
+- **Owner / admin** — create, update, delete rewards; install Slack; manage team and notifications.
+- **Owner / admin / approver** — approve or decline pending goods orders.
+- **All roles** — read rewards, read activity, read team.
+
+See [Authentication](/api/authentication) for how roles are resolved from the Auth0 subject.

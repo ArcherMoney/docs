@@ -1,43 +1,35 @@
 ---
-title: "Archer: automate incentive payouts on the blockchain"
-description: "Archer lets you automate rule-based and scheduled USDC payouts to your team using smart wallets, on-chain spending controls, and a full audit trail."
+title: "Archer: reward any behavior, anywhere"
+description: "Archer is a developer-first rewards platform. Define a trigger and a reward in plain English, send Archer the event, and the reward runs automatically."
 ---
 
-Archer is a blockchain-powered incentive platform that helps businesses send automated, programmable payouts to team members. Set up spending rules, invite recipients, and let Archer handle execution — with every transaction enforced on-chain for full auditability.
+Archer turns any event into a reward. Define a rule, send Archer the event, and Archer handles fulfillment — gift cards, partner payouts, office swag, customer gifts.
 
 <CardGroup cols={2}>
-  <Card title="Quick start" icon="rocket" href="/quickstart">
-    Create your account, set up your smart wallet, and send your first payout in minutes.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create your first reward and fire a test event in under five minutes.
   </Card>
-  <Card title="Core concepts" icon="book-open" href="/concepts/payouts">
-    Learn how payouts, rules, and smart wallets work together in Archer.
+  <Card title="Concepts" icon="book-open" href="/concepts/rewards">
+    Rewards, events, triggers, and the agent runtime.
   </Card>
-  <Card title="Guides" icon="map" href="/guides/create-payout">
-    Step-by-step walkthroughs for common tasks like creating payouts and inviting team members.
+  <Card title="Guides" icon="map" href="/guides/create-reward">
+    Step-by-step walkthroughs for creating rewards and wiring up events.
+  </Card>
+  <Card title="API reference" icon="code" href="/api/rewards">
+    Full HTTP contract for rewards, events, activity, and account endpoints.
   </Card>
 </CardGroup>
 
 ## How Archer works
 
-Archer combines a web dashboard with an on-chain smart contract to give you complete control over automated payouts — with enforceable spending limits and a full transaction audit trail.
-
 <Steps>
-  <Step title="Create your account">
-    Sign up and Archer automatically provisions a smart wallet for you. This is the wallet that sends payouts on your behalf.
+  <Step title="Define a reward">
+    Describe the trigger and reward in plain English. Pick a category (`office`, `customer`, `partner`) and a trigger kind (webhook or Slack).
   </Step>
-  <Step title="Set spending limits">
-    Configure per-transaction and per-period maximums. Limits are enforced on-chain by the ArcherAgentEndpoint contract — not just at the application layer.
+  <Step title="Wire up the trigger">
+    Archer gives each reward a unique webhook URL. `POST` your events to it from any system.
   </Step>
-  <Step title="Invite team members">
-    Add recipients by email. Once they complete onboarding, their wallet address is registered on-chain as an approved recipient.
-  </Step>
-  <Step title="Create and run payouts">
-    Set up event-driven payouts (triggered by conditions) or scheduled payouts (triggered by time). Archer executes them automatically within your defined limits.
+  <Step title="Archer runs the reward">
+    The agent runtime resolves each event to its reward and executes idempotently. Fulfillment shows up on the Activity page.
   </Step>
 </Steps>
-
-<CardGroup cols={2}>
-  <Card title="Compliance" icon="shield-check" href="/compliance/kyc-kyb">
-    Complete KYC/KYB verification and access your full transaction history.
-  </Card>
-</CardGroup>

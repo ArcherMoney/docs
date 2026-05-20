@@ -1,0 +1,49 @@
+---
+title: "Authentication"
+description: "How to authenticate against the Archer API — Auth0 access tokens, internal keys, and the public event endpoint."
+---
+
+Archer's API has three authentication tiers. Each endpoint enforces exactly one.
+
+## Public — event ingest
+
+`POST /events/{webhook_token}` accepts events with **no authentication header**. The `webhook_token` in the URL is the secret. Treat the full URL as an API key.
+
+Same applies to:
+
+- `POST /slackevent` — verified via Slack signing secret, not Authorization.
+- `POST /webhooks/google_forms` — accepted by source allowlist.
+- `GET /health`, `GET /agent/health`, `GET /events/health`, `GET /webhooks/health` — health canaries.
+
+## Protected — Auth0 access tokens
+
+All product API endpoints (`/account`, `/agent`, `/activity`, `/team/*`, `/slack_workspace`, `/notification_settings`, `/goods_order/approvals`) require an Auth0 RS256 access token:
+
+```
+Authorization: Bearer <access_token>
+```
+
+Archer verifies tokens against the Auth0 JWKS, then uses the token's `sub` claim as the caller's user id. The user must belong to an account with an appropriate role.
+
+### Obtain a token
+
+- **Dashboard users** — sign in at [archermoney.com](https://archermoney.com). The dashboard surfaces the access token in your developer settings.
+- **Machine-to-machine** — use the Auth0 client credentials grant against your tenant's authorization server.
+
+### RBAC
+
+Once a token is verified, Archer applies role-based access control. Endpoints document required roles inline; the default groups are:
+
+- **Owner / admin** — destructive and configuration endpoints (rewards write, Slack install, team writes).
+- **Owner / admin / approver** — approval queue endpoints.
+- **All roles** — read endpoints.
+
+## Internal — `x-internal-key`
+
+`GET|PATCH /goods_order` and `POST /goods_order/purchasing` accept an internal key header:
+
+```
+x-internal-key: <key>
+```
+
+These are used by the Archer ordering portal for pricing and fulfillment. They are not part of the public API surface and should not be called from customer integrations.
