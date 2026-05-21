@@ -1,0 +1,77 @@
+---
+title: "Manage billing and plans"
+description: "Upgrade your Archer plan, start a subscription with Stripe Checkout, and manage payment methods or invoices from the Stripe customer portal."
+---
+
+Archer subscriptions are billed through Stripe. You start or change a paid plan from **Settings → Plan** in the dashboard, then manage payment methods, invoices, and cancellation in a Stripe-hosted customer portal.
+
+## Plans
+
+| Plan | Who it's for |
+|---|---|
+| **Basic** | Small teams getting started with one or two agents. |
+| **Pro** | Growing teams that need more agents, approvers, and branding controls. |
+| **Enterprise** | Larger orgs with custom volume, security, or contractual needs. |
+
+Every workspace starts on **Basic**. Upgrades take effect immediately; downgrades and cancellations take effect at the end of the current billing period.
+
+## Who can manage billing
+
+| Role | Can do |
+|---|---|
+| **Owner**, **Admin** | View the current plan, start checkout, open the Stripe portal, change plans, update payment methods, cancel. |
+| **Approver**, **Member** | View the current plan only. |
+
+If you don't see the **Upgrade** or **Manage plan** button, ask an owner or admin on your workspace.
+
+## Start a subscription
+
+<Steps>
+  <Step title="Open Settings → Plan">
+    From the dashboard sidebar, click **Settings**, then scroll to **Plan**.
+  </Step>
+  <Step title="Pick a plan">
+    Click **Upgrade** on **Pro** or **Enterprise**. Archer opens a Stripe Checkout page in a new tab.
+  </Step>
+  <Step title="Enter payment details">
+    Fill in your billing email, card, and (if required) tax ID. Stripe handles the form — Archer never sees the card number.
+  </Step>
+  <Step title="Confirm">
+    Click **Subscribe**. Stripe redirects you back to **Settings → Plan** with the new plan active.
+  </Step>
+</Steps>
+
+Each workspace is one Stripe customer. If you start checkout twice for the same plan, Archer reuses the existing customer and avoids creating duplicates.
+
+## Manage an existing subscription
+
+Once you have an active subscription, **Settings → Plan** shows a **Manage plan** button instead of **Upgrade**. Click it to open the **Stripe customer portal** in a new tab. From the portal you can:
+
+- Update the card on file
+- Change your billing email or address
+- Download invoices and receipts
+- Switch between Basic, Pro, and Enterprise
+- Cancel at the end of the current period
+
+Changes you make in the portal sync back to the dashboard within a minute.
+
+## What the dashboard shows
+
+The **Plan** card on **Settings** displays:
+
+- **Current tier** — Basic, Pro, or Enterprise.
+- **Status** — `active`, `trialing`, `past_due`, or `canceled`.
+- **Renewal date** — the end of the current billing period, when the plan renews or cancels.
+- **Payment method** — card brand and last four digits, when one is on file.
+
+If the status is **past_due**, open the customer portal and update the card to restore service. Archer keeps the workspace on the paid plan during a short grace period before downgrading.
+
+## Cancel
+
+Open the **Manage plan** portal and click **Cancel plan**. The workspace stays on the paid plan until the renewal date, then drops back to **Basic**. You can resubscribe at any time from **Settings → Plan**.
+
+## Troubleshooting
+
+- **"Billing is not configured"** — the workspace's Stripe environment isn't set up. Contact support@archermoney.com.
+- **"Billing customer not found"** — you tried to open the portal before completing a checkout. Start a subscription first, or contact support if you previously had one.
+- **Checkout opens in the same tab and you can't get back** — use your browser back button. Your account isn't charged unless Stripe confirms the subscription.
