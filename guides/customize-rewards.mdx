@@ -12,7 +12,7 @@ Every agent has its own branding for the emails and claim forms it sends. You ca
 | **Email title** | Subject line of the reward email. Defaults to "You've got a reward waiting". |
 | **Email body** | Body of the reward email. Supports placeholders like `{Recipient}` and `{Company}`. |
 | **Primary color** | Accent color used on the email button and on the claim form. |
-| **Form logo** | Logo shown at the top of the claim form. PNG or SVG, transparent background recommended. |
+| **Form logo** | Logo shown at the top of the claim form. See [Form logo requirements](#form-logo-requirements). |
 | **Remove "Powered by Archer"** | Hides the Archer attribution from emails and forms. Available on paid plans. |
 
 ## Workflow
@@ -35,6 +35,29 @@ Every agent has its own branding for the emails and claim forms it sends. You ca
   </Step>
 </Steps>
 
+## Form logo requirements
+
+The claim form logo is uploaded directly to Archer's storage and served from a CDN, so it renders quickly for every recipient. To keep load times fast and the form layout clean, uploads must meet these limits:
+
+| Requirement | Value |
+|---|---|
+| **File type** | JPEG, PNG, or WebP |
+| **Maximum file size** | 500 KB |
+| **Maximum dimensions** | 150 × 150 pixels |
+
+If a file exceeds any of these limits, the dashboard rejects the upload with an inline message and the logo is not changed.
+
+### Upload or replace a logo
+
+1. On the agent detail page, scroll to **Email & form branding**.
+2. Next to **Form logo**, click **Upload logo** and select a file.
+3. The dashboard validates the file, uploads it, and saves it to the agent automatically — there's no separate **Save** step for the logo.
+4. To swap the logo, click **Remove**, then upload a new file. Removing a logo permanently deletes it from storage.
+
+<Tip>
+  Use a transparent PNG or WebP when possible. The claim form header uses a light background, so opaque logos with white padding can look boxed in.
+</Tip>
+
 ## Placeholders
 
 The email body supports a few placeholders that Archer substitutes per recipient:
@@ -56,6 +79,6 @@ Per-agent branding overrides workspace defaults where they overlap.
 
 ## Tips
 
-- Use a square or horizontal logo. Tall logos get squished in the header.
+- Use a square or horizontal logo within the 150 × 150 pixel limit. Tall logos get squished in the header.
 - Keep the email body under ~120 words. Recipients skim.
 - Test in both light and dark mode email clients — the primary color is used as both background and accent in different places.
