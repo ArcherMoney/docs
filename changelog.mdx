@@ -1,22 +1,39 @@
 ---
 title: "Changelog"
-description: "Weekly release notes for Archer covering new agent features, dashboard improvements, Slack integration changes, webhook updates, and product changes."
+description: "Weekly release notes for Archer covering new campaign features, dashboard improvements, Slack integration changes, webhook updates, and product changes."
 ---
+
+<Update label="2026-05-26" tags={["Feature"]} description="Week of May 25">
+  ## Campaigns, Orders, and the new order lifecycle
+
+  Agents are now **Campaigns** across the dashboard. The underlying primitive and APIs are unchanged — only the label moved. Webhook URLs, Slack bindings, and event payloads continue to work without changes.
+
+  Two new trigger kinds joined Webhook and Slack:
+
+  - **Upload** — periodic CSV drops, one row per event.
+  - **Scraper** — managed crawls of third-party sources.
+
+  Office Orders now run through a richer lifecycle: `PENDING_APPROVAL` → `PENDING_CLAIM` → `PENDING_CONFIRMATION` → `PENDING_FULFILLMENT` → `SENT`, with `CANCELLED` available at any pending step. A new **Orders** page in the sidebar lists confirmed orders ready to ship — owners, admins, and approvers click **Mark sent** when a package ships.
+
+  Approvals now handles both the initial sign-off and shipping-address confirmation. Activity shows a single `sent` status for fulfilled rewards; in-flight orders live in Approvals or Orders instead.
+
+  See [Campaigns](/concepts/campaigns), [Triggers](/concepts/triggers), and [Activity, approvals & orders](/concepts/activity-and-approvals) for details.
+</Update>
 
 <Update label="2026-05-20" tags={["Pivot"]} description="Week of May 18">
   ## Archer is now a rewards platform
 
   We rebuilt Archer around three things:
 
-  - **Agents** — natural-language automations that send rewards on your behalf.
-  - **Webhook and Slack triggers** — fire agents from your product, CRM, or chat.
+  - **Campaigns** — natural-language automations that send rewards on your behalf.
+  - **Webhook and Slack triggers** — fire campaigns from your product, CRM, or chat.
   - **Approvals** — sign off on Office Orders before they ship.
 
   The old payouts, smart wallet, and on-/off-ramp surfaces are retired. Start with the new [Introduction](/introduction) and [Quickstart](/quickstart).
 </Update>
 
 <Update label="2026-05-13" tags={["Improvement"]} description="Week of May 11">
-  ## Direct agent matching
+  ## Direct campaign matching
 
-  Webhook and Slack events now route directly to the agent that owns them — no fuzzy classification across agents in the same workspace. Agents fire faster and predictably, and duplicate events with the same `event_id` are deduped per agent.
+  Webhook and Slack events now route directly to the campaign that owns them — no fuzzy classification across campaigns in the same workspace. Campaigns fire faster and predictably, and duplicate events with the same `event_id` are deduped per campaign.
 </Update>

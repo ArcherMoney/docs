@@ -1,0 +1,85 @@
+---
+title: "Create a campaign"
+description: "Walk through creating a campaign in the Archer dashboard — naming, choosing a category, writing the logic, and picking a trigger."
+---
+
+This guide shows how to create a campaign end-to-end from the dashboard. By the end you'll have an active campaign with branding configured and a working test gift.
+
+<Note>
+  Campaigns were previously called **agents**. If you see "Agent" in older screenshots, it's the same primitive.
+</Note>
+
+## Prerequisites
+
+- An Archer account.
+- The **Owner** or **Admin** role. Members and Approvers can read campaigns but can't create or edit them.
+
+## 1. Open the Campaigns page
+
+In the dashboard sidebar, click **Campaigns**. Click **Create campaign** in the top right. The editor opens with the **Settings** tab selected.
+
+## 2. Pick a category
+
+Pick one of:
+
+- **Office Order** — for internal swag and supplies. Runs through the Approvals and Orders queues.
+- **Customer Gift** — for end users. Sends immediately.
+- **Partner Gift** — for partners and affiliates. Sends immediately.
+
+See [Categories](/concepts/categories) for fulfillment differences.
+
+## 3. Name the campaign
+
+Give it a short, internal label like "Onboarding gift" or "Q3 affiliate payout". This is what you and your team see in Campaigns, Activity, and Approvals.
+
+<Note>
+  Slack-triggered campaigns always show as **Slack Campaign** in lists regardless of the name you set. You can only have one Slack campaign per workspace.
+</Note>
+
+## 4. Write the logic
+
+The **Logic** field is the most important thing on the page. It's a plain-language description Archer uses to match incoming events. Two-clause sentences work best:
+
+- ✅ "When a referred user finishes onboarding, send the referrer a $25 Amazon gift card."
+- ✅ "When a teammate runs `/archer` with a recipient and item, ship the item to their address."
+- ❌ "Reward partners."
+
+Be specific about the trigger condition, who receives the reward, and what the reward is.
+
+## 5. Pick a trigger
+
+Choose one of:
+
+- **Webhook** — your product or backend `POST`s events to a URL Archer assigns.
+- **Slack** — a teammate runs `/archer` in your connected Slack workspace.
+- **Upload** — Archer ingests a recurring CSV you provide.
+- **Scraper** — Archer crawls a third-party source on your behalf.
+
+Slack requires the Archer Slack app to be installed — see [Connect Slack](/guides/connect-slack). See [Triggers](/concepts/triggers) for when to pick which.
+
+## 6. Save
+
+Click **Save**. The campaign is created as **Active**. The detail page now shows the campaign's:
+
+- **Webhook URL** (for webhook campaigns) — copy this into your producer.
+- **Email and form branding** — customize how recipients see the reward.
+- **Recent activity** — empty for now.
+
+## 7. Send a test gift
+
+Scroll to **Simulate campaign** on the detail page. Enter your own email under **Recipient email** and click **Send test →**. Archer sends a real reward email so you can preview exactly what recipients will receive.
+
+## 8. Wire up the real trigger
+
+For webhook campaigns, hand the **Webhook URL** to whoever is integrating your product or backend. They'll find request format and idempotency rules in [Sending events](/developers/sending-events).
+
+For Slack campaigns, run the slash command in any channel of your connected workspace.
+
+## Editing a campaign later
+
+Open the campaign from the Campaigns page and use the **Settings** tab to update name, category, logic, status, and branding. The webhook URL doesn't change when you edit other fields.
+
+## Pausing or archiving
+
+- **Pause** — flip the "Campaign is active" toggle on the Settings tab. Webhook events keep arriving but no rewards send.
+- **Archive** — delete the campaign. The webhook URL stops producing rewards. Archived campaigns can't be restored; create a new one if you need the same rule back.

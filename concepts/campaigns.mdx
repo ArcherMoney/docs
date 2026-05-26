@@ -1,0 +1,58 @@
+---
+title: "Campaigns"
+description: "Campaigns are Archer's core primitive — natural-language automations that send rewards on your behalf. Learn how they're modeled and how they fire."
+---
+
+A **campaign** is a reward rule. Each campaign describes — in plain English — when a reward should fire and what should happen. Every reward Archer sends is the output of a campaign.
+
+<Note>
+  Campaigns were previously called **agents**. The underlying behavior is unchanged; only the dashboard label moved.
+</Note>
+
+## What a campaign looks like
+
+When you create a campaign in the dashboard, you fill out five fields:
+
+| Field | What it means |
+|---|---|
+| **Name** | Internal label, shown in Campaigns, Activity, and Approvals. |
+| **Category** | `Office Order`, `Customer Gift`, or `Partner Gift`. Decides the fulfillment path. See [Categories](/concepts/categories). |
+| **Logic** | A one- or two-clause plain-English description of the trigger and the reward. Archer uses this to match incoming events. |
+| **Trigger** | `Webhook`, `Slack`, `Upload`, or `Scraper`. Decides how events reach the campaign. See [Triggers](/concepts/triggers). |
+| **Status** | `Active` or `Paused`. Paused campaigns accept events at the door but produce no rewards. |
+
+You can also configure email and form branding per campaign — subject, body, primary color, logo, and whether to show "Powered by Archer".
+
+## How campaigns fire
+
+<Steps>
+  <Step title="Event arrives">
+    For webhook campaigns, your system `POST`s a JSON event to the campaign's webhook URL. For Slack campaigns, a teammate runs the `/archer` slash command. Upload and Scraper campaigns ingest events from periodic file drops or managed crawls.
+  </Step>
+  <Step title="Campaign matches">
+    Archer routes the event directly to the campaign that owns the webhook URL (or, for Slack, to your single Slack campaign). There's no fuzzy classification across campaigns.
+  </Step>
+  <Step title="Reward queues or sends">
+    Customer Gift and Partner Gift campaigns email a claim link to the recipient. Office Orders enter the **Approvals** queue first.
+  </Step>
+  <Step title="Order lifecycle runs">
+    Once approved, a goods order moves through claim, address confirmation, fulfillment, and finally **Sent**. The reward shows up on **Activity** as `sent` when fulfillment is marked complete.
+  </Step>
+</Steps>
+
+## Per-campaign metrics
+
+The campaign detail page surfaces:
+
+- **Sent today / this week / total sent** — how many rewards this campaign has fired.
+- **Last event** — when the campaign most recently ran.
+- **Recent activity** — a small feed of recent fulfillments, linked into the full Activity page.
+
+## Pausing and archiving
+
+- **Pause** a campaign to temporarily stop it without losing its webhook URL or branding. Toggle it back to active any time. Events received while paused are accepted and silently dropped.
+- **Archive** a campaign (via delete) when you no longer need it. The webhook URL stops producing rewards. Archived campaigns are hidden from the Campaigns list and cannot be restored — create a new campaign if you need the same rule back.
+
+## Slack uniqueness
+
+You can have at most **one active Slack-triggered campaign per workspace**. Trying to create a second returns an error. Webhook, Upload, and Scraper campaigns have no such limit — create as many as you need, one per use case.

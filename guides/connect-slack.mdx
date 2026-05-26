@@ -1,9 +1,9 @@
 ---
 title: "Connect Slack"
-description: "Install the Archer Slack app, connect a workspace, create a Slack-triggered agent, and fire rewards from any channel with the /archer slash command."
+description: "Install the Archer Slack app, connect a workspace, create a Slack-triggered campaign, and fire rewards from any channel with the /archer slash command."
 ---
 
-Connecting Slack lets teammates fire an agent by typing `/archer` in any channel. It's the right fit for office orders and other ad-hoc requests that don't come from a programmatic source.
+Connecting Slack lets teammates fire a campaign by typing `/archer` in any channel. It's the right fit for office orders and other ad-hoc requests that don't come from a programmatic source.
 
 ## Prerequisites
 
@@ -27,22 +27,22 @@ Connecting Slack lets teammates fire an agent by typing `/archer` in any channel
   </Step>
 </Steps>
 
-## 2. Create a Slack-triggered agent
+## 2. Create a Slack-triggered campaign
 
-Slack agents work just like webhook agents, except their trigger is set to **Slack**. You can only have one active Slack agent at a time.
+Slack campaigns work just like webhook campaigns, except their trigger is set to **Slack**. You can only have one active Slack campaign at a time.
 
 <Steps>
-  <Step title="Open Agents → New agent">
-    Click **New agent** on the Agents page.
+  <Step title="Open Campaigns → Create campaign">
+    Click **Create campaign** on the Campaigns page.
   </Step>
   <Step title="Pick a category">
-    Office Order is the most common choice for Slack agents.
+    Office Order is the most common choice for Slack campaigns.
   </Step>
   <Step title="Write the logic">
     For example: "When a teammate runs `/archer` with a recipient and item, ship the item to their address."
   </Step>
   <Step title="Set trigger to Slack and save">
-    Save the agent. If a Slack agent already exists, Archer will tell you to pause or archive the existing one first.
+    Save the campaign. If a Slack campaign already exists, Archer will tell you to pause or archive the existing one first.
   </Step>
 </Steps>
 
@@ -54,20 +54,20 @@ In any channel in the connected workspace, type:
 /archer Send a YETI tumbler to jordan@acme.com
 ```
 
-Archer routes the command to your Slack agent. If the agent is an Office Order, it lands in the **Approvals** queue waiting on a sign-off. Customer Gift and Partner Gift Slack agents send immediately.
+Archer routes the command to your Slack campaign. If the campaign is an Office Order, it lands in the **Approvals** queue waiting on a sign-off. Customer Gift and Partner Gift Slack campaigns send immediately.
 
 ## Reinstalling or disconnecting
 
 From **Integrations**:
 
 - **Reinstall Slack** — refreshes the OAuth token. Use this after a Slack workspace owner change or a permissions update.
-- **Disconnect** — removes the Slack integration. Your Slack agent will stop firing until you reinstall.
+- **Disconnect** — removes the Slack integration. Your Slack campaign will stop firing until you reinstall.
 
 ## Troubleshooting
 
 | Symptom | Likely fix |
 |---|---|
-| `/archer` does nothing | Confirm the Slack agent is **Active**, not paused or archived. |
-| "An active Slack agent already exists" | Pause or archive the existing Slack agent before creating a new one. |
-| Slash command runs but the wrong reward sends | Check the agent's **Logic** field. The phrasing is what Archer matches against. |
+| `/archer` does nothing | Confirm the Slack campaign is **Active**, not paused or archived. |
+| "An active Slack campaign already exists" | Pause or archive the existing Slack campaign before creating a new one. |
+| Slash command runs but the wrong reward sends | Check the campaign's **Logic** field. The phrasing is what Archer matches against. |
 | The command suddenly stops working | Reinstall Slack from **Integrations**. The OAuth token may have rotated. |

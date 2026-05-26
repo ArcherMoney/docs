@@ -1,43 +1,57 @@
 ---
-title: "Approve Office Orders"
-description: "Review, approve, or decline Office Orders in the Approvals queue, see which roles can act, what each row shows, and how decisions affect fulfillment."
+title: "Approve and ship Office Orders"
+description: "Approve, confirm, cancel, and ship Office Orders across the Approvals and Orders queues, see which roles can act, and how each decision moves the lifecycle."
 ---
 
-Office Order agents don't send rewards immediately. Instead, every event they receive becomes a row in the **Approvals** queue waiting on a sign-off from someone with the right role.
+Office Order campaigns don't send rewards immediately. Every event they receive enters a multi-step lifecycle that flows across two dashboard pages: **Approvals** (sign-offs and address confirmation) and **Orders** (shipping).
 
-## Who can approve
+For an overview of the statuses involved, see [Activity, approvals & orders](/concepts/activity-and-approvals).
 
-Anyone with the **Owner**, **Admin**, or **Approver** role on the workspace can act on the queue. Members can view it but can't approve or decline.
+## Who can act
+
+Anyone with the **Owner**, **Admin**, or **Approver** role on the workspace can approve, confirm, cancel, and mark sent. Members can view both queues but can't take action.
 
 See [Invite your team](/guides/invite-team) for how roles are assigned.
 
-## Reviewing the queue
+## Step 1: Approve in Approvals
 
-Open **Approvals** from the dashboard sidebar. Each row shows:
+Open **Approvals** from the sidebar. Each row in `PENDING_APPROVAL` shows:
 
-- The agent that fired the order
-- The category (always Office Order for queued items)
+- The campaign that fired the order
 - The recipient
 - The item Archer plans to send
 - The quoted price
 - When the request was made
 
-Click into a row to see the full event payload, the recipient's saved shipping address, and any notes from the requester.
-
-## Acting on a request
-
-From the row, you can:
+Click into a row to see the full event payload and any notes from the requester. From the row you can:
 
 | Action | What happens |
 |---|---|
-| **Approve** | The order moves to fulfillment. It appears as `delivered` in Activity once shipped or settled. |
-| **Decline** | The order is removed from the queue. It does not appear in Activity. |
-| **Approve all** | Bulk-approves every order in the current view. Use carefully — there's no undo. |
+| **Approve** | Order moves to `PENDING_CLAIM`. Archer emails the recipient a form to collect their shipping address. |
+| **Cancel** | Order moves to `CANCELLED` and disappears from the queue. It does not appear in Activity. |
 
-Approvals are recorded with the approver's identity for audit purposes.
+For campaigns that already include a shipping address with the event, orders skip `PENDING_CLAIM` and land in Approvals as `PENDING_CONFIRMATION` instead — see the next step.
+
+## Step 2: Confirm the address
+
+Once the recipient submits their shipping form (or the campaign provides one upfront), the order moves to `PENDING_CONFIRMATION` and reappears in Approvals with a **Confirm address** action.
+
+| Action | What happens |
+|---|---|
+| **Confirm** | Order moves to `PENDING_FULFILLMENT` and shows up on the Orders page. |
+| **Cancel** | Order moves to `CANCELLED`. |
+
+Use this step to sanity-check addresses before you ship.
+
+## Step 3: Ship from Orders
+
+Open **Orders** from the sidebar. Each row is a confirmed order ready to fulfill — item, recipient, vendor, price, and shipping address. After you've packed and shipped, click **Mark sent**.
+
+The order moves to `SENT` and shows up as `sent` on the Activity page. Marking sent is irreversible — there's no undo.
 
 ## Tips
 
-- Set up agent **Logic** carefully — clear instructions reduce the back-and-forth on approvals.
-- Use the **Date range** filter in Approvals to focus on recent requests during high-volume periods.
-- For repeating low-cost Office Orders, consider switching the agent to a Customer Gift category to skip the queue entirely (if your governance allows).
+- Set up campaign **Logic** carefully — clear instructions reduce back-and-forth at approval time.
+- Confirm addresses promptly. Orders sit in `PENDING_CONFIRMATION` until someone acts, and recipients won't know there's a delay.
+- Use the **Orders** page as your daily shipping worklist. Batch approvals during the day and ship from a single queue at the end.
+- For repeating low-cost rewards, consider switching the campaign to a Customer Gift category to skip the Approvals queue entirely (if your governance allows).

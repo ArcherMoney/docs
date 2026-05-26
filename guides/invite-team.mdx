@@ -1,6 +1,6 @@
 ---
 title: "Invite your team"
-description: "Invite teammates to your Archer workspace from Settings, assign Owner, Admin, Approver, or Member roles, and control who can manage agents or approvals."
+description: "Invite teammates to your Archer workspace from Settings, assign Owner, Admin, Approver, or Member roles, and control who can manage campaigns or approvals."
 ---
 
 Archer workspaces support multiple users with role-based access. Invite teammates from **Settings → Team**.
@@ -10,9 +10,9 @@ Archer workspaces support multiple users with role-based access. Invite teammate
 | Role | Can do |
 |---|---|
 | **Owner** | Everything an admin can, plus account-level destructive actions like deleting the workspace. |
-| **Admin** | Create, edit, and archive agents; install Slack; manage team; approve Office Orders; edit workspace settings. |
-| **Approver** | Approve or decline Office Orders. Read agents and Activity. |
-| **Member** | Read-only access to agents, Activity, and the team list. |
+| **Admin** | Create, edit, and archive campaigns; install Slack; manage team; approve and ship Office Orders; edit workspace settings. |
+| **Approver** | Approve, confirm, cancel, and ship Office Orders. Read campaigns and Activity. |
+| **Member** | Read-only access to campaigns, Activity, Approvals, Orders, and the team list. |
 
 ## Send an invite
 
@@ -39,10 +39,10 @@ From **Settings → Team**, click the role badge next to a user's name. Pick the
 
 ## Remove a teammate
 
-Click the user's row in **Settings → Team** and choose **Remove**. The user loses access immediately. Agents they created are unaffected — agents are owned by the workspace, not by individuals.
+Click the user's row in **Settings → Team** and choose **Remove**. The user loses access immediately. Campaigns they created are unaffected — campaigns are owned by the workspace, not by individuals.
 
 ## Tips
 
-- Use **Approver** for finance and ops folks who should sign off on Office Orders but shouldn't be creating or editing agents.
+- Use **Approver** for finance and ops folks who should sign off on Office Orders but shouldn't be creating or editing campaigns.
 - Keep at least two **Owners** at all times so no single person becomes a bottleneck.
 - Invite teammates with their work email (the one they sign in to Google or Microsoft with). Auth0 will match the verified identity automatically.

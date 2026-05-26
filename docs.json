@@ -33,7 +33,7 @@
           {
             "group": "Concepts",
             "pages": [
-              "concepts/agents",
+              "concepts/campaigns",
               "concepts/categories",
               "concepts/triggers",
               "concepts/activity-and-approvals"
@@ -42,7 +42,7 @@
           {
             "group": "Dashboard guides",
             "pages": [
-              "guides/create-an-agent",
+              "guides/create-a-campaign",
               "guides/customize-rewards",
               "guides/connect-slack",
               "guides/approve-rewards",
@@ -65,5 +65,15 @@
         ]
       }
     ]
-  }
+  },
+  "redirects": [
+    {
+      "source": "/concepts/agents",
+      "destination": "/concepts/campaigns"
+    },
+    {
+      "source": "/guides/create-an-agent",
+      "destination": "/guides/create-a-campaign"
+    }
+  ]
 }

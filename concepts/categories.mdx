@@ -1,15 +1,15 @@
 ---
 title: "Categories"
-description: "Compare Archer's three agent categories — Customer Gift, Partner Gift, and Office Order — and learn how each one is delivered, approved, and fulfilled."
+description: "Compare Archer's three campaign categories — Customer Gift, Partner Gift, and Office Order — and learn how each one is delivered, approved, and fulfilled."
 ---
 
-Every agent has a **category**. The category controls how the reward is delivered and whether anyone on your team has to approve it before it goes out.
+Every campaign has a **category**. The category controls how the reward is delivered and whether anyone on your team has to approve it before it goes out.
 
 ## The three categories
 
 ### Customer Gift
 
-A reward sent to an end user — typically a gift card or branded item. Archer emails the recipient a claim link with your agent's branding (subject, body, color, logo). The recipient picks their gift or fills in a shipping address, and Archer ships or settles directly.
+A reward sent to an end user — typically a gift card or branded item. Archer emails the recipient a claim link with your campaign's branding (subject, body, color, logo). The recipient picks their gift or fills in a shipping address, and Archer ships or settles directly.
 
 **Use it for**: onboarding gifts, milestone rewards, NPS thank-yous, churn save offers.
 
@@ -21,7 +21,7 @@ A payout to a partner, affiliate, or contractor — usually triggered when a ref
 
 ### Office Order
 
-An internal reward — swag, supplies, or gifts for employees. Office Orders land in the **Approvals** queue before they ship. Owners, admins, and approvers can approve or decline each one.
+An internal reward — swag, supplies, or gifts for employees. Office Orders run through the full goods-order lifecycle: **Approvals** (approve, confirm address) then **Orders** (mark sent). Owners, admins, and approvers can act at each step.
 
 **Use it for**: new-hire kits, employee gifts, office supplies fired from Slack.
 
@@ -31,8 +31,8 @@ An internal reward — swag, supplies, or gifts for employees. Office Orders lan
 |---|---|---|---|
 | Customer Gift | No | Branded claim email | Webhook from your product |
 | Partner Gift | No | Branded claim email or direct payout | Webhook from your CRM |
-| Office Order | Yes (admin / approver) | Branded claim email | Slack slash command |
+| Office Order | Yes (admin / approver) | Branded claim email + shipping form | Slack slash command |
 
 ## Switching categories
 
-You can change an agent's category from the Agents page at any time. The change takes effect for new events only — rewards already in the Approvals queue keep their original routing.
+You can change a campaign's category from the Campaigns page at any time. The change takes effect for new events only — orders already in the Approvals or Orders queue keep their original routing.

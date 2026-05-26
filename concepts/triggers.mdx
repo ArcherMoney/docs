@@ -1,19 +1,19 @@
 ---
 title: "Triggers"
-description: "Compare Archer's webhook and Slack triggers, how each one routes events to an agent, when to pick which, and the security model for each channel."
+description: "Compare Archer's webhook, Slack, upload, and scraper triggers, how each one routes events to a campaign, when to pick which, and the security model."
 ---
 
-A **trigger** is the channel that delivers events to an agent. Each agent picks one of two trigger kinds when it's created. You can't switch an existing agent between trigger kinds — create a new agent if you need the other.
+A **trigger** is the channel that delivers events to a campaign. Each campaign picks one of four trigger kinds when it's created. You can't switch an existing campaign between trigger kinds — create a new campaign if you need a different one.
 
 ## Webhook trigger
 
-The default. Archer assigns each webhook agent its own URL on the **Agent** detail page:
+The default. Archer assigns each webhook campaign its own URL on the **Campaign** detail page:
 
 ```
 https://api.archermoney.com/events/{webhook_token}
 ```
 
-Your system `POST`s a JSON event to the URL and Archer fires the agent. No bearer token, no signature — the URL itself is the secret, so keep it out of client-side code and source control.
+Your system `POST`s a JSON event to the URL and Archer fires the campaign. No bearer token, no signature — the URL itself is the secret, so keep it out of client-side code and source control.
 
 **Best for**: anything programmatic. CRMs, product backends, CI pipelines, marketing automation, internal tools.
 
@@ -21,21 +21,33 @@ See [Sending events](/developers/sending-events) for the request shape, idempote
 
 ## Slack trigger
 
-Connect Slack from the **Integrations** page, then create one agent with **Slack** as its trigger. After install, a teammate types:
+Connect Slack from the **Integrations** page, then create one campaign with **Slack** as its trigger. After install, a teammate types:
 
 ```
 /archer Send a YETI tumbler to jordan@acme.com
 ```
 
-Archer verifies the Slack request, routes it to your Slack agent, and fires the reward. Office Order Slack agents land in the Approvals queue; Customer and Partner Gift Slack agents send immediately.
+Archer verifies the Slack request, routes it to your Slack campaign, and fires the reward. Office Order Slack campaigns land in the Approvals queue; Customer and Partner Gift Slack campaigns send immediately.
 
 **Best for**: ad-hoc requests from teammates — new-hire swag, customer thank-yous, last-minute gifts.
 
-You can have **at most one active Slack-triggered agent per workspace**. Pause or archive the existing Slack agent first if you need to replace it.
+You can have **at most one active Slack-triggered campaign per workspace**. Pause or archive the existing Slack campaign first if you need to replace it.
+
+## Upload trigger
+
+A campaign whose events come from periodic file drops you provide — typically a CSV exported from a system that can't `POST` webhooks. Each row becomes one event.
+
+**Best for**: warehouse exports, batch payouts from a finance system, weekly partner reconciliations.
+
+## Scraper trigger
+
+A campaign whose events come from a managed crawl of a third-party source Archer monitors on your behalf. New rows discovered on each crawl fire the campaign.
+
+**Best for**: sources without a webhook or export — public leaderboards, partner portals, scheduled report pages.
 
 ## Pausing a trigger
 
-Set an agent to **Paused** from its detail page (the "Agent is active" toggle) to stop processing without losing the webhook URL or Slack binding. Events received while paused are accepted and silently dropped — they will not be replayed when you reactivate the agent.
+Set a campaign to **Paused** from its detail page (the "Campaign is active" toggle) to stop processing without losing the webhook URL, Slack binding, upload schedule, or scraper config. Events received while paused are accepted and silently dropped — they will not be replayed when you reactivate the campaign.
 
 ## Which trigger should I use?
 
@@ -47,3 +59,5 @@ Set an agent to **Paused** from its detail page (the "Agent is active" toggle) t
 | A teammate typing in Slack | Slack |
 | A marketing automation step | Webhook |
 | One-off office order | Slack |
+| A recurring CSV export | Upload |
+| A third-party page without an API | Scraper |

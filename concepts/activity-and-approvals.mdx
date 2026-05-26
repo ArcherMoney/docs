@@ -1,48 +1,71 @@
 ---
-title: "Activity & approvals"
-description: "Track every reward in the Activity feed and review Office Orders in the Approvals queue, with statuses, filters, CSV export, and role-based actions."
+title: "Activity, approvals & orders"
+description: "Track every reward in the Activity feed, sign off in Approvals, and mark shipments complete in Orders, with statuses, role permissions, and the full lifecycle."
 ---
 
-Two pages in the dashboard tell you what's happening with your rewards: **Activity** and **Approvals**.
+Three pages in the dashboard tell you what's happening with your rewards: **Activity**, **Approvals**, and **Orders**.
+
+## Order lifecycle
+
+Goods orders move through a fixed set of statuses. Each one corresponds to a step in the dashboard:
+
+| Status | Where it appears | What it means |
+|---|---|---|
+| `PENDING_APPROVAL` | Approvals | A campaign created the order; an approver needs to sign off. |
+| `PENDING_CLAIM` | (recipient's inbox) | Approved. Archer emailed the recipient a form to enter their shipping address. |
+| `PENDING_CONFIRMATION` | Approvals | The recipient submitted (or the campaign provided) a shipping address; an approver needs to confirm it. |
+| `PENDING_FULFILLMENT` | Orders | Address confirmed. Ready for your team to ship. |
+| `SENT` | Activity | Your team marked the order shipped. |
+| `CANCELLED` | (hidden) | An approver cancelled the order before fulfillment. Not shown in Activity. |
+
+Customer Gifts and Partner Gifts that don't involve a physical good skip the Approvals and Orders steps and go straight to `SENT` when the reward settles.
 
 ## Activity
 
-The **Activity** page shows every reward Archer has produced, grouped by day. Each row links back to the agent that fired it and the recipient. You'll see two statuses:
+The **Activity** page shows every reward that's gone out, grouped by day. Each row links back to the campaign that fired it and the recipient. There's a single status:
 
 | Status | Meaning |
 |---|---|
-| `pending` | The reward is in the Approvals queue waiting on a decision. Only Office Orders land here. |
-| `delivered` | The reward has been shipped or settled to the recipient. |
+| `sent` | The reward shipped or settled to the recipient. |
 
-Declined Office Orders are hidden from Activity (they're visible in the Approvals history if you need to audit them).
+In-progress and cancelled orders are not shown here — see Approvals or Orders for those.
 
 ### Filters and export
 
 - **Date range** — narrow Activity to a specific period.
-- **Status** — show only `pending` or only `delivered`.
 - **Export** — download the filtered view as CSV. Useful for accounting, finance, and end-of-quarter reporting.
 
 ## Approvals
 
-The **Approvals** page lists Office Orders waiting on someone to act. Each row shows the agent that fired it, the requested item, the recipient, and the quoted price.
+The **Approvals** page lists goods orders waiting on a decision. Each row shows the campaign that fired it, the requested item, the recipient, and the quoted price.
 
-Anyone with the **owner**, **admin**, or **approver** role can:
+Anyone with the **owner**, **admin**, or **approver** role can act:
 
-- **Approve** — the order moves to fulfillment and eventually shows up as `delivered` in Activity.
-- **Decline** — the order is removed from the queue and hidden from Activity.
-- **Approve all** — bulk-approve the entire queue.
+- **Approve** an order in `PENDING_APPROVAL` — the order moves to `PENDING_CLAIM` and Archer emails the recipient the address form. (For direct-address campaigns the order skips this step.)
+- **Confirm address** on an order in `PENDING_CONFIRMATION` — the order moves to `PENDING_FULFILLMENT` and shows up on the Orders page.
+- **Cancel** any pending order — the order moves to `CANCELLED` and is removed from the queue.
 
-Customer Gifts and Partner Gifts don't appear here — they send immediately when their agent fires.
+Customer Gifts and Partner Gifts that don't ship a physical good don't appear here.
+
+## Orders
+
+The **Orders** page is the fulfillment queue. It lists every order in `PENDING_FULFILLMENT` — addresses confirmed, ready to ship.
+
+Each row shows the item, recipient, vendor, quoted price, and confirmed shipping address. When your team has shipped the order, click **Mark sent**. The order moves to `SENT` and shows up on Activity.
+
+<Tip>
+  Use Orders as your daily shipping worklist. Filter Approvals when you need to sign off; come to Orders when you have a stack of packages to send out.
+</Tip>
 
 ## Who sees what
 
-| Role | Activity | Approvals |
-|---|---|---|
-| Owner | Read + export | Approve, decline, approve all |
-| Admin | Read + export | Approve, decline, approve all |
-| Approver | Read + export | Approve, decline, approve all |
-| Member | Read + export | Read only |
+| Role | Activity | Approvals | Orders |
+|---|---|---|---|
+| Owner | Read + export | Approve, confirm, cancel | Mark sent |
+| Admin | Read + export | Approve, confirm, cancel | Mark sent |
+| Approver | Read + export | Approve, confirm, cancel | Mark sent |
+| Member | Read + export | Read only | Read only |
 
-## Recent activity on each agent
+## Recent activity on each campaign
 
-The agent detail page also shows the last few rewards that agent fired. It's the fastest way to confirm a new agent is wired up correctly — fire a test gift from the simulator and watch it appear.
+The campaign detail page also shows the last few rewards that campaign fired. It's the fastest way to confirm a new campaign is wired up correctly — fire a test gift from the simulator and watch it appear.
