@@ -43,6 +43,7 @@
             "group": "Dashboard guides",
             "pages": [
               "guides/create-an-agent",
+              "guides/catalog",
               "guides/customize-rewards",
               "guides/connect-slack",
               "guides/approve-rewards",
