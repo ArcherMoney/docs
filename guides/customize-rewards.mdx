@@ -10,7 +10,7 @@ Every agent has its own branding for the emails and claim forms it sends. You ca
 | Field | Where it appears |
 |---|---|
 | **Email title** | Subject line of the reward email. Defaults to "You've got a reward waiting". |
-| **Email body** | Body of the reward email. Supports placeholders like `{Recipient}` and `{Company}`. |
+| **Email body** | Body of the reward email. Supports the `{Company}` placeholder. |
 | **Primary color** | Accent color used on the email button and on the claim form. |
 | **Form logo** | Logo shown at the top of the claim form. PNG or SVG, transparent background recommended. |
 | **Remove "Powered by Archer"** | Hides the Archer attribution from emails and forms. Available on paid plans. |
@@ -37,9 +37,8 @@ Every agent has its own branding for the emails and claim forms it sends. You ca
 
 ## Placeholders
 
-The email body supports a few placeholders that Archer substitutes per recipient:
+The email title and body support one placeholder that Archer substitutes at send time:
 
-- `{Recipient}` — the recipient's first name (or email if no name is on file).
 - `{Company}` — your workspace's **Sender display name** from Settings.
 
 Anything else in `{ }` is rendered as-is.
