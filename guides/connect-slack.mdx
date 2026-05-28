@@ -56,6 +56,24 @@ In any channel in the connected workspace, type:
 
 Archer routes the command to your Slack agent. If the agent is an Office Order, it lands in the **Approvals** queue waiting on a sign-off. Customer Gift and Partner Gift Slack agents send immediately.
 
+## Set a notification channel
+
+Once Slack is connected, you can pick a channel where Archer posts approval notifications. This is the same notification you get by email — turning on **Approval needed** under [Settings → Notifications](/guides/workspace-settings#notifications) also posts to your chosen Slack channel.
+
+<Steps>
+  <Step title="Invite the Archer bot to the channel">
+    In Slack, open the channel you want notifications in and type `/invite @Archer`. The bot can only post to channels it has been added to.
+  </Step>
+  <Step title="Set the channel in Archer">
+    On the **Integrations** page, find the **Notification channel** field under the Slack card. Enter the channel name (for example, `approvals` — the leading `#` is optional) and click **Set channel**.
+  </Step>
+  <Step title="Confirm">
+    Archer resolves the name to a channel ID and shows **Channel updated**. The current channel ID is displayed under the input.
+  </Step>
+</Steps>
+
+Public and private channels both work, as long as the Archer bot is a member. If you see **Channel not found**, double-check the spelling and that the bot has been invited.
+
 ## Reinstalling or disconnecting
 
 From **Integrations**:
