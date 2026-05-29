@@ -40,7 +40,37 @@ Add and manage teammates. See [Invite your team](/guides/invite-team).
 
 ## Plan
 
-The **Plan** card shows your current plan and entitlements. Click **Manage plan** to upgrade, downgrade, or update billing. Some branding options (like hiding "Powered by Archer") are gated to paid plans.
+The **Plan** tab shows your current subscription, billing period, and payment method. Owners and admins can start a paid subscription or manage an existing one without leaving the dashboard.
+
+### Start a subscription
+
+If your account does not yet have a paid subscription, the Plan tab shows a tier picker and a **Start subscription** button:
+
+1. Pick a tier — **Basic**, **Pro**, or **Enterprise**.
+2. Click **Start *tier* subscription**.
+3. Archer redirects you to a Stripe-hosted Checkout page to enter payment details.
+4. After Checkout, Stripe returns you to Settings. Archer refreshes the page once the subscription is provisioned.
+
+If you close Checkout without completing payment, your plan is unchanged. You can retry from the same Plan tab.
+
+### Manage an existing subscription
+
+Once a subscription is active, the Plan tab shows:
+
+- **Tier** and **status** (Active, Trialing, Past due, Canceled, etc.).
+- **Billing period** — the next renewal date, or the cancellation date if the subscription is set to cancel.
+- **Payment method** — the brand and last four digits of the card on file.
+
+Click **Open Customer Portal** to update the card, download invoices, change tier, or cancel. The Customer Portal is hosted by Stripe and opens in the same window. Archer reflects any changes you make on the next page load.
+
+### Who can change billing
+
+- **Owners** and **Admins** can start a subscription and open the Customer Portal.
+- **Approvers** and **Members** see the Plan tab as read-only.
+
+### Branding entitlements
+
+Some branding options — like hiding "Powered by Archer" — remain gated to paid tiers. See [Customize reward branding](/guides/customize-rewards).
 
 ## Who can edit Settings
 
