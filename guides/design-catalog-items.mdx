@@ -1,0 +1,79 @@
+---
+title: "Design branded merch with the catalog designer"
+description: "Use the AI catalog designer on the Catalog page to create branded mugs, shirts, totes, and other merch your agents can send as rewards."
+---
+
+The **Catalog** page holds the items your account can send as rewards. To add a new branded item, you chat with the **catalog designer** — an AI assistant that finds a Printful base product, places your artwork on it, renders a mockup, and saves the finished item to your catalog.
+
+## Prerequisites
+
+- The **Owner** or **Admin** role. Members and Approvers can view the catalog but can't add items.
+- Optional: a logo, illustration, or photo to print on the merch. PNG or SVG with a transparent background works best. If you don't have artwork, the designer can generate it for you.
+
+## Open the designer
+
+1. In the dashboard sidebar, click **Catalog**.
+2. Click **Add item** in the top right (or in the empty state if your catalog is empty).
+3. The chat panel opens with a short intro from the designer.
+
+The session is created lazily — closing the panel before you send a message doesn't create anything.
+
+## Workflow
+
+<Steps>
+  <Step title="Describe the merch">
+    Tell the designer what you want in plain language. Examples:
+
+    - "A black ceramic mug with our logo centered."
+    - "A heavyweight t-shirt with a small chest print."
+    - "Canvas tote bag, natural color, big front graphic."
+
+    Drop in any artwork you want to use using the upload button. You can attach multiple images per message.
+  </Step>
+  <Step title="Pick a base product">
+    The designer searches Printful's catalog and surfaces up to five base products as cards with thumbnails, names, and variant counts. Reply with the one you want.
+  </Step>
+  <Step title="Review the mockup">
+    The designer renders a mockup of your artwork on the chosen product and shows it in the chat. If you didn't upload artwork and asked the designer to generate something, the AI image appears here too.
+  </Step>
+  <Step title="Iterate">
+    Ask for changes in chat. Common edits:
+
+    - Resize or reposition the artwork ("make it smaller", "move it to the chest")
+    - Swap to a different uploaded image
+    - Switch variant — color, size, or material
+    - Regenerate AI artwork with a different prompt
+    - Change placement (front, back, sleeve)
+
+    The designer renders a new mockup after each change.
+  </Step>
+  <Step title="Save to catalog">
+    When you're happy, tell the designer to save it. The item is added to your catalog with the rendered mockup as its image and a retail price quoted from Printful. The new card appears on the Catalog page when the chat closes.
+  </Step>
+</Steps>
+
+## Using your own artwork vs. AI generation
+
+The designer **defaults to your uploaded artwork**. It only generates new images when you explicitly ask — phrases like "design me a logo", "generate artwork", or "I don't have an image" trigger generation. If you describe an idea without asking for art, the designer will ask whether you want to upload your own or have it drawn.
+
+This keeps brand assets in your control. For best results:
+
+- Upload high-resolution PNGs with transparent backgrounds.
+- Mention the placement you want ("centered on the chest", "small bottom-right corner").
+- For AI generation, describe the style ("minimal line art", "flat vector logo") — busy art rarely prints well.
+
+## Pricing
+
+Catalog items are priced as **Printful's per-item cost plus your account's markup**. The designer surfaces this final retail quote when you ask about price or pick a variant. You pay the quoted price when an agent sends the item as a reward.
+
+If a variant's price can't be resolved at save time, the save fails rather than listing the item at $0.00 — pick a different variant and try again.
+
+## After saving
+
+Saved items appear as cards on the Catalog page with the mockup image, name, and price. Agents in your workspace can include them in rewards from then on. To add another item, click **Add item** again — each session is independent.
+
+## Tips
+
+- Keep messages focused. Short, specific instructions ("center it, smaller") iterate faster than long descriptions.
+- One product per session. To add a mug *and* a shirt, finish the mug, then open a new session for the shirt.
+- If the search results don't fit what you want, give the designer a clearer description — material, color, style — instead of asking it to search again with the same query.
