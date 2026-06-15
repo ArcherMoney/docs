@@ -40,7 +40,46 @@ Add and manage teammates. See [Invite your team](/guides/invite-team).
 
 ## Plan
 
-The **Plan** card shows your current plan and entitlements. Click **Manage plan** to upgrade, downgrade, or update billing. Some branding options (like hiding "Powered by Archer") are gated to paid plans.
+The **Plan** tab shows your current subscription, billing period, and payment method on file. Use it to start a subscription, manage billing details, or check renewal status.
+
+### Start a subscription
+
+New workspaces sign up for **Archer Pro** at $12,000/year with a 30-day free trial. You will not be charged if you cancel before the trial ends.
+
+1. Open **Settings → Plan**.
+2. Click **Start 30-day free trial**.
+3. Complete checkout on Stripe's hosted page using your payment details.
+4. You're redirected back to the Plan tab, where the badge updates to **Trialing** once the subscription is provisioned.
+
+The Plan tab polls for a few seconds after checkout to pick up the new subscription. If it doesn't appear, click **Refresh status**.
+
+### Manage billing
+
+Once a subscription exists, **Manage billing** opens the Stripe Customer Portal in a new session. Use the portal to:
+
+- Update the card on file
+- Download invoices and receipts
+- Change billing email and address
+- Cancel or resume your subscription
+
+Changes made in the portal sync back to Archer automatically — refresh the Plan tab if you don't see them right away.
+
+### Subscription status
+
+The badge next to your plan name reflects the current Stripe status:
+
+| Status | What it means |
+|---|---|
+| **Trialing** | You're inside the 30-day free trial. No charges yet. |
+| **Active** | Subscription is current and paid. |
+| **Past due** | A recent payment failed. Open **Manage billing** to update your card. |
+| **Canceled** | Subscription has ended. Start a new one to restore access. |
+| **Paused** | Billing is paused. Use Manage billing to resume. |
+
+### Who can change the plan
+
+- **Owners** and **Admins** can start checkout and open the Customer Portal.
+- **Approvers** and **Members** can view the current plan and status, but cannot make billing changes.
 
 ## Who can edit Settings
 
