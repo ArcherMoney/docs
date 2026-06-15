@@ -13,26 +13,30 @@ See [Invite your team](/guides/invite-team) for how roles are assigned.
 
 ## Reviewing the queue
 
-Open **Approvals** from the dashboard sidebar. Each row shows:
+Open **Approvals** from the dashboard sidebar. The page has two tabs, each with a live count of items waiting:
+
+- **Outbound Approvals** — Office Orders waiting on the first sign-off, before Archer reaches out to the recipient for their shipping address.
+- **Purchase Approvals** — Office Orders where the recipient has confirmed their address, and Archer needs your final go-ahead to purchase and ship the item.
+
+Switch tabs to see each list. Each row shows:
 
 - The agent that fired the order
 - The category (always Office Order for queued items)
 - The recipient
 - The item Archer plans to send
-- The quoted price
+- The recipient's shipping address (once confirmed, on the Purchase tab)
 - When the request was made
-
-Click into a row to see the full event payload, the recipient's saved shipping address, and any notes from the requester.
 
 ## Acting on a request
 
-From the row, you can:
+The action on each row depends on which tab you're in:
 
-| Action | What happens |
-|---|---|
-| **Approve** | The order moves to fulfillment. It appears as `delivered` in Activity once shipped or settled. |
-| **Decline** | The order is removed from the queue. It does not appear in Activity. |
-| **Approve all** | Bulk-approves every order in the current view. Use carefully — there's no undo. |
+| Tab | Primary action | What happens |
+|---|---|---|
+| **Outbound Approvals** | **Approve** | The order moves to the Purchase tab. Archer reaches out to the recipient to confirm their shipping address. |
+| **Purchase Approvals** | **Confirm** | The order moves to fulfillment. It appears as `delivered` in Activity once shipped or settled. |
+| Either tab | **Cancel** | The order is removed from the queue. It does not appear in Activity. |
+| Either tab | **Approve all** | Bulk-acts on every order in the current tab. Use carefully — there's no undo. |
 
 Approvals are recorded with the approver's identity for audit purposes.
 

@@ -26,11 +26,18 @@ Declined Office Orders are hidden from Activity (they're visible in the Approval
 
 The **Approvals** page lists Office Orders waiting on someone to act. Each row shows the agent that fired it, the requested item, the recipient, and the quoted price.
 
+The page is split into two tabs, each with a live count of items waiting:
+
+| Tab | What's in it |
+|---|---|
+| **Outbound Approvals** | Office Orders waiting on a sign-off before Archer reaches out to the recipient. Acting here sends the order forward to the recipient for address confirmation. |
+| **Purchase Approvals** | Office Orders where the recipient has confirmed their shipping address, and Archer needs the final go-ahead to purchase and ship the item. |
+
 Anyone with the **owner**, **admin**, or **approver** role can:
 
-- **Approve** — the order moves to fulfillment and eventually shows up as `delivered` in Activity.
-- **Decline** — the order is removed from the queue and hidden from Activity.
-- **Approve all** — bulk-approve the entire queue.
+- **Approve** (Outbound tab) or **Confirm** (Purchase tab) — the order moves to the next stage. Once purchased and shipped, it shows up as `delivered` in Activity.
+- **Cancel** — the order is removed from the queue and hidden from Activity.
+- **Approve all** — bulk-act on every order in the current tab.
 
 Customer Gifts and Partner Gifts don't appear here — they send immediately when their agent fires.
 
