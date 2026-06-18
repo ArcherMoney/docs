@@ -1,0 +1,71 @@
+---
+title: "Pay for goods orders with credits"
+description: "Add a saved payment method, accept direct-charge consent, and prepay for Office Order fulfillment with credits that Archer draws down as orders are approved."
+---
+
+Office Orders that ship physical goods need a way to pay for fulfillment. Archer settles approved goods orders against a prepaid **credit balance** first, then falls back to your saved payment method for any remainder. This guide walks through getting your workspace ready and topping up credits.
+
+## How payment works
+
+When an Office Order is approved, Archer charges in this order:
+
+1. **Credit balance** — if you have one, Archer deducts the item and shipping cost from it before charging anything else.
+2. **Saved payment method** — covers the remainder, or the full amount if your balance is zero.
+
+You always see the split on the order: **Item** + **Shipping** = total charged.
+
+## Get your workspace ready
+
+Both credits and direct charges require a one-time setup on the **Plan** tab under **Settings**. Only **Owners** and **Admins** can complete it.
+
+<Steps>
+  <Step title="Add a saved payment method">
+    On the Plan card, click **Set up payment method**. Archer redirects you to a hosted Stripe page to save a card. When you return, the **Direct goods charges** tile updates to show the card on file.
+  </Step>
+  <Step title="Accept direct-charge consent">
+    The Plan card shows a consent block under **Direct goods charges**. Read it, then click **Accept consent**. This authorizes Archer to charge the saved card for approved goods orders and credit deposits.
+
+    Consent is tied to the specific saved payment method. If you swap cards later, you'll be asked to re-accept.
+  </Step>
+  <Step title="Confirm readiness">
+    When the **Direct goods charges** badge reads **Ready**, the workspace can charge for goods orders and you can start buying credits.
+  </Step>
+</Steps>
+
+## Buy credits
+
+Once the workspace is ready, the **Credits** tab appears under **Settings** and a balance pill shows in the top bar.
+
+<Steps>
+  <Step title="Open Settings → Credits">
+    The Credits card shows your current balance, recent activity, and a deposit form.
+  </Step>
+  <Step title="Enter a deposit amount">
+    Type a USD amount and click **Buy credits**. Archer charges your saved card and adds the credits to the balance.
+  </Step>
+  <Step title="Handle authentication if asked">
+    If your bank requires 3-D Secure or similar, Archer prompts you to authenticate in-line. The balance updates within a few seconds of confirmation.
+  </Step>
+</Steps>
+
+Deposits show up in **Recent activity** alongside debits for fulfilled orders so you can reconcile spend.
+
+## Where this shows up
+
+| Surface | What you see |
+|---|---|
+| **Top bar** | A credit-balance pill next to your workspace switcher. Click it to jump to the Credits tab. |
+| **Approvals queue** | Each Office Order shows **Item** and **Shipping** as separate lines so you can preview the full charge before approving. |
+| **Orders page** | Fulfilled orders show the same **Item · Shipping** breakdown. |
+| **Catalog** | Item prices show **excl. shipping** — shipping is quoted at approval time based on the destination. |
+
+## When to use credits vs. card only
+
+- **Use credits** if you want predictable monthly spend, prepaid billing for finance, or a single invoice per top-up instead of one charge per order.
+- **Skip credits** if you'd rather see each goods order as its own card transaction. The setup is the same — just don't deposit a balance.
+
+## Troubleshooting
+
+- **"Setup needed" on the Credits or Plan card** — You're missing a saved payment method, direct-charge consent, or both. Re-run the steps above on the Plan tab.
+- **Deposit failed** — Stripe rejected the charge. Check the card in **Manage billing** (Customer Portal) or add a new payment method.
+- **Order approved but not fulfilling** — If your balance can't cover the order and the saved card fails, the order pauses until you resolve the payment. Top up credits or fix the card to retry.

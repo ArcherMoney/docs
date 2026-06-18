@@ -1,6 +1,6 @@
 ---
 title: "Configure your Archer workspace settings"
-description: "Set your Archer workspace name, sender display name, reply-to email, business address, notification preferences, and plan from the Settings page."
+description: "Set your Archer workspace name, sender display name, reply-to email, business address, notifications, plan, payment method, and credit balance from Settings."
 ---
 
 The **Settings** page in the dashboard is where workspace-wide configuration lives. Most fields here affect every agent and every reward — set them once when you start, then revisit only when something changes.
@@ -40,7 +40,20 @@ Add and manage teammates. See [Invite your team](/guides/invite-team).
 
 ## Plan
 
-The **Plan** card shows your current plan and entitlements. Click **Manage plan** to upgrade, downgrade, or update billing. Some branding options (like hiding "Powered by Archer") are gated to paid plans.
+The **Plan** card shows your current plan and entitlements. Click **Manage billing** to update card details, download invoices, or change tier in the hosted Customer Portal. Some branding options (like hiding "Powered by Archer") are gated to paid plans.
+
+### Direct goods charges
+
+The Plan card also tracks whether the workspace can pay for Office Order fulfillment. To turn it on:
+
+1. Click **Set up payment method** and save a card on the hosted Stripe page.
+2. Read and **Accept consent** under **Direct goods charges**.
+
+When the badge reads **Ready**, approved goods orders can charge the saved card and you can deposit credits. See [Pay for goods orders with credits](/guides/pay-for-goods-orders) for the full flow.
+
+## Credits
+
+Once direct goods charges are ready, a **Credits** tab appears alongside General. Deposit a prepaid balance that Archer draws down before charging the saved card on approved Office Orders. The current balance also shows as a pill in the top bar.
 
 ## Who can edit Settings
 
