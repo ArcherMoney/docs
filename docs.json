@@ -18,6 +18,12 @@
       "href": "https://archermoney.com"
     }
   },
+  "redirects": [
+    {
+      "source": "/guides/connect-slack",
+      "destination": "/concepts/triggers"
+    }
+  ],
   "navigation": {
     "tabs": [
       {
@@ -44,7 +50,6 @@
             "pages": [
               "guides/create-an-agent",
               "guides/customize-rewards",
-              "guides/connect-slack",
               "guides/approve-rewards",
               "guides/invite-team",
               "guides/workspace-settings"

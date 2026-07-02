@@ -1,7 +1,15 @@
 ---
 title: "Archer changelog and weekly release notes"
-description: "Weekly release notes for Archer covering new agent features, dashboard improvements, Slack integration changes, webhook updates, and product changes."
+description: "Weekly release notes for Archer covering new agent features, dashboard improvements, webhook updates, and product changes."
 ---
+
+<Update label="2026-07-02" tags={["Removal"]} description="Week of June 29">
+  ## Slack integration removed
+
+  The Slack integration is gone. The **Integrations** page no longer shows a Slack install, agents can't be created with a Slack trigger, and the `/archer` slash command has stopped working.
+
+  Every agent now fires from a **webhook**. If you were using a Slack agent for office orders, replace it with a webhook agent and `POST` events from an internal tool or form. See [Sending events](/developers/sending-events) for the request shape.
+</Update>
 
 <Update label="2026-05-20" tags={["Pivot"]} description="Week of May 18">
   ## Archer is now a rewards platform
@@ -9,7 +17,7 @@ description: "Weekly release notes for Archer covering new agent features, dashb
   We rebuilt Archer around three things:
 
   - **Agents** — natural-language automations that send rewards on your behalf.
-  - **Webhook and Slack triggers** — fire agents from your product, CRM, or chat.
+  - **Webhook triggers** — fire agents from your product, CRM, or backend.
   - **Approvals** — sign off on Office Orders before they ship.
 
   The old payouts, smart wallet, and on-/off-ramp surfaces are retired. Start with the new [Introduction](/introduction) and [Quickstart](/quickstart).

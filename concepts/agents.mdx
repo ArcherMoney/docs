@@ -14,7 +14,7 @@ When you create an agent in the dashboard, you fill out five fields:
 | **Name** | Internal label, shown in Agents, Activity, and Approvals. |
 | **Category** | `Office Order`, `Customer Gift`, or `Partner Gift`. Decides the fulfillment path. See [Categories](/concepts/categories). |
 | **Logic** | A one- or two-clause plain-English description of the trigger and the reward. Archer uses this to match incoming events. |
-| **Trigger** | `Webhook` or `Slack`. Decides how events reach the agent. See [Triggers](/concepts/triggers). |
+| **Trigger** | `Webhook`. Decides how events reach the agent. See [Triggers](/concepts/triggers). |
 | **Status** | `Active` or `Paused`. Paused agents accept events at the door but produce no rewards. |
 
 You can also configure email and form branding per agent — subject, body, primary color, logo, and whether to show "Powered by Archer".
@@ -23,10 +23,10 @@ You can also configure email and form branding per agent — subject, body, prim
 
 <Steps>
   <Step title="Event arrives">
-    For webhook agents, your system `POST`s a JSON event to the agent's webhook URL. For Slack agents, a teammate runs the `/archer` slash command.
+    Your system `POST`s a JSON event to the agent's webhook URL.
   </Step>
   <Step title="Agent matches">
-    Archer routes the event directly to the agent that owns the webhook URL (or, for Slack, to your single Slack agent). There's no fuzzy classification across agents.
+    Archer routes the event directly to the agent that owns the webhook URL. There's no fuzzy classification across agents.
   </Step>
   <Step title="Reward sends">
     Customer Gift and Partner Gift rewards send immediately. Office Orders enter the **Approvals** queue first.
@@ -49,6 +49,6 @@ The agent detail page surfaces:
 - **Pause** an agent to temporarily stop it without losing its webhook URL or branding. Toggle it back to active any time. Events received while paused are accepted and silently dropped.
 - **Archive** an agent (via delete) when you no longer need it. The webhook URL stops producing rewards. Archived agents are hidden from the Agents list and cannot be restored — create a new agent if you need the same rule back.
 
-## Slack uniqueness
+## How many agents can I create?
 
-You can have at most **one active Slack-triggered agent per workspace**. Trying to create a second returns an error. Webhook agents have no such limit — create as many as you need, one per use case.
+Webhook agents have no limit — create as many as you need, one per use case (onboarding gift, referral payout, milestone reward, and so on).
