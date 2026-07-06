@@ -1,0 +1,50 @@
+---
+title: "Add workers to your Archer workspace"
+description: "Add workers to your Archer workspace from the Workers page so agents can send them rewards and payouts."
+---
+
+Workers are the people your agents can send rewards and payouts to — teammates, contractors, referrers, or customers on payroll. Each worker has a name, email, and a wallet Archer provisions automatically so payouts settle without extra setup.
+
+Manage workers from the **Workers** page in the dashboard sidebar.
+
+## Prerequisites
+
+- An Archer account.
+- The **Owner** or **Admin** role. Members and Approvers can view the Workers list but can't add new workers.
+- The worker's email address. Archer uses it to provision the wallet and, later, to deliver reward emails.
+
+## Add a new worker
+
+<Steps>
+  <Step title="Open the Workers page">
+    In the dashboard sidebar, click **Workers**. The **New user** card sits at the top of the page.
+  </Step>
+  <Step title="Enter a name and email">
+    Type the worker's name and work email. Email is required — Archer uses it to create the wallet and match the worker to future events.
+  </Step>
+  <Step title="Click Create user">
+    Archer creates the worker record, provisions a wallet, and links it to your workspace. The new worker appears in the roster below with **Wallet: Connected**.
+  </Step>
+</Steps>
+
+Workers are always scoped to the workspace you're signed in to. You can't create a worker inside another workspace, even if you're a member of both.
+
+## The Workers table
+
+Once created, each worker appears in the table with these columns:
+
+| Column | What it shows |
+|---|---|
+| **Worker** | Name and email. Blank name falls back to the email. |
+| **Status** | Where the worker is in onboarding — for example, **Active** once the wallet is ready. |
+| **Wallet** | **Connected** when Archer has provisioned a wallet, **Missing** otherwise. |
+| **Archived** | **Yes** if the worker has been archived and is hidden from new payouts. |
+| **Record** | Internal record ID. Handy when debugging with support. |
+
+Use the **Search workers** box to filter by name, email, or status.
+
+## Tips
+
+- Use a worker's **verified work email**. Archer matches incoming events to workers by email, so mismatches will silently miss the intended recipient.
+- Adding a worker on the Workers page is different from [inviting a teammate](/guides/invite-team) — teammates sign in and use the dashboard, workers only receive rewards and payouts.
+- If wallet provisioning fails, the worker still appears with **Wallet: Missing**. Retry by contacting support or recreating the worker with a corrected email.
