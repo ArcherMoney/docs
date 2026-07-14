@@ -1,0 +1,102 @@
+---
+title: "Cash out USDC from Archer to your US bank account"
+description: "Withdraw USDC from your Archer wallet to a linked US bank account. Add a bank, kick off a cash-out, and track ACH settlement to completion."
+---
+
+Cash out moves USDC from your Archer wallet to a US bank account. Archer converts USDC on Base to USD automatically and sends the funds by ACH — usually within 1–2 business days.
+
+## Before you start
+
+- Finish identity verification. If your workspace hasn't completed KYC, the modal prompts you to verify before you can add a bank or cash out.
+- Have USDC in your smart wallet on Base. If the wallet is empty, add funds from **Deposit** first.
+- Have your US bank account details ready: routing number, account number, account type (checking or savings), account owner name, and the beneficiary's US address.
+
+## Open the Withdraw tab
+
+<Steps>
+  <Step title="Open the money modal">
+    From the dashboard, click **Deposit / Withdraw** in the top bar.
+  </Step>
+  <Step title="Switch to Withdraw">
+    Toggle the tab at the top of the modal from **Deposit** to **Withdraw**. The **Cash out** panel opens.
+  </Step>
+</Steps>
+
+## Add a US bank account
+
+The first time you cash out, add the bank account you want funds to land in. Archer keeps this account on file so you can reuse it on future cash-outs.
+
+<Steps>
+  <Step title="Click Add bank account">
+    In the Withdraw tab, click **Add bank account**.
+  </Step>
+  <Step title="Enter account details">
+    Fill in:
+
+    - **Routing number** and **account number**
+    - **Account type** — Checking or Savings
+    - **Account owner name** — must match the name on the bank account
+    - **Bank name**
+  </Step>
+  <Step title="Enter the beneficiary address">
+    Enter the US street address associated with the account owner. Country and state are picked from dropdowns; only supported regions are shown.
+  </Step>
+  <Step title="Save">
+    Click **Add bank account**. The account appears in the picker with a `••••1234` masked label so you can select it on any future cash-out.
+  </Step>
+</Steps>
+
+If a field is missing or the address isn't accepted, the form surfaces a specific error (for example, "Enter a complete US beneficiary address"). Fix the flagged field and resubmit.
+
+## Kick off a cash-out
+
+<Steps>
+  <Step title="Select the destination bank">
+    Pick the US bank account you want the funds wired to.
+  </Step>
+  <Step title="Enter an amount">
+    Type the USDC amount to cash out. The minimum is **$1**, and amounts settle to the whole cent.
+  </Step>
+  <Step title="Confirm the transfer">
+    Click **Cash out**. Approve the transaction in your smart wallet when prompted. Archer sends the USDC to a dedicated cash-out (liquidation) address, converts it to USD, and wires it to your bank.
+  </Step>
+</Steps>
+
+Each cash-out shows up in the **History** list beneath the form with a status pill that updates as the transfer moves through Bridge and your bank.
+
+## Track a cash-out
+
+| Status | What it means |
+|---|---|
+| **Sending** | USDC is on its way from your wallet to Archer's cash-out address. |
+| **Received** | Archer received the USDC and is converting it to USD. |
+| **In review** | The payout is under compliance review. You'll get an email when it clears. |
+| **Sending to bank** | Funds are on the ACH rails, heading to your bank. |
+| **Completed** | Funds have settled in your bank account. |
+| **Returning** | Your bank rejected the transfer. Funds are being returned to your wallet automatically. |
+| **Returned** | The return completed. USDC is back in your wallet. |
+| **Canceled** | The cash-out was canceled before it settled. |
+| **Return failed** / **Needs attention** / **Failed** | The transfer couldn't complete and needs manual help — [contact support](mailto:support@archermoney.com). |
+
+Most successful cash-outs move `Sending → Received → Sending to bank → Completed` within 1–2 business days.
+
+## What happens if the payout fails
+
+If your bank refuses the wire (for example, the account is closed or the name doesn't match), Bridge automatically returns the USDC to your Archer smart wallet using the return instructions on file. The history entry moves to **Returning** and then **Returned** once the crypto is back. You can retry the cash-out with a different bank account.
+
+If the automatic return itself fails, the entry shows **Return failed** or **Needs attention**. In that case, [contact support](mailto:support@archermoney.com) — the funds are safe, but they need manual routing.
+
+## Limits and timing
+
+- **Minimum**: $1 per cash-out.
+- **Rails**: US domestic ACH. International accounts aren't supported today.
+- **Settlement**: 1–2 business days for a successful ACH payout.
+- **KYC**: A verified workspace is required before adding a bank or starting a cash-out.
+
+## Troubleshooting
+
+- **"Finish verifying your identity before cashing out to a bank."** — Complete workspace verification, then reopen the Withdraw tab.
+- **"Insufficient USDC in your smart wallet."** — Top up your wallet from the **Deposit** tab and try again.
+- **"Smart wallet has no ETH for gas."** — Fund the smart wallet with a small amount of ETH on Base to cover gas, then retry.
+- **"Cash-out cancelled."** — You dismissed the wallet prompt. Click **Cash out** again to retry.
+- **Address rejected** — Bridge only supports certain regions. Double-check the state and postal code, or pick another supported country from the dropdown.
