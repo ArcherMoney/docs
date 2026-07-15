@@ -1,0 +1,125 @@
+---
+title: "Scoped API access with OAuth token exchange"
+description: "Configure a JWKS issuer for your Archer workspace, exchange your own JWT for a scoped Archer bearer token, and call the People API programmatically."
+---
+
+Archer exposes a small programmatic API for managing people (the recipients of rewards and payouts) in your workspace. Access is authenticated through an [OAuth 2.0 token exchange](https://datatracker.ietf.org/doc/html/rfc8693) broker — you present a JWT signed by your own identity provider, and Archer returns a short-lived, scoped bearer token you can use against the API.
+
+Use this when you need to sync people from your own systems into Archer without having a human sign in to the dashboard.
+
+## Prerequisites
+
+- An Archer workspace with **Admin** access.
+- An identity provider that publishes a public JWKS (Auth0, Okta, Cognito, Azure AD, a self-hosted signer, etc.) and can mint JWTs for the service or user that will call Archer.
+- The tenant ID Archer assigns to your workspace once you save a JWKS configuration.
+
+## 1. Configure your JWKS issuer
+
+Open the **Developers** page in the dashboard and fill in the **API access** card:
+
+| Field | What to enter |
+|---|---|
+| **JWKS URL** | Your issuer's JWKS endpoint, for example `https://issuer.example.com/.well-known/jwks.json`. Archer fetches it to verify tokens you present. |
+| **Issuer** | Optional. The expected `iss` claim on your JWTs. Archer rejects tokens with a different issuer when set. |
+| **Audience** | Optional. The expected `aud` claim. Set this to a value your identity provider signs into tokens meant for Archer (e.g. `archer`). |
+| **Subject claim** | The claim Archer treats as the user identity. Defaults to `sub`. |
+| **API scopes** | The scopes your workspace is allowed to request. Check `person:read` and `person:write` to enable the People API. |
+| **Enable token exchange for this tenant** | Turn off to temporarily disable API access without deleting the config. |
+
+Select **Save configuration**. Archer creates the config and reveals your **Tenant ID** — copy it. You'll pass it on every token-exchange request.
+
+You can update or delete the config at any time from the same card.
+
+## 2. Exchange your JWT for an Archer token
+
+Mint a JWT with your identity provider, then POST it to `/auth/token_exchange` with your tenant ID and the scopes you want:
+
+```bash
+curl -X POST "https://api.archermoney.com/auth/token_exchange" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+    "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+    "tenant_id": "act_2026_05_20_abc",
+    "subject_token": "<your signed JWT>",
+    "scope": "person:read person:write"
+  }'
+```
+
+A successful response returns a short-lived Archer bearer token:
+
+```json
+{
+  "access_token": "eyJhbGciOi...",
+  "issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
+  "token_type": "Bearer",
+  "expires_in": 300,
+  "scope": "person:read person:write",
+  "subject": "user_1234"
+}
+```
+
+Notes:
+
+- `scope` is optional. Omit it to receive every scope your workspace has enabled; pass a space-separated list to narrow the token. You can never request a scope that isn't allowed on your JWKS config.
+- Tokens expire in five minutes. Exchange a fresh subject token when you need a new one — don't cache Archer access tokens across requests.
+- The `subject` in the response is whatever claim you configured as the **Subject claim**. Archer uses it to record who took each action.
+
+## 3. Call the API
+
+Pass the exchanged access token as a `Bearer` token on every request:
+
+```bash
+curl "https://api.archermoney.com/person" \
+  -H "Authorization: Bearer $ARCHER_ACCESS_TOKEN"
+```
+
+### Available scopes
+
+| Scope | Grants |
+|---|---|
+| `person:read` | `GET /person` — list people, or fetch a single person with `?person_id=…`. |
+| `person:write` | `POST /person` — create a person and provision their wallet. |
+
+Requests without a scope the endpoint requires return `403 Forbidden`.
+
+### List people
+
+```bash
+curl "https://api.archermoney.com/person" \
+  -H "Authorization: Bearer $ARCHER_ACCESS_TOKEN"
+```
+
+Optional query parameters:
+
+- `person_id` — fetch a single person by ID.
+- `include_archived=true` — include archived people in the list.
+- `include_all_states=true` — include people in non-active states.
+
+### Create a person
+
+```bash
+curl -X POST "https://api.archermoney.com/person" \
+  -H "Authorization: Bearer $ARCHER_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "alice@example.com",
+    "name": "Alice Example"
+  }'
+```
+
+`email` is required and must be unique within your workspace. Archer pregenerates a wallet for the person on creation and returns their `id`, `wallet_address`, and status.
+
+## Verifying Archer-issued tokens
+
+If you need to verify Archer's access tokens yourself (for example, in a proxy), fetch the public JWKS at:
+
+```
+https://api.archermoney.com/auth/jwks
+```
+
+Tokens are signed by Archer and include your `tenant_id`, the `subject` from your original JWT, and the granted `scope`.
+
+## Related
+
+- [Sending webhook events to fire an agent](/developers/sending-events)
