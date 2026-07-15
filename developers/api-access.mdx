@@ -19,11 +19,11 @@ Open the **Developers** page in the dashboard and fill in the **API access** car
 
 | Field | What to enter |
 |---|---|
-| **JWKS URL** | Your issuer's JWKS endpoint, for example `https://issuer.example.com/.well-known/jwks.json`. Archer fetches it to verify tokens you present. |
-| **Issuer** | Optional. The expected `iss` claim on your JWTs. Archer rejects tokens with a different issuer when set. |
-| **Audience** | Optional. The expected `aud` claim. Set this to a value your identity provider signs into tokens meant for Archer (e.g. `archer`). |
+| **JWKS URL** | Required. Your issuer's JWKS endpoint, for example `https://issuer.example.com/.well-known/jwks.json`. Archer fetches it to verify tokens you present. |
+| **Issuer** | Required. The expected `iss` claim on your JWTs. Archer rejects any token whose issuer doesn't match. |
+| **Audience** | Required. The expected `aud` claim. Set this to a value your identity provider signs into tokens meant for Archer (e.g. `archer`). |
 | **Subject claim** | The claim Archer treats as the user identity. Defaults to `sub`. |
-| **API scopes** | The scopes your workspace is allowed to request. Check `person:read` and `person:write` to enable the People API. |
+| **API scopes** | Required. The scopes your workspace is allowed to request. Check `person:read` and `person:write` to enable the People API. |
 | **Enable token exchange for this tenant** | Turn off to temporarily disable API access without deleting the config. |
 
 Select **Save configuration**. Archer creates the config and reveals your **Tenant ID** — copy it. You'll pass it on every token-exchange request.
@@ -64,6 +64,17 @@ Notes:
 - `scope` is optional. Omit it to receive every scope your workspace has enabled; pass a space-separated list to narrow the token. You can never request a scope that isn't allowed on your JWKS config.
 - Tokens expire in five minutes. Exchange a fresh subject token when you need a new one — don't cache Archer access tokens across requests.
 - The `subject` in the response is whatever claim you configured as the **Subject claim**. Archer uses it to record who took each action.
+
+### Subject token requirements
+
+Archer rejects the exchange request with `400 invalid_request` or `403 access_denied` when:
+
+- The subject JWT is missing, unsigned, or larger than a few kilobytes.
+- The `iss` or `aud` claim doesn't match the values on your JWKS config.
+- The signing algorithm isn't `RS256` or `ES256`.
+- Token exchange is disabled on your JWKS config, or your workspace is inactive.
+
+Fix the mismatch on your identity provider (or re-enable the config on the Developers page) and retry.
 
 ## 3. Call the API
 
