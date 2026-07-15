@@ -1,6 +1,6 @@
 ---
 title: "Scoped API access with OAuth token exchange"
-description: "Configure a JWKS issuer for your Archer workspace, exchange your own JWT for a scoped Archer bearer token, and call the People API programmatically."
+description: "Configure a JWKS issuer, exchange your JWT for a scoped Archer bearer token, and call the People API to sync recipients programmatically."
 ---
 
 Archer exposes a small programmatic API for managing people (the recipients of rewards and payouts) in your workspace. Access is authenticated through an [OAuth 2.0 token exchange](https://datatracker.ietf.org/doc/html/rfc8693) broker — you present a JWT signed by your own identity provider, and Archer returns a short-lived, scoped bearer token you can use against the API.
