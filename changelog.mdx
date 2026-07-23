@@ -3,6 +3,22 @@ title: "Archer changelog and weekly release notes"
 description: "Weekly release notes for Archer covering new agent features, dashboard improvements, Slack integration changes, webhook updates, and product changes."
 ---
 
+<Update label="2026-07-22" tags={["New"]} description="Week of July 20">
+  ## Fund and cash out in more currencies
+
+  Workspaces can now fund their Archer wallet from EUR, GBP, MXN, BRL, and COP bank accounts in addition to USD. Deposits are converted to USDC on Base automatically, and the **Deposit → Bank transfer** panel provisions a virtual account per currency you enable.
+
+  Cash-out grew the same way. Workspace admins and claimed recipients can pay out to local bank accounts in:
+
+  - **EUR** over SEPA — IBAN and BIC
+  - **GBP** over Faster Payments — sort code and account number
+  - **MXN** over SPEI — 18-digit CLABE
+  - **BRL** over Pix — Pix key and CPF or CNPJ
+  - **COP** over Bre-B — Bre-B key
+
+  Pick a payout currency in the **Cash out** panel and Archer routes the transfer over the matching local rail. SPEI, Pix, and Bre-B usually settle in minutes; SEPA and Faster Payments in the same business day.
+</Update>
+
 <Update label="2026-05-20" tags={["Pivot"]} description="Week of May 18">
   ## Archer is now a rewards platform
 
