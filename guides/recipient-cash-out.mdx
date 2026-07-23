@@ -1,0 +1,102 @@
+---
+title: "Cash out USDC to a local bank in Mexico, Brazil, or Colombia"
+description: "Workers who have claimed an Archer invite can cash out USDC to a Mexican, Brazilian, or Colombian bank using SPEI, Pix, or Bre-B — this guide walks through setup and payouts."
+---
+
+Workers who claim an Archer invite land in a recipient dashboard where they can cash USDC out of their wallet to a local bank. Payouts settle in local currency over instant rails — **SPEI** in Mexico, **Pix** in Brazil, and **Bre-B** in Colombia — after a one-time identity check.
+
+## Prerequisites
+
+- You accepted an invite from a workspace and finished claiming your account. If you haven't, follow the claim link the workspace sent you and sign in.
+- Your Archer wallet holds at least $1 in USDC on Base.
+- You have a bank account in Mexico, Brazil, or Colombia, and the account holder is you.
+
+## Verify your identity
+
+Cash-out is gated behind a one-time identity check.
+
+<Steps>
+  <Step title="Open Cash out">
+    Sign in to your recipient dashboard. In the **Cash out** panel, click **Verify to cash out**.
+  </Step>
+  <Step title="Complete verification">
+    A verification window opens. Follow the prompts to submit your ID and personal details, then close the window when you're done.
+  </Step>
+  <Step title="Wait for approval">
+    Approval is usually instant. The **Cash out** panel unlocks as soon as your status is **Approved**.
+  </Step>
+</Steps>
+
+<Tip>
+  Verification is tied to the **payout currency** you pick. If you later add a bank in a different country, you may be asked to complete a short follow-up review for that region.
+</Tip>
+
+## Add a bank account
+
+Add the bank account you want your cash-out to land in. Each currency uses a different local rail, so the form fields change based on what you pick.
+
+<Steps>
+  <Step title="Pick a payout currency">
+    In the **Cash out** panel, choose **MXN**, **BRL**, or **COP**. This selects the rail used for the transfer.
+  </Step>
+  <Step title="Fill in the bank details">
+    Enter the account details for the currency you picked:
+
+    | Currency | Rail | Required details |
+    |---|---|---|
+    | **MXN** | SPEI | 18-digit **CLABE** |
+    | **BRL** | Pix | **Pix key** and **CPF or CNPJ** |
+    | **COP** | Bre-B | **Bre-B key** |
+
+    Also enter your **first name**, **last name**, and full **beneficiary address** (street, city, state, postal code, country). The account holder must be you.
+  </Step>
+  <Step title="Save the account">
+    Click **Add bank account**. The account appears in your bank list and is selected automatically.
+  </Step>
+</Steps>
+
+You can add multiple accounts and switch between them at cash-out time. You can add accounts in different currencies from the same dashboard.
+
+## Cash out USDC
+
+<Steps>
+  <Step title="Pick a bank account">
+    Select one of your saved bank accounts in the **Cash out** panel.
+  </Step>
+  <Step title="Enter an amount">
+    Type an amount in USDC. The minimum is **$1**, and amounts are settled to the whole cent.
+  </Step>
+  <Step title="Confirm and sign">
+    Click **Cash out to bank** and approve the wallet signature. Archer moves your USDC on Base to the cash-out address, converts it to local currency, and sends it to your bank.
+  </Step>
+</Steps>
+
+Typical settlement times:
+
+- **SPEI (MXN):** minutes to a few hours
+- **Pix (BRL):** minutes
+- **Bre-B (COP):** minutes to a few hours
+
+## Track a cash-out
+
+Every cash-out shows up under **Recent cash-outs** on your dashboard. Statuses update live while a payout is in flight:
+
+| Status | What it means |
+|---|---|
+| **Sending** | Your USDC is on its way to the cash-out address. |
+| **Received** | Archer received your USDC and is converting it to local currency. |
+| **In review** | The payout is under manual review. You'll get an email when it clears. |
+| **Sending to bank** | The local-currency transfer is on its way to your bank. |
+| **Completed** | The payout settled to your bank account. |
+| **Returning** / **Returned** | Your bank couldn't accept the payout — the USDC is being returned to your wallet. |
+| **Needs attention** / **Failed** | Something blocked the payout. Contact support. |
+
+## Troubleshooting
+
+- **"Finish verifying your identity before cashing out to a bank."** — Your identity check hasn't been approved yet. Re-open the verification window and finish it.
+- **"Verification for this payout currency isn't complete yet."** — You added a bank in a new region and need to complete a short follow-up review. Open the verification window again to finish it.
+- **"Insufficient USDC in your smart wallet. Top up and try again."** — Your wallet balance is below the amount you entered. Ask the workspace that pays you to top you up, then retry.
+- **"Cash-out cancelled."** — You dismissed the signature prompt in your wallet. Click **Cash out to bank** again and approve the signature.
+- **Payout stuck in "Returning."** — Double-check the bank details you saved (CLABE, Pix key, or Bre-B key). Once the funds are back in your wallet, add a corrected account and retry.
+
+For anything else, reach out to your workspace admin or Archer support.
