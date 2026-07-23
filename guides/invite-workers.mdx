@@ -1,0 +1,64 @@
+---
+title: "Invite workers to claim their Archer account"
+description: "Send an invite link from the Workers page so a worker can sign in, claim their own self-custodied wallet, and see rewards land in a recipient dashboard."
+---
+
+Adding a worker on the **Workers** page creates a record Archer can send payouts to. Inviting that worker to **claim** their account lets them sign in, take custody of their own wallet, and see their balance and activity in a dedicated recipient dashboard.
+
+Once a worker claims their invite, they sign in with their own email. Archer never signs on their behalf — the wallet is bound to the worker's login, not to your organization.
+
+## Prerequisites
+
+- An Archer account with the **Owner** or **Admin** role.
+- The worker already exists on the **Workers** page with a valid email address.
+
+## Send an invite
+
+<Steps>
+  <Step title="Open the Workers page">
+    In the dashboard sidebar, click **Workers**. Each row in the roster has an invite action on the right.
+  </Step>
+  <Step title="Click Invite">
+    Next to the worker you want to invite, click **Invite**. Archer generates a one-time claim link and shows it inline with a copy button.
+  </Step>
+  <Step title="Share the link">
+    Copy the link and send it to the worker over your usual channel — email, Slack DM, whatever they'll see. The link is tied to that worker's email, so only they can complete the claim.
+  </Step>
+</Steps>
+
+The worker's invite status shows next to their row:
+
+| Status | What it means |
+|---|---|
+| **No badge** | No invite has been issued yet, or a previous invite was revoked. |
+| **Pending** | An invite link is live and waiting to be claimed. |
+| **Claimed** | The worker has signed in and their wallet is provisioned. |
+
+## Regenerate or revoke a link
+
+If a worker loses their invite link or you sent it to the wrong place:
+
+- Click **Regenerate link** on a pending invite to mint a fresh link. The old link stops working immediately.
+- Click **Revoke** on a pending invite to cancel it entirely. You can issue a new invite later from the same row.
+
+Claimed invites can't be regenerated or revoked — the worker's account is already active.
+
+## What the worker sees
+
+When the worker opens the claim link, Archer walks them through a short flow:
+
+1. **Sign in** with the email the invite was sent to. If they sign in with a different email, Archer refuses the claim and asks them to switch accounts.
+2. **Wallet setup** happens automatically in the background. Archer provisions a self-custodied wallet bound to the worker's own login.
+3. **Recipient dashboard** at `/recipient` opens once setup finishes. The worker sees:
+   - Their **USDC on Base** wallet address, with a copy button, for anyone who wants to send them funds.
+   - Their **current balance**.
+   - **Activity** — recent transactions on their wallet.
+   - A **Cash out to your bank** card noting that bank payouts are coming soon.
+
+The worker keeps custody of the wallet. Your organization can send them payouts through agents, but only the worker can sign transactions from their wallet.
+
+## Tips
+
+- Invite links are tied to the email on the worker's record. Fix a typo on the Workers page **before** sending an invite, otherwise the worker will hit an "Wrong account" error.
+- Regenerate a link any time you're unsure whether the previous one leaked — old links stop working the moment a new one is issued.
+- Inviting a worker to claim is different from [inviting a teammate](/guides/invite-team). Teammates get dashboard access; workers get a recipient view scoped to their own wallet.
