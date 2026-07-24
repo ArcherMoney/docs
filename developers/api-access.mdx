@@ -1,89 +1,27 @@
 ---
-title: "Scoped API access with OAuth token exchange"
-description: "Configure a JWKS issuer, exchange your JWT for a scoped Archer bearer token, and call the People API to sync recipients programmatically."
+title: "Scoped API access with an API signer"
+description: "Generate a scoped API signer on the Developers page, sign requests with EIP-191, and call the People API to sync recipients programmatically."
 ---
 
-Archer exposes a small programmatic API for managing people (the recipients of rewards and payouts) in your workspace. Access is authenticated through an [OAuth 2.0 token exchange](https://datatracker.ietf.org/doc/html/rfc8693) broker — you present a JWT signed by your own identity provider, and Archer returns a short-lived, scoped bearer token you can use against the API.
+Archer exposes a small programmatic API for managing people (the recipients of rewards and payouts) in your workspace. Access is authenticated with an **API signer** — a dedicated EVM key pair that you generate on the Developers page and use to sign every request. Archer stores only the signer address and its scopes; the private key never leaves your machine.
 
 Use this when you need to sync people from your own systems into Archer without having a human sign in to the dashboard.
 
 ## Prerequisites
 
-- An Archer workspace with **Admin** access.
-- An identity provider that publishes a public JWKS (Auth0, Okta, Cognito, Azure AD, a self-hosted signer, etc.) and can mint JWTs for the service or user that will call Archer.
-- The tenant ID Archer assigns to your workspace once you save a JWKS configuration.
+- An Archer workspace with **Admin** access. Recipient-only accounts can't create signers.
+- A completed onboarding — the API rejects signer requests until your workspace is active.
+- A secret manager (or equivalent) to store the signer's private key.
 
-## 1. Configure your JWKS issuer
+## 1. Generate an API signer
 
-Open the **Developers** page in the dashboard and fill in the **API access** card:
+Open the **Developers** page in the dashboard and find the **API signer** card.
 
-| Field | What to enter |
-|---|---|
-| **JWKS URL** | Required. Your issuer's JWKS endpoint, for example `https://issuer.example.com/.well-known/jwks.json`. Archer fetches it to verify tokens you present. |
-| **Issuer** | Required. The expected `iss` claim on your JWTs. Archer rejects any token whose issuer doesn't match. |
-| **Audience** | Required. The expected `aud` claim. Set this to a value your identity provider signs into tokens meant for Archer (e.g. `archer`). |
-| **Subject claim** | The claim Archer treats as the user identity. Defaults to `sub`. |
-| **API scopes** | Required. The scopes your workspace is allowed to request. Check `person:read` and `person:write` to enable the People API. |
-| **Enable token exchange for this tenant** | Turn off to temporarily disable API access without deleting the config. |
+1. Select **Generate API signer**. Archer creates a new EVM key pair, stores the public address, and displays the private key **once**.
+2. Copy the private key into your secret manager immediately. If you lose it, you'll have to generate a new signer.
+3. Under **API scopes**, check the scopes this signer should be allowed to use, then select **Save API scopes**. New signers have no permissions until you assign at least one scope.
 
-Select **Save configuration**. Archer creates the config and reveals your **Tenant ID** — copy it. You'll pass it on every token-exchange request.
-
-You can update or delete the config at any time from the same card.
-
-## 2. Exchange your JWT for an Archer token
-
-Mint a JWT with your identity provider, then POST it to `/auth/token_exchange` with your tenant ID and the scopes you want:
-
-```bash
-curl -X POST "https://api.archermoney.com/auth/token_exchange" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
-    "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
-    "tenant_id": "act_2026_05_20_abc",
-    "subject_token": "<your signed JWT>",
-    "scope": "person:read person:write"
-  }'
-```
-
-A successful response returns a short-lived Archer bearer token:
-
-```json
-{
-  "access_token": "eyJhbGciOi...",
-  "issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
-  "token_type": "Bearer",
-  "expires_in": 300,
-  "scope": "person:read person:write",
-  "subject": "user_1234"
-}
-```
-
-Notes:
-
-- `scope` is optional. Omit it to receive every scope your workspace has enabled; pass a space-separated list to narrow the token. You can never request a scope that isn't allowed on your JWKS config.
-- Tokens expire in five minutes. Exchange a fresh subject token when you need a new one — don't cache Archer access tokens across requests.
-- The `subject` in the response is whatever claim you configured as the **Subject claim**. Archer uses it to record who took each action.
-
-### Subject token requirements
-
-Archer rejects the exchange request with `400 invalid_request` or `403 access_denied` when:
-
-- The subject JWT is missing, unsigned, or larger than a few kilobytes.
-- The `iss` or `aud` claim doesn't match the values on your JWKS config.
-- The signing algorithm isn't `RS256` or `ES256`.
-- Token exchange is disabled on your JWKS config, or your workspace is inactive.
-
-Fix the mismatch on your identity provider (or re-enable the config on the Developers page) and retry.
-
-## 3. Call the API
-
-Pass the exchanged access token as a `Bearer` token on every request:
-
-```bash
-curl "https://api.archermoney.com/person" \
-  -H "Authorization: Bearer $ARCHER_ACCESS_TOKEN"
-```
+Each workspace can have one active signer at a time. Rotating the key and revoking access are on the roadmap.
 
 ### Available scopes
 
@@ -92,13 +30,87 @@ curl "https://api.archermoney.com/person" \
 | `person:read` | `GET /person` — list people, or fetch a single person with `?person_id=…`. |
 | `person:write` | `POST /person` — create a person and provision their wallet. |
 
-Requests without a scope the endpoint requires return `403 Forbidden`.
+Requests without a scope the endpoint requires return `403 Forbidden` with code `insufficient_scope`.
+
+## 2. Sign a request
+
+Every call to a scoped endpoint must include four headers:
+
+| Header | Value |
+|---|---|
+| `x-archer-signer-address` | The signer's EVM address, exactly as shown on the Developers page. |
+| `x-archer-timestamp` | Current Unix time in seconds. Requests more than five minutes off from Archer's clock are rejected. |
+| `x-archer-nonce` | A unique 16–128 character value (letters, digits, `._~-`). Reused nonces are rejected for 10 minutes. |
+| `x-archer-signature` | An EIP-191 (`personal_sign`) signature over the canonical message below, produced by the signer's private key. |
+
+Build the canonical message by joining these lines with `\n`:
+
+```
+archer-api-v1
+<host — for example api.archermoney.com, lowercased>
+<HTTP method, uppercased — for example GET or POST>
+<request path — for example /person>
+<canonical query string — sorted key=value pairs joined with &, empty for no params>
+<sha256 hex digest of the request body — empty string when there is no body>
+<x-archer-timestamp value>
+<x-archer-nonce value>
+```
+
+Then sign that string with EIP-191 and pass the resulting `0x…` signature in `x-archer-signature`.
+
+### Node.js example
+
+```js
+import { createHash, randomBytes } from "node:crypto";
+import { Wallet } from "ethers";
+
+const wallet = new Wallet(process.env.ARCHER_API_SIGNER_KEY);
+const host = "api.archermoney.com";
+const method = "GET";
+const path = "/person";
+const query = ""; // e.g. "include_archived=true"
+const body = ""; // stringified JSON for POST/PUT
+
+const timestamp = Math.floor(Date.now() / 1000).toString();
+const nonce = randomBytes(16).toString("hex");
+const bodyHash = createHash("sha256").update(body).digest("hex");
+
+const message = [
+  "archer-api-v1",
+  host,
+  method,
+  path,
+  query,
+  bodyHash,
+  timestamp,
+  nonce,
+].join("\n");
+
+const signature = await wallet.signMessage(message);
+
+const response = await fetch(`https://${host}${path}`, {
+  method,
+  headers: {
+    "x-archer-signer-address": wallet.address,
+    "x-archer-timestamp": timestamp,
+    "x-archer-nonce": nonce,
+    "x-archer-signature": signature,
+  },
+});
+```
+
+For requests with a body, JSON-serialize it once, use that exact string as the body Archer receives **and** for the sha256 in the signed message.
+
+## 3. Call the API
 
 ### List people
 
 ```bash
 curl "https://api.archermoney.com/person" \
-  -H "Authorization: Bearer $ARCHER_ACCESS_TOKEN"
+  -H "x-archer-signer-address: 0x…" \
+  -H "x-archer-timestamp: 1721775600" \
+  -H "x-archer-nonce: 9f8e7d6c5b4a3210" \
+  -H "x-archer-signature: 0x…"
 ```
 
 Optional query parameters:
@@ -111,25 +123,34 @@ Optional query parameters:
 
 ```bash
 curl -X POST "https://api.archermoney.com/person" \
-  -H "Authorization: Bearer $ARCHER_ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{
-    "email": "alice@example.com",
-    "name": "Alice Example"
-  }'
+  -H "x-archer-signer-address: 0x…" \
+  -H "x-archer-timestamp: 1721775600" \
+  -H "x-archer-nonce: 9f8e7d6c5b4a3210" \
+  -H "x-archer-signature: 0x…" \
+  -d '{"email":"alice@example.com","name":"Alice Example"}'
 ```
 
 `email` is required and must be unique within your workspace. Archer pregenerates a wallet for the person on creation and returns their `id`, `wallet_address`, and status.
 
-## Verifying Archer-issued tokens
+## Common rejection reasons
 
-If you need to verify Archer's access tokens yourself (for example, in a proxy), fetch the public JWKS at:
+Archer returns `401 Unauthorized` or `403 Forbidden` with a `code` field when a signed request can't be verified:
 
-```
-https://api.archermoney.com/auth/jwks
-```
+| Code | Meaning |
+|---|---|
+| `missing_api_signer_headers` | One of the four `x-archer-*` headers isn't set. |
+| `invalid_api_signer_address` | The address isn't a valid checksummed EVM address. |
+| `invalid_api_signer_timestamp` | Timestamp isn't a Unix integer, or it's off by more than five minutes. |
+| `expired_api_signer_request` | Same as above — clock skew is out of the ±5 minute window. |
+| `invalid_api_signer_nonce` | Nonce is the wrong length or contains disallowed characters. |
+| `invalid_api_signer_signature` | The recovered signer address doesn't match `x-archer-signer-address`, or the signed message doesn't match the request. |
+| `unknown_api_signer` | The signer address isn't registered on any workspace, or has been revoked. |
+| `recipient_not_allowed` | Recipient accounts can't use the API. |
+| `not_onboarded` | Your workspace hasn't finished onboarding. |
+| `insufficient_scope` | The signer isn't assigned the scope the endpoint requires. |
 
-Tokens are signed by Archer and include your `tenant_id`, the `subject` from your original JWT, and the granted `scope`.
+Match the message you sign to the exact request you send — the wrong host, path, query ordering, or body serialization will fail verification.
 
 ## Related
 
