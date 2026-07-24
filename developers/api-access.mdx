@@ -17,9 +17,10 @@ Use this when you need to sync people from your own systems into Archer without 
 
 Open the **Developers** page in the dashboard and find the **API signer** card.
 
-1. Select **Generate API signer**. Archer creates a new EVM key pair, stores the public address, and displays the private key **once**.
-2. Copy the private key into your secret manager immediately. If you lose it, you'll have to generate a new signer.
-3. Under **API scopes**, check the scopes this signer should be allowed to use, then select **Save API scopes**. New signers have no permissions until you assign at least one scope.
+1. Enter a **name** for the signer — pick something that identifies where you'll use it (for example, `production-sync` or `staging-worker`). Names help you tell signers apart if you rotate them.
+2. Select **Generate API signer**. Your browser generates a new EVM key pair locally, signs a short-lived registration challenge with the private key to prove ownership, and sends only the public address and signature to Archer. The private key never leaves the page.
+3. Copy the private key into your secret manager immediately — it's displayed **once**. If you lose it, generate a new signer.
+4. Under **API scopes**, check the scopes this signer should be allowed to use, then select **Save API scopes**. New signers have no permissions until you assign at least one scope.
 
 Each workspace can have one active signer at a time. Rotating the key and revoking access are on the roadmap.
 
