@@ -3,6 +3,36 @@ title: "Archer changelog and weekly release notes"
 description: "Weekly release notes for Archer covering new agent features, dashboard improvements, Slack integration changes, webhook updates, and product changes."
 ---
 
+<Update label="2026-07-27" tags={["New", "Improvement"]} description="Week of July 20">
+  ## New: fund and cash out in more currencies
+
+  Workspaces can now fund their Archer wallet from EUR, GBP, MXN, BRL, and COP bank accounts in addition to USD. Deposits convert to USDC on Base automatically, and the **Deposit → Bank transfer** panel provisions a virtual account per currency you enable.
+
+  Cash-out grew the same way. Workspace admins and claimed recipients can pay out to local bank accounts in:
+
+  - **EUR** over SEPA
+  - **GBP** over Faster Payments
+  - **MXN** over SPEI
+  - **BRL** over Pix
+  - **COP** over Bre-B
+
+  Pick a payout currency in the **Cash out** panel and Archer routes the transfer over the matching local rail.
+
+  ## New: invite workers to claim their own account
+
+  A new **Invite** action on the Workers page sends a one-time claim link. Once the worker signs in, Archer provisions a self-custodied wallet bound to their login and drops them into a recipient dashboard with balance, activity, and cash-out. Invite status (**Pending**, **Claimed**) shows on the roster, and you can regenerate or revoke pending links.
+
+  ## Improved: API signer replaces JWT token exchange
+
+  Programmatic access to the People API now uses an **API signer** — a scoped EVM key pair you generate on the **Developers** page and use to sign each request with EIP-191. No more JWKS setup, token-exchange round trips, or 5-minute bearer tokens.
+
+  - Give the signer a **name** so you can tell rotations apart.
+  - Keys are generated **in your browser** — Archer stores only the public address and scopes.
+  - Scopes (`person:read`, `person:write`) still gate what a signer can do.
+
+  Existing JWT/OAuth token-exchange integrations should migrate to signers.
+</Update>
+
 <Update label="2026-05-20" tags={["Pivot"]} description="Week of May 18">
   ## Archer is now a rewards platform
 
