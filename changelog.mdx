@@ -3,6 +3,18 @@ title: "Archer changelog and weekly release notes"
 description: "Weekly release notes for Archer covering new agent features, dashboard improvements, Slack integration changes, webhook updates, and product changes."
 ---
 
+<Update label="2026-07-30" tags={["New"]} description="Week of July 27">
+  ## New: embed the worker view with `@archermoney/sdk`
+
+  Partners can now drop the Archer worker balance, activity, and cash-out surface directly into their own app with the new [`@archermoney/sdk`](/developers/embed-workers-sdk) package. Your app hands the SDK a worker JWT; Archer exchanges it for a scoped worker session and renders the recipient view against the worker's own wallet.
+
+  - Headless `ArcherWorkerClient` for token exchange, account and transaction reads, Bridge KYC, and cash-out prepare/submit.
+  - `ArcherWorkerView` React component (plus `ArcherWorkerProvider` and `useArcherWorker` for custom layouts).
+  - `mountArcherWorkerWidget` for non-React pages and script-tag embeds.
+
+  Embed sessions are recipient-only — they cannot call sender or admin routes. Ask Archer to add your partner origins to the CORS allowlist before you go live.
+</Update>
+
 <Update label="2026-07-27" tags={["New", "Improvement"]} description="Week of July 20">
   ## New: fund and cash out in more currencies
 

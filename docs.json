@@ -53,7 +53,8 @@
           {
             "group": "Developers",
             "pages": [
-              "developers/sending-events"
+              "developers/sending-events",
+              "developers/embed-workers-sdk"
             ]
           }
         ]

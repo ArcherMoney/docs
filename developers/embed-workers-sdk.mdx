@@ -1,0 +1,199 @@
+---
+title: "Embed the worker view in your app with the Archer SDK"
+description: "Use @archermoney/sdk to embed the Archer worker balance, activity, and cash-out view in your partner app with an exchanged worker session token."
+---
+
+`@archermoney/sdk` lets partners drop the worker balance, activity, and cash-out surface directly into their own app. Your app authenticates each worker with a JWT you already issue; the SDK exchanges it for a scoped Archer worker session and renders the recipient view against the worker's own wallet.
+
+Use it when you want workers to see their Archer balance and pay out to their bank without leaving your product.
+
+## When to use the SDK
+
+Reach for the SDK when all of these are true:
+
+- You already invite workers to Archer through the [Workers page](/changelog) and have their **Person** roster set up.
+- You issue a JWT to each worker in your own app and want them to skip a second sign-in.
+- You want the worker view (balance graph, transactions, cash-out) inside your UI instead of linking out to the Archer recipient dashboard.
+
+If you only need to fire agents from your backend, use the [webhook API](/developers/sending-events) — the SDK is not required.
+
+## What the SDK includes
+
+The `@archermoney/sdk` package ships three entry points:
+
+| Entry point | What it exports | Use it when |
+|---|---|---|
+| `@archermoney/sdk` | `ArcherWorkerClient` — headless TypeScript client for token exchange, account, transactions, Bridge KYC, cash-out prepare/submit, and USDC balance reads. | You want to build your own UI or run server-side calls. |
+| `@archermoney/sdk/react` | `ArcherWorkerView`, `ArcherWorkerProvider`, `useArcherWorker` — a drop-in React worker view plus a hook for custom layouts. | You have a React app and want the default view or a hook-driven custom view. |
+| `@archermoney/sdk/embed` | `mountArcherWorkerWidget` and `window.ArcherWorkerWidget.mount` — mount the view into any DOM node from a script tag. | You are embedding from a non-React page or a plain script include. |
+
+The SDK never stores your tenant JWT or your worker's wallet signature. Cash-out submission still goes through the standard 2-of-2 wallet quorum — your app supplies the worker authorization signature for the prepared intent.
+
+## Prerequisites
+
+Before you install the SDK:
+
+1. **Register a JWKS config** for your tenant on the Archer **Developers** page. Archer uses this to verify the JWTs your app issues for its workers.
+2. **Add each worker to the roster** on the Workers page and set their **External user ID** to the same value you put in the `sub` claim of the JWT you issue for that worker. Embed auth resolves the worker only through an exact `Person.external_user_id` match.
+3. **Ask Archer to allowlist your origin.** Archer's API only accepts embed requests from origins in its `CORS_ALLOW_ORIGINS` list. Share the exact origins you plan to embed from (for example `https://app.example.com`) and Archer will add them.
+4. Note your **tenant ID** — the Archer sender account ID that owns the JWKS config.
+
+## Install
+
+```bash
+npm install @archermoney/sdk
+```
+
+The React and embed entry points require `react` and `react-dom` 18 or newer as peer dependencies.
+
+## Configure the client
+
+Create a single `ArcherSdkConfig` object and reuse it for every entry point. `getSubjectToken` is called every time the SDK needs a fresh session, so return a live worker JWT — not a cached one that might be expired.
+
+```ts
+import type { ArcherSdkConfig } from "@archermoney/sdk";
+
+const config: ArcherSdkConfig = {
+  apiBaseUrl: "https://api.archermoney.com",
+  tenantId: "acct_your_tenant_id",
+  getSubjectToken: async () => await yourAuth.getWorkerJwt(),
+};
+```
+
+| Field | Required | What it does |
+|---|---|---|
+| `apiBaseUrl` | Yes | Archer API base URL. Use `https://api.archermoney.com` in production. |
+| `tenantId` | Yes | Your Archer sender account ID — the owner of the JWKS config. |
+| `getSubjectToken` | Yes | Sync or async function that returns a worker JWT. The `sub` claim must match the worker's `Person.external_user_id`. |
+| `fetch` | No | Custom `fetch` implementation (for tests or non-browser runtimes). |
+| `tokenTtlSkewMs` | No | Milliseconds to refresh before the session token expires. Defaults to `30000`. |
+
+## Render the React view
+
+The fastest path is `ArcherWorkerView`. Pass the same config plus a `balance` object so the SDK can read the worker's on-chain USDC balance.
+
+```tsx
+import { ArcherWorkerView } from "@archermoney/sdk/react";
+
+export function WorkerDashboard() {
+  return (
+    <ArcherWorkerView
+      config={config}
+      balance={{
+        rpcUrl: "https://mainnet.base.org",
+        usdcAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        chainId: 8453,
+      }}
+      usdcAddress="0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+      onAuthorizeCashOut={async (prepared) => {
+        // Sign prepared.prepared.request_payload with the worker's wallet
+        // and return { user_authorization_signature, request_payload, prepared_user_operation }.
+        return await yourWallet.authorizeCashOut(prepared);
+      }}
+    />
+  );
+}
+```
+
+`onAuthorizeCashOut` is only required if you want workers to complete cash-out from inside the embed. Your app is responsible for producing the worker's authorization signature — the SDK never signs on your behalf.
+
+For a fully custom UI, wrap your components in `ArcherWorkerProvider` and read state with `useArcherWorker()`:
+
+```tsx
+import { ArcherWorkerProvider, useArcherWorker } from "@archermoney/sdk/react";
+
+function BalanceHeader() {
+  const { account, balance, loading } = useArcherWorker();
+  if (loading) return <span>Loading…</span>;
+  return <span>{account?.name}: {balance ?? "--"} USDC</span>;
+}
+
+export function CustomView() {
+  return (
+    <ArcherWorkerProvider config={config} balance={/* … */}>
+      <BalanceHeader />
+      {/* Your own transaction list, cash-out form, etc. */}
+    </ArcherWorkerProvider>
+  );
+}
+```
+
+## Mount the widget from a script tag
+
+For non-React pages, use the `embed` entry point:
+
+```html
+<div id="archer-worker"></div>
+<script type="module">
+  import { mountArcherWorkerWidget } from "https://esm.sh/@archermoney/sdk/embed";
+
+  mountArcherWorkerWidget("#archer-worker", {
+    config: {
+      apiBaseUrl: "https://api.archermoney.com",
+      tenantId: "acct_your_tenant_id",
+      getSubjectToken: () => window.yourAuth.getWorkerJwt(),
+    },
+  });
+</script>
+```
+
+The embed bundle also exposes `window.ArcherWorkerWidget.mount(target, props)` for classic script includes. `mountArcherWorkerWidget` returns an `unmount()` function you can call when the containing view is destroyed.
+
+## Use the headless client
+
+Prefer the client when you want to run calls server-side or build your own UI. Every method exchanges the subject token on demand and caches the resulting session until it is near expiry.
+
+```ts
+import { ArcherWorkerClient } from "@archermoney/sdk";
+
+const client = new ArcherWorkerClient(config);
+
+const account = await client.getAccount();
+const history = await client.getTransactionHistory({ limit: 25 });
+const balance = await client.getUsdcBalance({
+  rpcUrl: "https://mainnet.base.org",
+  usdcAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  chainId: 8453,
+});
+```
+
+Cash-out is a two-step call. Prepare the intent, sign it in your app with the worker's wallet, then submit:
+
+```ts
+const prepared = await client.prepareCashOut({
+  amount: "25000000", // 25 USDC in base units
+  usdcAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+});
+
+const signed = await yourWallet.authorizeCashOut(prepared);
+
+const result = await client.submitWalletIntent(prepared.intent, signed);
+```
+
+The Bridge KYC and external-account helpers (`getBridgeStatus`, `startBridgeVerification`, `listExternalAccounts`, `createExternalAccount`) let you drive the same recipient flows the default view uses.
+
+## Session behavior and errors
+
+- **Session refresh.** The client keeps one exchanged session in memory and refreshes it automatically when it is within `tokenTtlSkewMs` of expiry. Call `client.clearSession()` if the worker signs out.
+- **Recipient-only.** The exchanged session is scoped to the worker view. It cannot call sender or admin routes — including the People API and agent management — even if the underlying tenant is an admin.
+- **Errors.** Failures throw `ArcherApiError` with `status` and `body` fields so you can branch on the API status code:
+
+  ```ts
+  import { ArcherApiError } from "@archermoney/sdk";
+
+  try {
+    await client.getAccount();
+  } catch (error) {
+    if (error instanceof ArcherApiError && error.status === 401) {
+      // The subject token is invalid or the worker's external_user_id no longer matches.
+    }
+    throw error;
+  }
+  ```
+
+- **CORS.** If a browser request fails with a CORS error, confirm the origin has been added to Archer's allowlist.
+
+## Related
+
+- [Sending webhook events](/developers/sending-events) — fire an agent from your backend without the SDK.
+- [Changelog](/changelog) — recent worker, funding, and cash-out changes.
