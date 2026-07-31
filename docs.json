@@ -21,49 +21,47 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Docs",
+        "tab": "SDK",
         "groups": [
           {
             "group": "Get started",
             "pages": [
               "introduction",
-              "quickstart"
+              "quickstart",
+              "installation",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/react-provider",
+              "guides/embed-widget",
+              "guides/cash-out"
             ]
           },
           {
             "group": "Concepts",
             "pages": [
-              "concepts/agents",
-              "concepts/categories",
-              "concepts/triggers",
-              "concepts/activity-and-approvals"
+              "concepts/architecture",
+              "concepts/token-exchange",
+              "concepts/wallet-authorization",
+              "concepts/cash-out"
             ]
           },
           {
-            "group": "Dashboard guides",
+            "group": "Reference",
             "pages": [
-              "guides/create-an-agent",
-              "guides/customize-rewards",
-              "guides/connect-slack",
-              "guides/approve-rewards",
-              "guides/invite-team",
-              "guides/workspace-settings"
-            ]
-          },
-          {
-            "group": "Developers",
-            "pages": [
-              "developers/sending-events"
+              "reference/types",
+              "reference/client",
+              "reference/react",
+              "reference/errors",
+              "reference/embed"
             ]
           }
         ]
-      },
-      {
-        "tab": "Changelog",
-        "pages": [
-          "changelog"
-        ]
       }
     ]
-  }
+  },
+  "description": "Documentation for the Archer stablecoin payments platform and @archermoney/sdk."
 }

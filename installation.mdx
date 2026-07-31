@@ -1,0 +1,46 @@
+---
+title: "Installation"
+description: "Install @archermoney/sdk and pick an integration surface."
+sidebarTitle: "Installation"
+---
+
+`@archermoney/sdk` ships one package with three entry points. Install once and import from the surface that fits your app.
+
+## Install
+
+```bash npm
+npm install @archermoney/sdk
+```
+
+```bash pnpm
+pnpm add @archermoney/sdk
+```
+
+```bash yarn
+yarn add @archermoney/sdk
+```
+
+If you use the React surface, install `react` and `react-dom` (\>= 18) as peer dependencies:
+
+```bash
+npm install react react-dom
+```
+
+## Entry points
+
+| Import | When to use |
+| --- | --- |
+| `@archermoney/sdk` | Framework-agnostic `ArcherWorkerClient` for backends, Node scripts, or custom UI. |
+| `@archermoney/sdk/react` | `ArcherWorkerProvider`, `useArcherWorker`, and the prebuilt `ArcherWorkerView`. |
+| `@archermoney/sdk/embed` | `mountArcherWorkerWidget()` and a `window.ArcherWorkerWidget.mount` global for non-React hosts. |
+
+## Requirements
+
+- Node 18\+ or a modern browser with `fetch`.
+- An Archer **tenant id** and **API base URL** (issued when you onboard).
+- A way to mint a **subject token** for the signed-in end user. Any JWT your backend can sign works, as long as your tenant is configured to accept its issuer.
+
+## Next
+
+- [Quickstart](/quickstart) — render the prebuilt view in five minutes.
+- [Authentication](/authentication) — subject tokens, tenant ids, and session tokens.
