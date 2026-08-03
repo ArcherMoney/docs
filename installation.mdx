@@ -30,7 +30,8 @@ npm install react react-dom
 
 | Import | When to use |
 | --- | --- |
-| `@archermoney/sdk` | Framework-agnostic `ArcherWorkerClient` for backends, Node scripts, or custom UI. |
+| `@archermoney/sdk` | Framework-agnostic `ArcherWorkerClient` for end-user flows (balances, history, cash-out). |
+| `@archermoney/sdk/backend` | Server-only `ArcherBackendClient` for provisioning workers with an API signer. |
 | `@archermoney/sdk/react` | `ArcherWorkerProvider`, `useArcherWorker`, and the prebuilt `ArcherWorkerView`. |
 | `@archermoney/sdk/embed` | `mountArcherWorkerWidget()` and a `window.ArcherWorkerWidget.mount` global for non-React hosts. |
 

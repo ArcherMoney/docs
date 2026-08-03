@@ -54,6 +54,7 @@
             "pages": [
               "reference/types",
               "reference/client",
+              "reference/backend",
               "reference/react",
               "reference/errors",
               "reference/embed"
