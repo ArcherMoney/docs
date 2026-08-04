@@ -4,15 +4,15 @@ sidebarTitle: "Introduction"
 description: "The Archer worker SDK is an embeddable client, React surface, and browser widget for adding Archer stablecoin balances, history, and cash-out to your app."
 ---
 
-Archer is a stablecoin payments platform. Every end user gets a smart wallet that holds USDC on Base, tracks its own transaction history, and can cash out to a linked bank account through Bridge.
+Archer is a stablecoin payments platform. Every end user gets a wallet that holds USDC on Base, tracks its own transaction history, and can cash out to a linked bank account through Bridge.
 
 The **`@archermoney/sdk`** package embeds that experience directly into your product. Point it at your existing identity provider, and Archer takes care of authentication, wallet provisioning, balance display, history, and payouts.
 
 ## What the SDK gives you
 
-- **Balances and history** for the end user's Archer smart wallet, on Base or Base Sepolia.
+- **Balances and history** for the end user's Archer wallet, on Base or Base Sepolia.
 - **Cash-out to a bank account** via Bridge KYC, external accounts, and liquidation addresses.
-- **Wallet intents** with host-signed authorization, so the end user's Privy-backed smart wallet only moves funds you explicitly approve.
+- **Wallet intents** with host-signed authorization, so the end user's Privy-backed wallet — delegated via [EIP-7702](/concepts/wallet-authorization) — only moves funds you explicitly approve.
 - **Three integration surfaces**:
   - `@archermoney/sdk` — framework-agnostic TypeScript client.
   - `@archermoney/sdk/react` — `ArcherWorkerProvider`, `useArcherWorker`, and a prebuilt `ArcherWorkerView`.

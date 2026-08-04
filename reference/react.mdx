@@ -1,6 +1,6 @@
 ---
 title: "React reference"
-description: "ArcherWorkerProvider, useArcherWorker, and ArcherWorkerView from @archermoney/sdk/react."
+description: "ArcherWorkerProvider, useArcherWorker hook, and prebuilt ArcherWorkerView component from the @archermoney/sdk/react entry point for React apps."
 sidebarTitle: "React"
 ---
 
@@ -59,14 +59,16 @@ interface ArcherWorkerViewProps {
   config: ArcherSdkConfig;
   balance?: GetBalanceOptions;
   usdcAddress?: string;
-  onAuthorizeCashOut?: (prepared: PreparedCashOut) => Promise<SignedPayload>;
+  signAuthorization?: AuthorizationSigner;
 }
 ```
 
 Renders a self-contained UI: hero balance, balance-over-time chart, latest transactions, and a cash-out panel. Internally wraps its children in `<ArcherWorkerProvider>`.
 
 - `usdcAddress` is required for the cash-out panel to submit a transfer.
-- `onAuthorizeCashOut` receives the `PreparedCashOut` and must return a `SignedPayload`. Without it, the panel refuses to submit.
+- `signAuthorization` is a callback the view invokes to sign each `PrivyAuthorizationRequestPayload`. It is called once for the EIP-7702 delegation (on first use) and once for every user operation, so hand it a signer that can respond to arbitrary payloads from your host wallet (typically Privy). Without it, the cash-out panel refuses to submit.
+
+The view calls `ensureDelegatedWallet` before its first cash-out, so the underlying EIP-7702 delegation is bootstrapped automatically.
 
 ## `GetBalanceOptions`
 

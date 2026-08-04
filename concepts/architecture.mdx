@@ -1,6 +1,6 @@
 ---
 title: "SDK architecture"
-description: "How the client, React surface, and embed widget layer on top of the Archer API and the end user's smart wallet."
+description: "How the framework-agnostic client, React provider, and embed widget layer on top of the Archer API and the end user's EIP-7702 wallet."
 sidebarTitle: "Architecture"
 ---
 
@@ -32,7 +32,8 @@ The SDK is three layers stacked on the Archer API. Each layer is optional. You c
 All network I/O lives here. It:
 
 - Exchanges a **subject token** for an Archer **session token** and caches it in memory.
-- Talks to the Archer REST API (`/account`, `/transaction_history`, `/offramp/*`, `/bridge/*`, `/wallet/intent/*`).
+- Talks to the Archer REST API (`/account`, `/transaction_history`, `/offramp/*`, `/bridge/*`, `/wallet/delegation/*`, `/wallet/intent/*`).
+- Drives the one-time EIP-7702 delegation handshake via `ensureDelegatedWallet`.
 - Reads the end user's on-chain USDC balance via viem, given an RPC URL.
 
 It has no UI, no framework dependency, and no persistent storage.
@@ -49,16 +50,16 @@ A thin wrapper that mounts `ArcherWorkerView` into any DOM node and exposes `win
 
 - **Subject token.** A JWT your identity provider signs. Identifies the end user to Archer.
 - **Session token.** Short-lived bearer token the SDK gets from `/auth/token_exchange`.
-- **Smart wallet.** Each Archer end user has a smart contract wallet on Base, provisioned on first login.
+- **Wallet.** Each Archer end user has a Privy-managed EOA on Base, provisioned on first login. Archer delegates it to a Kernel implementation via [EIP-7702](/concepts/wallet-authorization) so the same address executes ERC-4337 user operations — there is no separate smart-account address.
 - **Wallet intent.** A structured description of a wallet operation (currently `erc20_transfer`) that the Archer API can prepare into a user operation.
-- **Signed payload.** The host-produced signature that authorizes a prepared intent. See [Wallet authorization](/concepts/wallet-authorization).
+- **Signed payload.** The host-produced signature that authorizes a prepared intent. Includes an EIP-7702 delegation authorization on the first submit for a wallet. See [Wallet authorization](/concepts/wallet-authorization).
 
 ## What Archer runs vs. what your app runs
 
 | Runs in Archer | Runs in your app |
 | --- | --- |
 | Identity federation and token exchange. | User authentication. |
-| Smart wallet provisioning and orchestration. | Wallet-authorization surface (Privy or similar). |
+| Wallet provisioning, EIP-7702 delegation, and user-operation orchestration. | Wallet-authorization surface (Privy or similar). |
 | Bridge integration (KYC, external accounts, off-ramp settlement). | Presenting Bridge status and links to the end user. |
 | Transaction indexing and history. | UI, routing, and any product-specific screens. |
 | User operation bundling and relay to Base. | Signing the user operation authorization payload. |

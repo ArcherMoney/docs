@@ -1,6 +1,6 @@
 ---
 title: "React provider"
-description: "Wrap your app in ArcherWorkerProvider and read live state from useArcherWorker."
+description: "Wrap your React app in ArcherWorkerProvider to fetch account, balance, transactions, and Bridge state, and read it live with useArcherWorker."
 sidebarTitle: "React provider"
 ---
 
@@ -62,7 +62,7 @@ export function WorkerCard() {
 | Field | Type | Notes |
 | --- | --- | --- |
 | `client` | `ArcherWorkerClient` | Call directly for anything the provider does not expose. |
-| `account` | `ArcherAccount \| null` | Includes `smart_wallet_address` and `user_eoa_address`. |
+| `account` | `ArcherAccount \| null` | Includes the canonical `wallet_address`. |
 | `balance` | `number \| null` | USDC balance, or `null` if the `balance` prop was omitted or the read failed. |
 | `balanceSeries` | `BalancePoint[]` | Synthesised from `transactions`, ready to feed a chart. |
 | `transactions` | `TransactionHistoryItem[]` | Latest 100 by default. |

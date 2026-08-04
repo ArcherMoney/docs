@@ -1,14 +1,14 @@
 ---
 title: "Cash-out flow"
-description: "End-to-end sequence for moving USDC from an Archer smart wallet to a fiat bank account through Bridge."
+description: "End-to-end sequence for moving USDC from an Archer wallet to a fiat bank account through Bridge KYC, liquidation addresses, and off-ramp settlement."
 sidebarTitle: "Cash-out flow"
 ---
 
-Cash-out is the composition of three subsystems: Bridge (KYC \+ off-ramp), the Archer smart wallet (USDC transfer), and the host wallet-authorization surface (signature).
+Cash-out is the composition of three subsystems: Bridge (KYC \+ off-ramp), the Archer wallet (USDC transfer), and the host wallet-authorization surface (signature).
 
 ## Actors
 
-- **End user** — owns the smart wallet, completes KYC, taps “Cash out”.
+- **End user** — owns the wallet, completes KYC, taps “Cash out”.
 - **Host app** — hosts the SDK, owns the signing key, drives the UI.
 - **Archer API** — prepares intents, calls Bridge, relays user operations.
 - **Bridge** — KYC provider and off-ramp; issues liquidation addresses and settles fiat.
@@ -45,13 +45,13 @@ end user      host app          SDK / API         Bridge         Base
 1. **Check status.** `client.getBridgeStatus()`. If not approved, `startBridgeVerification` and send the end user through `kyc_link` / `tos_link`.
 2. **Add a destination.** `createExternalAccount` (or list existing ones). Bridge validates the account (in the US, via VoP for supported rails).
 3. **Ensure a liquidation address.** `ensureLiquidationAddress` returns a Base address that Bridge sweeps to fiat and settles to the external account.
-4. **Prepare.** `prepareCashOut` builds an `erc20_transfer` intent from the end user's smart wallet to the liquidation address and asks Archer to prepare the ERC-4337 user operation.
-5. **Authorize.** The host calls its wallet-authorization surface with `prepared.intent` and `prepared.prepared.request_payload`, receives a signature, and packages it as `SignedPayload`.
+4. **Prepare.** `prepareCashOut` builds an `erc20_transfer` intent from the end user's wallet to the liquidation address and asks Archer to prepare the ERC-4337 user operation. If the wallet is not yet [EIP-7702 delegated](/concepts/wallet-authorization), the response also includes a `delegation` block that must be signed alongside the user operation.
+5. **Authorize.** The host calls its wallet-authorization surface with `prepared.intent` and `prepared.prepared.request_payload` (plus `prepared.prepared.delegation.request_payload` if present), receives signatures, and packages them as `SignedPayload`.
 6. **Submit.** `submitWalletIntent` returns `{ tx_hash, user_operation_hash }`. The transfer executes on Base.
 7. **Settle.** Bridge detects the deposit at the liquidation address and initiates fiat settlement to the linked bank account. Poll `getOfframpHistory` for status.
 
 ## Failure recovery
 
 - If step 5 fails (user rejects, signer offline), nothing has hit chain — you can retry from step 4.
-- If step 6 succeeds but the user operation reverts on chain, the response carries a `tx_hash`; the funds never leave the smart wallet.
+- If step 6 succeeds but the user operation reverts on chain, the response carries a `tx_hash`; the funds never leave the wallet.
 - Bridge settlement failures show up in `getOfframpHistory` with `combined_status` reflecting the reason.

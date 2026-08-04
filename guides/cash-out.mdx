@@ -1,10 +1,14 @@
 ---
 title: "Cash out to a bank account"
-description: "Onboard a payout destination with Bridge, then submit an authorized cash-out."
+description: "Onboard an end user through Bridge KYC, add a payout bank account, and submit an authorized USDC cash-out from their Archer wallet."
 sidebarTitle: "Cash out"
 ---
 
-Cash-out moves USDC from the end user's Archer smart wallet to a fiat bank account through Bridge. It has two phases: **onboarding** (KYC and adding a payout account) and **execution** (preparing, authorizing, and submitting a wallet intent).
+Cash-out moves USDC from the end user's Archer wallet to a fiat bank account through Bridge. It has two phases: **onboarding** (KYC and adding a payout account) and **execution** (preparing, authorizing, and submitting a wallet intent).
+
+<Note>
+  If this is the first cash-out for the end user, call `client.ensureDelegatedWallet(signWithHostWallet)` once at session start. It runs the one-time [EIP-7702 delegation](/concepts/wallet-authorization) that lets the wallet execute user operations, and is a no-op after that. `signWalletIntent` handles the delegation half automatically if you prefer to combine both steps.
+</Note>
 
 ## 1. Check Bridge status
 
@@ -53,7 +57,7 @@ const prepared = await client.prepareCashOut({
 });
 ```
 
-`prepareCashOut` ensures a liquidation address exists, builds an ERC-20 transfer intent to it, and asks the Archer API to prepare a user operation for the end user's smart wallet.
+`prepareCashOut` ensures a liquidation address exists, builds an ERC-20 transfer intent to it, and asks the Archer API to prepare a user operation for the end user's wallet. When the wallet is still undelegated, `prepared.prepared.delegation` is populated and must be signed alongside the user operation.
 
 ## 4. Have the host authorize the intent
 
@@ -91,12 +95,16 @@ async function cashOut(amountUsdc: string) {
     throw new Error("Add a payout account first");
   }
 
-  const prepared = await client.prepareCashOut({
+  // Bootstrap EIP-7702 delegation on first use (no-op after that).
+  await client.ensureDelegatedWallet(signWithHostWallet);
+
+  return client.signWalletIntent(signWithHostWallet, {
+    type: "erc20_transfer",
+    token_address: USDC_BASE,
+    recipient_address: (await client.ensureLiquidationAddress(accounts[0].id)).address!,
     amount: amountUsdc,
-    usdcAddress: USDC_BASE,
-    externalAccountId: accounts[0].id,
   });
-  const signed = await signWithHostWallet(prepared);
-  return client.submitWalletIntent(prepared.intent, signed);
 }
 ```
+
+`signWalletIntent` runs prepare → sign → submit in one call and signs both the delegation half (if present) and the user operation in the correct order.
