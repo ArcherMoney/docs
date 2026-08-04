@@ -46,9 +46,9 @@ try {
 | --- | --- | --- |
 | `400` | Malformed request body, invalid intent, mutated `request_payload`. | Fix the request; do not retry unchanged. |
 | `401` | Session token missing, expired, or subject token rejected. | `clearSession()` and retry so the SDK re-exchanges. |
-| `403` | Tenant / issuer mismatch, or the signer is not authorized on the smart wallet. | Verify tenant configuration; check host signer. |
+| `403` | Tenant / issuer mismatch, or the signer is not authorized on the wallet. | Verify tenant configuration; check host signer. |
 | `404` | Resource does not exist (account not yet provisioned, unknown external account id). | Poll or provision, then retry. |
-| `409` | Conflicting state (for example, Bridge onboarding not complete). | Read the relevant status endpoint and reconcile. |
+| `409` | Conflicting state — Bridge onboarding not complete, or the prepared payload is stale (`delegation_authorization_nonce_drift`, `account_nonce_consumed`). | Read the relevant status endpoint and reconcile, or re-prepare. `ensureDelegatedWallet` and `signWalletIntent` retry stale payloads automatically. |
 | `422` | Bridge or downstream provider rejected the request. | Inspect `body` for the underlying reason. |
 | `429` | Rate limited. | Exponential backoff. |
 | `5xx` | Archer or an upstream provider had an error. | Retry with backoff; report if persistent. |
@@ -58,7 +58,9 @@ try {
 The client also throws plain `Error`s for local misuse:
 
 - `"apiBaseUrl is required"` — empty `apiBaseUrl` in `ArcherSdkConfig`.
-- `"Worker smart wallet is not ready"` — `getUsdcBalance` called before the smart wallet is provisioned.
+- `"Worker wallet is not ready"` — `getUsdcBalance` called before the wallet is provisioned.
+- `"Signer did not return a delegation authorization signature."` / `"Signer did not return a user authorization signature."` — the `AuthorizationSigner` callback returned an empty string. Return a valid `0x…` signature.
+- `"Wallet delegation was submitted but has not finished confirming yet"` — the delegation user operation was accepted by the bundler but did not settle within the polling window. Retry `ensureDelegatedWallet` after a short delay.
 - `"Liquidation address is not ready"` — `prepareCashOut` called before Bridge onboarding completed.
 - `"useArcherWorker must be used inside ArcherWorkerProvider"` — hook called outside its provider.
 - `"Archer widget target was not found"` — embed selector did not resolve.

@@ -36,8 +36,7 @@ interface ArcherAccount {
   surname: string | null;
   business_name?: string | null;
   wallet_id?: string | null;
-  user_eoa_address: string | null;
-  smart_wallet_address: string | null;
+  wallet_address: string | null;
   is_recipient: boolean;
 }
 
@@ -156,19 +155,21 @@ interface PrivyAuthorizationRequestPayload {
 }
 
 interface PreparedIntentResult {
-  smart_wallet_address?: string | null;
+  wallet_address?: string | null;
   prepared_user_operation: Record<string, unknown>;
   request_payload: PrivyAuthorizationRequestPayload;
+  delegation?: PreparedDelegation | null;
 }
 
 interface SignedPayload {
   user_authorization_signature: string;
   request_payload: PrivyAuthorizationRequestPayload;
   prepared_user_operation: Record<string, unknown>;
+  delegation: SignedDelegationPayload | null;
 }
 
 interface SignedWalletResult {
-  smart_wallet_address?: string | null;
+  wallet_address?: string | null;
   user_operation_hash?: string | null;
   tx_hash?: string | null;
   intent_type?: string;
@@ -180,6 +181,62 @@ interface PreparedCashOut {
   prepared: PreparedIntentResult;
 }
 ```
+
+## EIP-7702 delegation
+
+Each Archer wallet is a Privy-managed EOA that Archer delegates to a pinned Kernel implementation via [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702). Delegation happens once per wallet through `ensureDelegatedWallet()` (or the `/wallet/delegation/*` route pair). Once delegated, the same address executes ERC-4337 user operations — there is no separate smart-account address.
+
+Prepared payloads returned by `/wallet/intent/prepare` and `/wallet/delegation/prepare` carry a `delegation` block whenever the wallet is still undelegated. Sign both `request_payload`s (delegation first, then user operation) and return them together in `SignedPayload`.
+
+```ts
+interface PreparedDelegation {
+  required: boolean;
+  implementation: string;   // pinned Kernel implementation address
+  chain_id: number;
+  nonce: number;
+  request_payload: PrivyAuthorizationRequestPayload;
+}
+
+interface SignedDelegationPayload {
+  request_payload: PrivyAuthorizationRequestPayload;
+  user_authorization_signature: string;
+}
+
+interface DelegationSetupPrepareResult {
+  wallet_address?: string | null;
+  setup_required: boolean;
+  configured: boolean;
+  prepared_user_operation?: Record<string, unknown> | null;
+  request_payload?: PrivyAuthorizationRequestPayload | null;
+  delegation?: PreparedDelegation | null;
+}
+
+interface DelegationSetupSubmitResult {
+  wallet_address: string;
+  configured: boolean;
+  user_operation_hash?: string | null;
+}
+```
+
+## Authorization signer
+
+```ts
+type AuthorizationSigner = (
+  requestPayload: PrivyAuthorizationRequestPayload,
+) => Promise<string> | string;
+```
+
+A callback the SDK invokes to produce authorization signatures. Called twice when delegation is required — once for the delegation payload, once for the user operation — in that order.
+
+## Error codes
+
+```ts
+const DELEGATION_NONCE_DRIFT_CODE: "delegation_authorization_nonce_drift";
+const ACCOUNT_NONCE_CONSUMED_CODE: "account_nonce_consumed";
+const STALE_PREPARED_OPERATION_CODES: ReadonlySet<string>;
+```
+
+Both codes mean the same thing to a caller: the prepared payload is stale and re-preparing is the recovery. `ensureDelegatedWallet` and `signWalletIntent` already retry once on these codes; the constants are exported so hosts driving the handshake manually can do the same.
 
 ## Helpers
 
@@ -195,4 +252,15 @@ function rawTokenAmountToNumber(raw: bigint, decimals?: number): number;
 interface BalanceSeriesOptions {
   decimals?: number;
 }
+
+function signPreparedIntent(
+  signer: AuthorizationSigner,
+  prepared: {
+    prepared_user_operation: Record<string, unknown>;
+    request_payload: PrivyAuthorizationRequestPayload;
+    delegation?: PreparedDelegation | null;
+  },
+): Promise<SignedPayload>;
 ```
+
+`signPreparedIntent` invokes the signer for the delegation half (if present) and then for the user operation, returning a `SignedPayload` ready for `/wallet/intent/submit` or `/wallet/delegation/submit`.

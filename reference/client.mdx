@@ -60,7 +60,7 @@ Drops the cached session token. Call on sign-out.
 getAccount(): Promise<ArcherAccount>
 ```
 
-Returns the Archer account for the current subject, including `smart_wallet_address` and `user_eoa_address`.
+Returns the Archer account for the current subject, including its canonical `wallet_address`. This is a single address — the Privy-managed EOA that Archer delegates to a Kernel implementation via [EIP-7702](/concepts/wallet-authorization). There is no separate smart-account address.
 
 ### `getTransactionHistory(params)`
 
@@ -96,7 +96,7 @@ getUsdcBalance(options: {
 }): Promise<number>
 ```
 
-Reads USDC `balanceOf(smart_wallet_address)` via viem. Defaults: `chainId` picks between Base and Base Sepolia; `decimals` defaults to `6`.
+Reads USDC `balanceOf(wallet_address)` via viem. Defaults: `chainId` picks between Base and Base Sepolia; `decimals` defaults to `6`.
 
 ## Bridge
 
@@ -132,6 +132,40 @@ ensureLiquidationAddress(externalAccountId?: string): Promise<BridgeLiquidationA
 
 Returns (creating if necessary) the Bridge liquidation address for the given external account.
 
+## Wallet delegation
+
+Every Archer wallet is a Privy-managed EOA that must be delegated to a pinned Kernel implementation via [EIP-7702](/concepts/wallet-authorization) before it can execute user operations. Delegation is a one-time, sponsored operation. The runtime refuses to settle any intent from an undelegated wallet.
+
+### `ensureDelegatedWallet(signer)`
+
+```ts
+ensureDelegatedWallet(signer: AuthorizationSigner): Promise<string>
+```
+
+Idempotent. Drives the full `/wallet/delegation/prepare` → sign → `/wallet/delegation/submit` handshake, polls until the delegation designator settles on chain, and returns the wallet address. If the wallet is already delegated, this costs a single prepare call. Call it once at session start before submitting any wallet intent.
+
+```ts
+import { ArcherWorkerClient } from "@archermoney/sdk";
+
+await client.ensureDelegatedWallet(async (requestPayload) => {
+  // Sign requestPayload with your host wallet (typically Privy) and return the
+  // 0x… signature. Called once for the delegation authorization, once for the
+  // user operation that installs the executor module.
+  return signWithHostWallet(requestPayload);
+});
+```
+
+Retries once on `delegation_authorization_nonce_drift` and `account_nonce_consumed` (see [`STALE_PREPARED_OPERATION_CODES`](/reference/types#error-codes)). Other errors surface as `ArcherApiError`.
+
+### `prepareDelegationSetup()` / `submitDelegationSetup(signed)`
+
+```ts
+prepareDelegationSetup(): Promise<DelegationSetupPrepareResult>
+submitDelegationSetup(signed: SignedPayload): Promise<DelegationSetupSubmitResult>
+```
+
+Low-level access to the same handshake. Use these only if you need to drive the flow yourself — for example, to interleave a delegation prompt with your own UI. Otherwise prefer `ensureDelegatedWallet`.
+
 ## Wallet intents
 
 ### `prepareWalletIntent(intent)`
@@ -140,7 +174,7 @@ Returns (creating if necessary) the Bridge liquidation address for the given ext
 prepareWalletIntent(intent: WalletIntent): Promise<PreparedIntentResult>
 ```
 
-Asks Archer to build a user operation for the intent.
+Asks Archer to build a user operation for the intent. When the wallet is still undelegated, the returned `PreparedIntentResult` also carries a `delegation` block; both `request_payload`s must be signed and included in the submit call.
 
 ### `submitWalletIntent(intent, signed)`
 
@@ -152,6 +186,26 @@ submitWalletIntent(
 ```
 
 Relays a signed user operation. Returns `tx_hash` and `user_operation_hash`.
+
+### `signWalletIntent(signer, intent)`
+
+```ts
+signWalletIntent(
+  signer: AuthorizationSigner,
+  intent: WalletIntent,
+): Promise<SignedWalletResult>
+```
+
+Drives the full prepare → sign → submit handshake in one call. Prefer this over calling the three pieces separately: it guarantees the prepared payloads are ferried verbatim and every signature the prepare asked for (including the EIP-7702 delegation half, if present) is returned.
+
+```ts
+const result = await client.signWalletIntent(signWithHostWallet, {
+  type: "erc20_transfer",
+  token_address: USDC_BASE,
+  recipient_address: "0x…",
+  amount: "25.00",
+});
+```
 
 ### `prepareCashOut(params)`
 

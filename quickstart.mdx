@@ -39,25 +39,26 @@ export function App() {
 }
 ```
 
-The view renders available balance, the smart wallet address, a balance graph, the latest transactions, and a cash-out panel.
+The view renders available balance, the wallet address, a balance graph, the latest transactions, and a cash-out panel.
 
 ## 3. Enable cash-out
 
-Cash-out requires the host to authorize the wallet operation. Pass `usdcAddress` and `onAuthorizeCashOut`:
+Cash-out requires the host to authorize the wallet operation. Pass `usdcAddress` and a `signAuthorization` callback:
 
 ```tsx
 <ArcherWorkerView
   config={config}
   balance={balanceConfig}
   usdcAddress="0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
-  onAuthorizeCashOut={async (prepared) => {
-    // Present prepared.intent and prepared.prepared.request_payload to your
-    // wallet-authorization surface (e.g. Privy, WalletConnect, custom UI)
-    // and return the signed payload.
-    return signWithHostWallet(prepared);
+  signAuthorization={async (requestPayload) => {
+    // Present requestPayload to your wallet-authorization surface
+    // (e.g. Privy) and return the resulting 0x… signature.
+    return signWithHostWallet(requestPayload);
   }}
 />
 ```
+
+`signAuthorization` is called once for the [EIP-7702 delegation](/concepts/wallet-authorization) on first cash-out, and once per user operation after that. The view runs `ensureDelegatedWallet` automatically before its first submit.
 
 See [Wallet authorization](/concepts/wallet-authorization) for the security boundary and [Cash-out flow](/concepts/cash-out) for the full sequence.
 

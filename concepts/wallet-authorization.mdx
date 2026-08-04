@@ -1,22 +1,40 @@
 ---
 title: "Wallet authorization"
-description: "Why Archer prepares wallet intents but never signs them, and how the host proves the end user approved the operation."
+description: "How Archer prepares wallet operations, how the host signs them, and how EIP-7702 delegation is bootstrapped once per wallet."
 sidebarTitle: "Wallet authorization"
 ---
 
-The end user's Archer smart wallet is theirs. Archer prepares operations, relays them, and indexes them, but the signature that authorizes an operation must come from a key the **host** controls (typically a Privy-managed embedded wallet).
+The end user's Archer wallet is theirs. Archer prepares operations, relays them, and indexes them, but the signature that authorizes an operation must come from a key the **host** controls (typically a Privy-managed embedded wallet).
 
 This boundary is the security model that lets Archer be embedded without becoming custodian of user funds.
+
+## What "the wallet" is
+
+Every Archer wallet is a single address: a Privy-managed EOA that Archer delegates to a pinned Kernel implementation via [EIP-7702](https://eips.ethereum.org/EIPS/eip-7702). Once delegated, the same address executes ERC-4337 user operations through EntryPoint 0.7. There is no separate smart-account address — `wallet_address` is the one address users receive to and send from.
 
 ## Roles
 
 | Party | Owns |
 | --- | --- |
-| End user | The smart wallet address on Base. |
+| End user | The wallet address on Base. |
 | Host app | The signing key and the wallet-authorization UI. |
 | Archer | Preparation, relay, indexing, Bridge integration. |
 
-## The two-step handshake
+## Delegation: the one-time handshake
+
+Before a wallet can execute any intent, Archer must delegate the underlying EOA to the pinned Kernel implementation and install the executor module. This is a one-time, sponsored operation and is completely idempotent.
+
+The SDK exposes it as `ArcherWorkerClient.ensureDelegatedWallet(signer)`:
+
+1. `POST /wallet/delegation/prepare` returns `setup_required` plus, if delegation is still pending, a `PreparedDelegation` block (the EIP-7702 authorization) and a `prepared_user_operation` (the module install).
+2. The host signs **both** `request_payload`s in the order the runtime expects: delegation authorization first, then the user operation.
+3. `POST /wallet/delegation/submit` relays them together. The SDK polls prepare until the designator settles on chain.
+
+An already-delegated wallet costs a single prepare call. `ensureDelegatedWallet` retries once on `delegation_authorization_nonce_drift` or `account_nonce_consumed` — those codes mean the prepared payload is stale and re-preparing is the recovery.
+
+Nothing else in the SDK can settle on-chain until this has run, because the runtime rejects a submit whose sender is still undelegated.
+
+## Intent submission: the two-step handshake
 
 ### Step 1: prepare
 
@@ -24,13 +42,16 @@ The SDK calls `POST /wallet/intent/prepare` with a `WalletIntent`. Archer return
 
 ```ts
 interface PreparedIntentResult {
-  smart_wallet_address?: string | null;
+  wallet_address?: string | null;
   prepared_user_operation: Record<string, unknown>;   // ERC-4337 user op
   request_payload: PrivyAuthorizationRequestPayload;   // canonical payload to sign
+  delegation?: PreparedDelegation | null;              // present if still undelegated
 }
 ```
 
 `request_payload` is a canonical representation of the API call that will submit the user operation. Signing that payload with the host key proves the end user authorized this exact operation.
+
+If `delegation` is present, the wallet still needs to be delegated. Sign both `request_payload`s — delegation first, user operation second.
 
 ### Step 2: submit
 
@@ -41,21 +62,25 @@ interface SignedPayload {
   user_authorization_signature: string;
   request_payload: PrivyAuthorizationRequestPayload;
   prepared_user_operation: Record<string, unknown>;
+  delegation: SignedDelegationPayload | null;
 }
 ```
 
-The SDK sends it to `POST /wallet/intent/submit`. Archer verifies the signature against the smart wallet's authorized signer, then bundles and relays the user operation.
+The SDK sends it to `POST /wallet/intent/submit`. Archer verifies the signatures against the wallet's authorized signer, then bundles and relays the user operation.
+
+The `signPreparedIntent(signer, prepared)` helper handles both halves in the right order — every SDK method that submits an intent already goes through it, so an undelegated wallet can never have its delegation half silently dropped.
 
 ## What the host must guarantee
 
-- The signing key belongs to a signer authorized on the end user's smart wallet.
-- The signed `request_payload` and `prepared_user_operation` are exactly the ones Archer returned (do not mutate).
+- The signing key belongs to the signer authorized on the end user's wallet (the Privy-managed EOA).
+- The signed `request_payload`s and `prepared_user_operation` are exactly the ones Archer returned (do not mutate).
 - The end user has actually approved the operation in your UI before signing.
 
 ## What Archer guarantees
 
 - It will not accept an unsigned intent.
 - It will reject a signed intent whose `request_payload` does not match the payload it prepared.
+- It will reject a submit whose sender is still undelegated.
 - It never derives, holds, or exports the host signing key.
 
 ## Failure modes
@@ -63,6 +88,8 @@ The SDK sends it to `POST /wallet/intent/submit`. Archer verifies the signature 
 | Situation | Result |
 | --- | --- |
 | Host signs a mutated payload. | `submit` returns `400`; nothing hits chain. |
-| Signer is not authorized on the smart wallet. | `submit` returns `401`. |
+| Signer is not authorized on the wallet. | `submit` returns `401`. |
+| Wallet is not yet delegated when an intent is submitted. | `submit` returns `400`. Call `ensureDelegatedWallet` first, then retry. |
+| Prepared payload is stale (nonce drift). | `submit` returns `409` with `delegation_authorization_nonce_drift` or `account_nonce_consumed`; re-prepare and retry. |
 | End user rejects in the host UI. | Host never calls `submit`; no side effects. |
 | User operation reverts on chain. | Recorded in transaction history; `submit` returns the failing `tx_hash` and `user_operation_hash`. |

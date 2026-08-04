@@ -23,7 +23,7 @@ const widget = mountArcherWorkerWidget("#archer-root", {
     chainId: 8453,
   },
   usdcAddress: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-  onAuthorizeCashOut: async (prepared) => signWithHostWallet(prepared),
+  signAuthorization: async (requestPayload) => signWithHostWallet(requestPayload),
 });
 
 // Later, when the user navigates away:
@@ -62,7 +62,7 @@ When the embed entry is loaded in a browser, it also attaches to `window` so pla
 - `config` (required) — `ArcherSdkConfig`.
 - `balance` (optional) — pass to enable on-chain USDC balance display.
 - `usdcAddress` (optional) — required to submit cash-outs.
-- `onAuthorizeCashOut` (optional) — host callback that signs a prepared cash-out. See [Wallet authorization](/concepts/wallet-authorization).
+- `signAuthorization` (optional) — `AuthorizationSigner` the widget calls to sign each authorization payload (delegation on first use, then user operations). See [Wallet authorization](/concepts/wallet-authorization).
 
 ## Cleanup
 
